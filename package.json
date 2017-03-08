@@ -1,0 +1,55 @@
+{
+  "name": "happyhour-mobile",
+  "version": "1.0.0",
+  "description": "毕业设计------移动web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --config ./webpack.dev.config.js --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miaowwwww/HappyHour-mobile.git"
+  },
+  "author": "miaowwwwww",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miaowwwww/HappyHour-mobile/issues"
+  },
+  "homepage": "https://github.com/miaowwwww/HappyHour-mobile#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.7.6",
+    "babel": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "css-loader": "^0.26.2",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "file-loader": "^0.10.1",
+    "html-webpack-plugin": "^2.28.0",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "lib-flexible": "^0.3.2",
+    "postcss-loader": "^1.3.2",
+    "style-loader": "^0.13.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-md5-hash": "0.0.5"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "flexible": "^0.1.20",
+    "immutable": "^3.8.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "react-router": "^3.0.2",
+    "redux": "^3.6.0",
+    "redux-immutablejs": "0.0.8",
+    "redux-logger": "^2.8.2",
+    "redux-thunk": "^2.2.0"
+  }
+}
