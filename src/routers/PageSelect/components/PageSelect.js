@@ -6,8 +6,14 @@ import Video from 'components/Video.js';
 
 
 class PageSelect extends React.Component {
+	constructor(props){
+		super(props);
+	}
+	componentDidMount() {
+		// this.props.getFilms();
+	}
 	render() {
-
+		// const videos = this.props.videos.toJS();
 		let videos = [
 			{id: 1, name: 'learn js with miao 1', category:'广告', time: `5'43"`},
 			{id: 2, name: 'learn js with miao 2', category:'广告', time: `5'43"`},

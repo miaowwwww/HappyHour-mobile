@@ -14,11 +14,11 @@ const initialState = Immutable.Map({
 export default function user( state = initialState, action){
 	switch(action.type) {
 		case USER_REQUESTING:
-			return state.merge({isLogining: true, requestErrorMsg: ''});
+			return state.merge({isLogining: true, requestErrorMsg: '', loginErrorMsg: ''});
 		case USER_REQUESTSUCCESS:
 			return state.merge({isLogining: false, ...action.user});
 		case USER_REQUESTERROR:
-			return state.merge({isLogining: false, loginError: action.loginErrorMsg});
+			return state.merge({isLogining: false, requestErrorMsg: action.requestErrorMsg});
 		default:
 			return state;
 	}

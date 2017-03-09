@@ -5,7 +5,7 @@ import { login } from '../actions/user.js';
 
 function mapStateToProps(state) {
 	return {
-		user: state.user
+		user: state.get('user')
 	}
 }
 function mapDispatchToProps(dispatch) {

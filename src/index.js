@@ -10,7 +10,6 @@ import rootRouter from './routers/index.js';
 import configureStore from './configureStore.js';
 
 const store = configureStore();
-
 render(
 	<Provider store={store}>
 		{rootRouter}

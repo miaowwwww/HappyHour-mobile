@@ -6,7 +6,6 @@ import rootReducers from './reducers/index.js';
 
 
 
-
 export default function configureStore(preloadedState) {
 	return createStore(
 		rootReducers,
