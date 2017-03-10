@@ -10,17 +10,12 @@ class PageSelect extends React.Component {
 		super(props);
 	}
 	componentDidMount() {
-		// this.props.getFilms();
+		this.props.getList();
 	}
 	render() {
-		// const videos = this.props.videos.toJS();
-		let videos = [
-			{id: 1, name: 'learn js with miao 1', category:'广告', time: `5'43"`},
-			{id: 2, name: 'learn js with miao 2', category:'广告', time: `5'43"`},
-			{id: 3, name: 'learn js with miao 3', category:'广告', time: `5'43"`}
-		]
-
-
+		console.log('pageSelect', this.props.videos)
+		let videos = this.props.videos;
+		console.log('11',videos)
 		return (
 			<div id={style.pageSelect}>
 				<header>
@@ -28,7 +23,7 @@ class PageSelect extends React.Component {
 					<p>星期一，3月6日</p>
 					<i className={style.search}></i>
 				</header>
-				{ videos.map((item) => <Video key={item.id} videoData={item} /> )}
+				{videos && videos.map((item) => <Video key={item.id} data={item} /> )}
 			</div>
 		)
 	}

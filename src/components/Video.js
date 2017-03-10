@@ -6,17 +6,17 @@ export default class Video extends PureComponent {
 	static defaultProps = {
 		videoData: {
 			name: 'try to learn js',
-			time: `3'23"`,
+			durations: `3'23"`,
 			category: '学习',
-			team: '天天影视'
+			producer: '天天影视'
 		}
 	}
 	render() {
-		let { name, time, category } = this.props.videoData;
+		let { name, durations, category } = this.props.data;
 		return (
 				<section id={style.video}>
 					<h1>{name}</h1>
-					<p>#{category} / {time}</p>
+					<p>#{category} / {durations}</p>
 				</section>
 		)
 	}

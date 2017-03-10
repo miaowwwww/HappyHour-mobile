@@ -6,7 +6,8 @@ import App from 'components/App.js';
 import Follow from './PageFollow/components/PageFollow.js';
 import Found from './PageFound/components/PageFound.js';
 import My from './PageMy/components/PageMy.js';
-import Select from './PageSelect/components/PageSelect.js';
+// import Select from './PageSelect/components/PageSelect.js';
+import Select from './PageSelect/index.js';
 // login page
 // import LoginPage from 'components/LoginPage.js';
 import LoginPage from '../containers/LoginPage.js';

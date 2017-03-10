@@ -1,7 +1,6 @@
 export const USER_REQUESTING = 'USER_REQUESTING';
 export const USER_REQUESTSUCCESS = 'USER_REQUESTSUCCESS';
 export const USER_REQUESTERROR = 'USER_REQUESTERROR';
-
 // 若需要修改路由，可通过react-router-redux，此处暂时将history引入
 import { browserHistory } from 'react-router';
 

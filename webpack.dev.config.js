@@ -22,7 +22,8 @@ module.exports = {
 	resolve: {
 		alias: {
 			"components": path.resolve(__dirname, 'src/components'),
-			"images": path.resolve(__dirname, 'images')
+			"images": path.resolve(__dirname, 'images'),
+			"actions": path.resolve(__dirname, 'src/actions')
 		}
 	},
 	module: {
@@ -48,6 +49,10 @@ module.exports = {
 			{
 				test: /\.(jpg|png)$/,
 				use: 'url-loader?limit=8192&name=images/[name][hash:8].[ext]'
+			},
+			{
+				test: /\.json$/,
+				use: 'json-loader'
 			}
 		]
 	},
