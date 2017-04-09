@@ -18,7 +18,7 @@ import LoginPage from '../containers/LoginPage.js';
 const routers = (
 	<Router history={ browserHistory } >
 		<Route path='/' component={App}>
-			<IndexRedirect to={`/found`} component={Select} ></IndexRedirect>
+			<IndexRedirect to={`found`} component={Select} ></IndexRedirect>
 			<Route path={`found`} component={Found}></Route>
 			<Route path={`follow`} component={Follow}></Route>
 			<Route path={`select`} component={Select}></Route>

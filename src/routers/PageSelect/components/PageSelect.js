@@ -10,12 +10,10 @@ class PageSelect extends React.Component {
 		super(props);
 	}
 	componentDidMount() {
-		this.props.getList();
+		this.props.videos.size === 0 && this.props.getList();
 	}
 	render() {
-		console.log('pageSelect', this.props.videos)
 		let videos = this.props.videos;
-		console.log('11',videos)
 		return (
 			<div id={style.pageSelect}>
 				<header>

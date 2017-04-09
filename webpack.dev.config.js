@@ -6,8 +6,8 @@ var autoprefixer = require('autoprefixer');
 var path = require('path');
 
 module.exports = {
-	// devtool: 'cheap-module-eval-source-map',
-	devtool: 'cheap-source-map',
+	devtool: 'cheap-module-eval-source-map',
+	// devtool: 'cheap-source-map',
 	entry: {
 		app: './src/index.js',
 		// vendor: ['react', 'react-dom', 'redux', 'react-redux', 'lib-flexible', 'react-router']
@@ -48,7 +48,7 @@ module.exports = {
 			},
 			{
 				test: /\.(jpg|png)$/,
-				use: 'url-loader?limit=8192&name=images/[name][hash:8].[ext]'
+				use: 'url-loader?limit=4092&name=images/[name][hash:8].[ext]'
 			},
 			{
 				test: /\.json$/,
@@ -102,7 +102,7 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin()
 	],
 	devServer: {
-		// open: true,
+		open: true,
 		// host: 'localhost',
 		host: '0.0.0.0',
 		port: 9999,

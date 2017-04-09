@@ -4,7 +4,7 @@ import style from './Video.less';
 
 export default class Video extends PureComponent {
 	static defaultProps = {
-		videoData: {
+		data: {
 			name: 'try to learn js',
 			durations: `3'23"`,
 			category: '学习',

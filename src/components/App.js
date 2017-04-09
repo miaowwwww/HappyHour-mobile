@@ -16,3 +16,4 @@ export default class App extends React.PureComponent {
 		)
 	}
 }
+				// {this.props.children}

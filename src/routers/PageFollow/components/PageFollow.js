@@ -11,6 +11,11 @@ export default class PageFollow extends React.Component {
 			{id: 2, data:{}},
 			{id: 3, data:{}},
 			{id: 4, data:{}},
+			{id: 5, data:{}},
+			{id: 6, data:{}},
+			{id: 7, data:{}},
+			{id: 8, data:{}},
+			{id: 9, data:{}},
 		]
 		return (
 			<div id={style.pageFollow} >
