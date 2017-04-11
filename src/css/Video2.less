@@ -1,0 +1,44 @@
+@import './tool.less';
+
+.Video {
+	.flex();
+	.flex-v();
+	header {
+		.flex-n(5);
+		position: relative;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+
+		.begin {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate3d(-50%, -50%, 0) rotate(-90deg);
+			transform-origin: center;
+			display: block;
+			padding: 0.4rem;
+			border-radius: 50%;
+			border: 6px solid #fff;
+			.font-dpr(14px);
+			color: #fff;
+			z-index: 1;	
+		}
+	}
+
+	section {
+		.flex-n(4);
+		position: relative;
+		img {
+			width: 100%;
+			// height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	}
+
+	footer {
+		.flex-n(1);
+	}
+}

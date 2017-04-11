@@ -1,7 +1,7 @@
 import React from 'react';
 
 import GlobalNav from './GlobalNav.js';
-import style from './App.less';
+import '../css/App.less';
 export default class App extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -9,11 +9,10 @@ export default class App extends React.PureComponent {
 
 	render() {
 		return (
-			<div id={style.app} >
-				<div className={style.content}>{this.props.children}</div>
+			<div className='App' >
+				<div className='App-content'>{this.props.children}</div>
 				<GlobalNav />
 			</div>
 		)
 	}
 }
-				// {this.props.children}

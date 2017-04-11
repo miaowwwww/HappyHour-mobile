@@ -1,32 +1,23 @@
-import React, { PureComponent, PropTypes } from 'react';
-import { Link, browserHistory } from 'react-router';
+import React, { PureComponent, Component, PropTypes } from 'react';
 
-import style from './GlobalNav.less';
+import Link from './Link.js';
 
-export default class GlobalNav extends PureComponent {
+import '../css/GlobalNav.less';
+
+export default class GlobalNav extends Component {
 	constructor(props) {
 		super(props);
-	}
-	handleTouch = () => {
-		console.log(browserHistory)
-		browserHistory.push({pathname:`/my`})
 	}
 
 	render() {
 
 		return (
-			<div className={style.nav} >
-				<Link to={`/select`} activeClassName={style.activeTab} >精选</Link>
-				<Link to={`/found`} activeClassName={style.activeTab} >发现</Link>
-				<Link to={`/follow`} activeClassName={style.activeTab} >关注</Link>
-				<Link to={`/my`} activeClassName={style.activeTab} >我的</Link>
-				<a onTouchEnd={this.handleTouch} >我的</a>
+			<div className='GlobalNav' >
+				<Link to={`/select`} activeClassName='GlobalNav-active-link' >精选</Link>
+				<Link to={`/found`} activeClassName='GlobalNav-active-link' >发现</Link>
+				<Link to={`/follow`} activeClassName='GlobalNav-active-link' >关注</Link>
+				<Link to={`/my`} activeClassName='GlobalNav-active-link' >我的</Link>
 			</div>
 		)
 	}
-}
-GlobalNav.contextType = {
-	router: PropTypes.object,
-	route: PropTypes.object,
-	location: PropTypes.object
 }

@@ -1,5 +1,20 @@
 # HappyHour-mobile
 毕业设计------移动web
+# 目录结构
+server
+src
+	actions
+	constants
+	components
+	container
+	reducers
+	routers
+	store（history）
+	css
+	images
+	virtual_data
+config
+
 # 数据库设计MongoDB
 ```js
 user={
@@ -103,27 +118,5 @@ category={
     }
   }
 }
-producer={
-	id,
-	name,
-	brand,//商标
-	motto,//座右铭
-	videos:[videoId],
-	video_count,//视频数量
-	follow_count,//关注人数
-	good_count,//点赞数
-		//记录
-	meta: {
-		//创建时间
-		createTime: {
-			type: Date,
-			default: Date.now
-		},
-		//更新时间
-		updateTime: {
-			type: Date,
-			default: Date.now
-		}
-	}
-}
+manager={}
 ```
