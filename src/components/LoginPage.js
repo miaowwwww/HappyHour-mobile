@@ -24,19 +24,20 @@ export default class Login extends PureComponent {
 
 	render() {
 		const { isLogining, requestErrorMsg, loginErrorMsg } = this.props.user.toJS();
+			
 		return (
-			<div id={style.login}>
-				<div className={style.blackBg}></div>
-				<i className={style.close} onClick={this.handleClose}>X</i>
+			<div className='Login'>
+				<div className='Login-blackBg'></div>
+				<i className='Login-close iconfont icon-guanbi' onClick={this.handleClose}></i>
 				<h1>开眼世界</h1>
 				<p>登录优即可评论即同步已收藏的视频</p>
-				{ isLogining && <p>正在登陆。。。</p>}
+				{ this.state.isLogining && <p>正在登陆。。。</p>}
 				<form>
-					<label><i>♀</i><input type="text" ref={account => this._accountId = account} placeholder="请输入邮箱或电话" /></label>
-					<label><i>♂</i><input type="password" ref={pwd => this._password = pwd} placeholder="请输入密码" /></label>
+					<label><i className="iconfont icon-geren" ></i><input type="text" ref="account" placeholder="请输入邮箱或电话" /></label>
+					<label><i className="iconfont icon-mima" ></i><input type="password" ref="password" placeholder="请输入密码" /></label>
 					{ requestErrorMsg && <p className={style.err}>{ requestErrorMsg }</p>}
 					{ loginErrorMsg && <p className={style.err}>{ loginErrorMsg }</p>}
-					<a className={style.submit} onClick={this.handleSubmit} >登录</a>
+					<a className='submit' onClick={this.handleSubmit} >登录</a>
 					<a>新用户请注册</a>
 				</form>
 			</div>

@@ -1,0 +1,19 @@
+{
+	"restartable": "rs", 
+	"ignore": [
+		".git",
+		"node_modules/**/node_modules"
+	],
+	"verbose": true, 
+	"execMap": { 
+		"": "babel-node",
+		"js": "babel-node --harmony" 
+	},
+	"events": {
+	 "start": "echo 'app start'",
+	 "restart": "echo 'app restart'"
+	},
+	"watch": "server/*",
+	"ext": "js json",
+	"legacy-watch": false
+}

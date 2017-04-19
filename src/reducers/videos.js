@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { VIDEO_REQUESTPOST, VIDEO_REQUESTSUCCESS, VIDEO_REQUESTERROR } from 'actions/videos.js';
+import { VIDEO_REQUESTPOST, VIDEO_REQUESTSUCCESS, VIDEO_REQUESTERROR } from '../actions/videos.js';
 
 const initialState = Immutable.Map({
 	list: Immutable.List(),

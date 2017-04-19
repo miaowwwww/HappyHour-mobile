@@ -1,0 +1,59 @@
+@keyframes fromBottom {
+	0% { transform: translate3d(0, 100%, 0); opacity: 0; }
+	100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes fromUp {
+	0% { transform: translate3d(0, -100%, 0); opacity: 0; }
+	100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes  toBottom{
+	0% { transform: translate3d(0, 0, 0); opacity: 1; }
+	100% { transform: translate3d(0, 100%, 0); opacity: 0; }
+}
+@keyframes  toUp{
+	0% { transform: translate3d(0, 0, 0); opacity: 1; }
+	100% { transform: translate3d(0, -100%, 0); opacity: 0; }
+}
+
+.animate-from-bottom { animation: fromBottom .2s ease-out; }
+.animate-from-up { animation: fromUp .2s ease-out; }
+.animate-to-bottom { animation: toBottom .2s ease-out; }
+.animate-to-up { animation: toUp .2s ease-out; }
+
+
+@keyframes fromRight {
+	0% { transform: translate3d(100%, 0, 0); opacity: 0; }
+	100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes fromLeft {
+	0% { transform: translate3d(-100%, 0, 0); opacity: 0; }
+	100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+@keyframes toRight {
+	0% { transform: translate3d(0, 0, 0); opacity: 1; }
+	100% { transform: translate3d(100%, 0, 0); opacity: 0; }
+}
+@keyframes toLeft {
+	0% { transform: translate3d(0, 0, 0); opacity: 1; }
+	100% { transform: translate3d(-100%, 0, 0); opacity: 0; }
+}
+.animate-from-right { animation: fromRight .2s ease-out; }
+.animate-from-left { animation: fromLeft .2s ease-out; }
+.animate-to-right { animation: toRight .2s ease-out; }
+.animate-to-left { animation: toLeft .2s ease-out; }
+
+// @keyframes scaleIn {
+// 	0% { transform: scale3d(0, 0, 1); opacity: 0; }
+// 	100% { transform: scale3d(1, 1, 1); opacity: 1; }
+// }
+
+// @keyframes scaleOut {
+// 	0% { transform: scale3d(1, 1, 1); opacity: 1; }
+// 	100% { transform: scale3d(0, 0, 1); opacity: 0; }
+// }
+
+
+// .slide-to-up { transform: translate3d(0, 50%, 0); transition: all .5s; }
+// .slide-to-up-active { transform: translate3d(0, 0, 0); }
+// .animate-scale { animation: scaleIn .2s ease; }
+// .animate-scale { animation: scaleOut .2s ease; }

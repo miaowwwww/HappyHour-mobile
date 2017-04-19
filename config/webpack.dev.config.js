@@ -17,24 +17,18 @@ module.exports = {
 		chunkFilename: 'js/[name]-[chunkhash:8].js'
 		// publicPath: ''
 	},
-	resolve: {
-		alias: {
-			"components": path.resolve(__dirname, 'src/components'),
-			"images": path.resolve(__dirname, 'images'),
-			"actions": path.resolve(__dirname, 'src/actions'),
-			"css": path.resolve(__dirname, 'src/css')
-		}
-	},
+	// resolve: {
+	// },
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['es2015', 'react', 'stage-0']
-					}
+					loader: 'babel-loader'
+					// options: {
+					// 	presets: ['es2015', 'react', 'stage-0']
+					// }
 				}
 			},
 			{
@@ -105,7 +99,14 @@ module.exports = {
 		port: 9999,
 		hot: true,
 		inline: true,
-		historyApiFallback: true
+		historyApiFallback: true,
+		proxy: {
+			"/api": {
+				target: "http://localhost:3000",
+				changeOrigin: true,
+				secure: false
+			}
+		}
 	}
 
 	

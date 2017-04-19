@@ -1,6 +1,6 @@
 @import './tool.less';
 
-#Login {
+#Regist {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -12,7 +12,7 @@
 	background-size: cover;
 	color: #fff;
 
-	.Login-close {
+	.Regist-close {
 		position: absolute;
 		top: 0.3rem;
 		left: 0.3rem;
@@ -20,6 +20,7 @@
 		display: block;
 		padding: 0.4rem;		
 	}
+
 	h1 {
 		text-align: center;
 		.font-dpr(30px);
@@ -30,15 +31,28 @@
 		.font-dpr(12px);
 		line-height:1rem;
 	}
-	.Login-err {
+	.Regist-err {
 		color: #f00;
 		.font-dpr(16px);
 	}
 	form {
 		width: 6rem;
-		margin: 1rem auto 0;
+		margin: 3rem auto 0;
 		display: block;
 		text-align: center;
+		
+
+		img {
+			background-image: url('../images/default_user.png');
+			margin-bottom: 1rem;
+			height: 1.7rem; 
+			width: 1.7rem;
+			border-radius: 50%;
+			border: 1px solid #ccc;
+			overflow: hidden;
+			background-size: cover;
+		}
+
 		label {
 			display: block;
 			border-bottom: 1px solid #fff;
@@ -54,6 +68,7 @@
 				.font-dpr(14px);
 			}
 		}
+		
 		a.submit {
 			display: block;
 			width: 100%; 

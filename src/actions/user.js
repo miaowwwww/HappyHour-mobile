@@ -1,8 +1,10 @@
-export const USER_REQUESTING = 'USER_REQUESTING';
-export const USER_REQUESTSUCCESS = 'USER_REQUESTSUCCESS';
-export const USER_REQUESTERROR = 'USER_REQUESTERROR';
+export const USER_REQUESTING = 'USER_REQUESTING';	// 发送请求
+export const USER_REQUESTSUCCESS = 'USER_REQUESTSUCCESS'; // 请求成功
+export const USER_REQUESTERROR = 'USER_REQUESTERROR'; // 请求失败
+export const USER_SYNCLOGIN = 'USER_SYNCLOGIN'; //同步方式登录
 // 若需要修改路由，可通过react-router-redux，此处暂时将history引入
-import { browserHistory } from 'react-router';
+import defineHistory from '../history';
+import { userHttpServer } from '../api/HttpServer.js';
 
 function requestPost(user) {
 	return {
@@ -25,29 +27,40 @@ function requestError(err) {
 	}
 }
 
-export const login = (user) => {
-	return function (dispatch, getState) {
-		dispatch(requestPost(user));
-		setTimeout(function () {
-			// 模拟请求,当然为false
-			const user = {
-				"name": "miaowwwww",
-				"sex": "girl",
-				"birthday": "0928",
-				// "loginErrorMsg": "账号密码不正确",
-				"accessToken": "itisaccessToken"
-			};
-			if(user.loginErrorMsg) {
-				dispatch(requestSuccess(user));
-			}else {
-				browserHistory.goBack();
-			}
-			dispatch(requestSuccess(user))
-			// fetch('/user.json', { type: 'POST', body: user})
-			// 	.then(response => response.json())
-			// 	.then(json => dispatch(receivePost(json)))
-			// 	.catch(err => dispatch(requestError(err)))
-		}, 2000)
+/* 登录 action */
+function requestLogining(user) {
+	return {
+		type: USER_REQUESTING
 	}
+}
+function requestLogined(user) {
+	return {
+		type: USER_REQUESTSUCCESS,
+		user: user
+	}
+}
 
+function requestLoginError(err) {
+	return {
+		type: USER_REQUESTERROR,
+		requestErrorMsg: err
+	}
+}
+export const asyncLogin = ( user ) => {
+	return function ( dispatch, getState ) {
+		dispatch( requestLogining() );
+
+		userHttpServer.login( user )
+			.then( user => {
+				dispatch( requestLogined( user ) );
+				defineHistory.goBack();
+			} )
+			.catch( err => dispatch( requestLoginError( err )))
+	}
+}
+export const syncLogin = ( user ) => {
+	return {
+		type: USER_SYNCLOGIN,
+		user
+	}
 }

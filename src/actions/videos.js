@@ -3,7 +3,7 @@ export const VIDEO_REQUESTSUCCESS = 'VIDEO_REQUESTSUCCESS';
 export const VIDEO_REQUESTERROR = 'VIDEO_REQUESTERROR';
 
 // 模拟数据
-import video from '../vdata/video.json';
+// import video from '../vdata/video.json';
 
 function requestPost(VIDEO) {
 	return {

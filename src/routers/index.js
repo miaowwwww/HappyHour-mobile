@@ -16,7 +16,7 @@ import VideoPlay from '../components/VideoPlay';
 const routers = (
 	<Router history={ defineHistory } >
 		<Route path='/' component={App}>
-			<IndexRedirect to='/videos'></IndexRedirect>
+			<IndexRedirect to='/my'></IndexRedirect>
 			<Route path='found' component={Found}></Route>
 			<Route path='follow' component={Follow}></Route>
 			<Route path='select' component={Select}></Route>

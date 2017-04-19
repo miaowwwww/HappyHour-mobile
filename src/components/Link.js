@@ -3,6 +3,9 @@ import React, { Component, PropTypes} from 'react';
 import History from '../history';
 
 export default class Link extends Component {
+	static DefaultProps = {
+		to: PropTypes.string.isRequired
+	}
 	handleTouchEnd = () => {
 		History.push({pathname: this.props.to});
 		this.forceUpdate();
