@@ -6,9 +6,23 @@ var autoprefixer = require('autoprefixer');
 var path = require('path');
 
 module.exports = {
-	devtool: 'cheap-module-eval-source-map',
+	// devtool: 'cheap-module-eval-source-map',
+	devtool: 'eval',
 	entry: {
-		app: './src/index.js',
+		app: [
+			    'react-hot-loader/patch',
+    // activate HMR for React
+
+    'webpack-dev-server/client?http://localhost:9999',
+    // bundle the client for webpack-dev-server
+    // and connect to the provided endpoint
+
+    'webpack/hot/only-dev-server',
+    // bundle the client for hot reloading
+    // only- means to only hot reload for successful updates
+
+			'./src/index.js'
+		],
 		vendor: './src/vendor.js'
 	},
 	output: {
@@ -63,7 +77,7 @@ module.exports = {
 				postcss: {
 					options: {
 						plugins: [autoprefixer({
-							browsers: ['last 4 versions']
+							browsers: ['ie >= 9', 'ios > 7', 'Android > 4']
 							// flexbox: false
 						})]
 					}
@@ -90,6 +104,7 @@ module.exports = {
 		// 	},
 		// 	comments: false
 		// }),
+		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin()
 	],
 	devServer: {

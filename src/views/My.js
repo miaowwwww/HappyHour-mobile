@@ -11,7 +11,6 @@ export class My extends Component {
 
 	constructor(props, context) {
 		super(props);
-		this.state = {};
 	}
 
 	handleClick = (e) => {
@@ -23,8 +22,7 @@ export class My extends Component {
 	}
 
 	render() {
-		console.log(this.props.user);
-		let { account, name, img } = this.props;
+		let { account, name, img } = this.props.user.toJS();
 		return (
 			<div className='My'>
 				<header className='My-Top'>
@@ -49,7 +47,7 @@ export class My extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.get('user')
 	}
 }
 
