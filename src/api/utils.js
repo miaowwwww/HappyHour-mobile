@@ -1,17 +1,18 @@
 const imgpath = '/images';
 
-const utils = {
-	img: (name) => {
+const utils = { };
+	
+utils.img = (name) => {
 		return `${imgpath}/${name}`;
 	},
 
-	typeof: (param) => {
+utils.typeof = (param) => {
 		let _str = Object.prototype.toString.call(param);
 		_str = _str.slice(8, -1);
 		return _str;
 	},
 
-	reg: {
+utils.reg = {
 		email : /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
 		mobile : /^0?1[3|4|5|8][0-9]\d{8}$/,
 		int : /^[-]?([0-9]+\d*)$/,
@@ -22,5 +23,47 @@ const utils = {
 		idCardNo:/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
 	}
 
+
+
+utils.xhrUpload = (url, formName) => {
+	//0.预处理
+			let xhr = new window.XMLHttpRequest(), 
+				form = document.forms.namedItem(formName);
+			let formData = new window.FormData(form);
+			// console.log(file)
+			// Append file data:
+			// formData.append(key, file, file.name);
+
+	// To account for sites that may require CORS
+			// if (data && data.withCredentials === true) {
+			// 		xhr.withCredentials = true;
+			// }
+
+	//1.设置各类回调函数
+			// Triggered when upload starts:
+			xhr.upload.onloadstart = function() {
+			};
+
+			// Triggered many times during upload:
+			xhr.upload.onprogress = function(ev) {
+				console.log(ev.loaded/ev.total*100 + '%')
+			};
+
+			// Triggered when upload is completed:
+			xhr.onload = function(e) {
+				console.log('loaed');
+			};
+
+			// Triggered when upload fails:
+			xhr.onerror = function(ev) {
+				console.log('err')
+			};
+
+			xhr.open('POST', url);
+
+			//2.开始上传文件了
+			xhr.send(formData);
 }
+
+
 export default utils;

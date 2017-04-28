@@ -9,26 +9,13 @@ module.exports = {
 	// devtool: 'cheap-module-eval-source-map',
 	devtool: 'eval',
 	entry: {
-		app: [
-			    'react-hot-loader/patch',
-    // activate HMR for React
-
-    'webpack-dev-server/client?http://localhost:9999',
-    // bundle the client for webpack-dev-server
-    // and connect to the provided endpoint
-
-    'webpack/hot/only-dev-server',
-    // bundle the client for hot reloading
-    // only- means to only hot reload for successful updates
-
-			'./src/index.js'
-		],
-		vendor: './src/vendor.js'
+		app: path.resolve(__dirname, '../src/index.js'),
+		vendor: path.resolve(__dirname, '../src/vendor.js')
 	},
 	output: {
-		filename: 'js/[name][hash:8].js',
-		path: path.resolve(__dirname, 'dist'),
-		chunkFilename: 'js/[name]-[chunkhash:8].js'
+		filename: 'js/[name].js',
+		path: path.resolve(__dirname, 'dist')
+		// chunkFilename: 'js/[name]-[chunkhash:8].js'
 		// publicPath: ''
 	},
 	// resolve: {
@@ -40,9 +27,6 @@ module.exports = {
 				exclude: /node_modules/,
 				use: {
 					loader: 'babel-loader'
-					// options: {
-					// 	presets: ['es2015', 'react', 'stage-0']
-					// }
 				}
 			},
 			{
@@ -55,7 +39,7 @@ module.exports = {
 			},
 			{
 				test: /\.(jpe?g|png|woff|svg|eot|ttf)$/,
-				use: 'url-loader?limit=4092&name=images/[name][hash:8].[ext]'
+				use: 'url-loader?limit=4092&name=images/[name].[ext]'
 			},
 			{
 				test: /\.json$/,
@@ -65,10 +49,11 @@ module.exports = {
 	},
 	plugins: [
 		new htmlWebpackPlugin({
+			template: path.resolve(__dirname, '../src/index.html'),
 			filename: 'index.html',
 			title: 'HappyHour-m'
 		}),
-		// new webpackMd5Hash(),
+		new webpackMd5Hash(),
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ['app', 'vendor']
 		}),
@@ -85,26 +70,10 @@ module.exports = {
 			}
 		}),
 		new extractTextPlugin({
-			filename: 'css/style[contenthash:6].css',
+			filename: 'css/style.css',
 			disable: true,
 			allChunks: true
 		}),
-		// new webpack.LoaderOptionsPlugin({
-		// 	minimize: true,
-		// 	debug: false
-		// }),
-		// new webpack.optimize.UglifyJsPlugin({
-		// 	beautify: false,
-		// 	mangle: {
-		// 		screw_ie8: true,
-		// 		keep_fnames: true
-		// 	},
-		// 	compress: {
-		// 		screw_ie8: true
-		// 	},
-		// 	comments: false
-		// }),
-		new webpack.NamedModulesPlugin(),
 		new webpack.HotModuleReplacementPlugin()
 	],
 	devServer: {

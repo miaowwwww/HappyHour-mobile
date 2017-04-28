@@ -1,8 +1,8 @@
 const Router = require('koa-router');
-const UserRouter = new Router({prefix: '/api'});
 const UserModel = require('../model/User.js');
+const UserRouter = new Router({prefix: '/api'});
 
-import * as userCtrl from '../controller/user.js';
+const userCtrl = require('../controller/user.js');
 
 /* 登录 */
 UserRouter.post('/user/login', userCtrl.login)

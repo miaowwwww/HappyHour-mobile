@@ -14,6 +14,17 @@ class HttpServer {
 			return `${DATABASE}/${this.apiBaseUri}/${param}`;
 		}
 		// 如果是object或者array就说明要组合 ?foo&bar;
+		let url;
+		if(param.uri) {
+			url = `${DATABASE}/${this.apiBaseUri}/${param.uri}?`
+			delete param.uri;
+		}else {
+			url = `${DATABASE}/${this.apiBaseUri}?`
+		}
+		Object.keys(param).map(key => {
+			url += `${key}=${param[key]}&`
+		})
+		return url.substring(0, url.length - 1);
 	}
 	
 	/* 发送请求 */
@@ -21,7 +32,7 @@ class HttpServer {
 		let headers = new Headers({'Content-Type' : 'application/json'});
 		body = JSON.stringify(body);
 		// const req = new Request(_getUri(Uri), {method, body, headers, ...rest});
-		return fetch(this.getUri(Uri), {method, headers, body, ...rest})
+		return fetch(this.getUri(Uri), {credentials: 'include', method, headers, body, ...rest})
 			.then(res => {
 				return res.json();
 			})
@@ -31,8 +42,8 @@ class HttpServer {
 	}
 
 	/* 以id 获取单例 */
-	get = (id) => {
-		return this.request(id, 'GET')
+	get = (params) => {
+		return this.request(params, 'GET')
 	}
 
 	/* 添加尾地址，和postdata */
@@ -53,11 +64,31 @@ class UserHttpServer extends HttpServer {
 	}
 	/*更新*/
 	update = (user) => {
-		return this.post(`update`, user)
+		return this.post('update', user)
 	}
 	/*登录*/
 	login = (AccountPwd) => {
 		return this.post('login', AccountPwd);
 	}
 }
+class VideoHttpServer extends HttpServer {
+	constructor(apiBaseUri){
+		super(apiBaseUri);
+	}
+	
+	/* 获取列表 */
+	queryVideos = (type) => {
+		return this.get({uri: 'list', ...type});
+	}
+	/*更新*/
+	update = (user) => {
+		return this.post('update', user)
+	}
+	/*登录*/
+	login = (AccountPwd) => {
+		return this.post('login', AccountPwd);
+	}
+}
+
 export const userHttpServer = new UserHttpServer('user');
+export const videoHttpServer = new VideoHttpServer('video');

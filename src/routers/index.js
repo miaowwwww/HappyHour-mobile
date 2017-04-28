@@ -22,7 +22,7 @@ const routers = (
 			<Route path='select' component={Select}></Route>
 			<Route path='my' component={My}></Route>
 		</Route>
-		<Route path='/videos' component={Video}></Route>
+		<Route path='/videos/:id' component={Video}></Route>
 		<Route path='/videopaly' component={VideoPlay}></Route>
 	</Router>
 )

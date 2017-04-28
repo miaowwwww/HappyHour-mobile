@@ -9,46 +9,37 @@ module.exports = {
 	// devtool: 'cheap-module-eval-source-map',
 	devtool: 'cheap-source-map',
 	entry: {
-		app: './src/index.js',
-		// vendor: ['react', 'react-dom', 'redux', 'react-redux', 'lib-flexible', 'react-router']
-		vendor: './src/vendor.js'
+		app: path.resolve(__dirname, '../src/index.js'),
+		vendor: path.resolve(__dirname, '../src/vendor.js')
 	},
 	output: {
-		filename: 'js/[name]-[hash:8].js',
-		path: path.resolve(__dirname, 'dist'),
-		chunkFilename: 'js/[name]-[chunkhash:8].js'
+		filename: 'js/[name].js',
+		path: path.resolve(__dirname, '../dist'),
+		chunkFilename: 'js/[name].js'
 		// publicPath: ''
-	},
-	resolve: {
-		alias: {
-			"components": path.resolve(__dirname, 'src/components'),
-			"images": path.resolve(__dirname, 'images'),
-			"actions": path.resolve(__dirname, 'src/actions')
-		}
 	},
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['es2015', 'react', 'stage-0']
-					}
-				}
+				use: 'babel-loader'		
 			},
 			{
 				test: /\.less$/,
 				use: extractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loaders', 'postcss-loader', 'less-loader'],
+					use: ['css-loader', 'postcss-loader', 'less-loader'],
 					publicPath: '../'
 				})
 			},
+			// {
+			// 	test: /\.(jpg|png)$/,
+			// 	use: 'url-loader?limit=8192&name=images/[name].[ext]'
+			// },
 			{
-				test: /\.(jpg|png)$/,
-				use: 'url-loader?limit=8192&name=images/[name][hash:8].[ext]'
+				test: /\.(jpe?g|png|woff|svg|eot|ttf)$/,
+				use: 'url-loader?limit=4092&name=images/[name].[ext]'
 			},
 			{
 				test: /\.json$/,
@@ -58,7 +49,7 @@ module.exports = {
 	},
 	plugins: [
 		new htmlWebpackPlugin({
-			// template: path.resolve(__dirname, 'dist/index.html')
+			template: path.resolve(__dirname, '../src/index.html'),
 			filename: 'index.html',
 			title: 'HappyHour-m'
 		}),
@@ -73,15 +64,14 @@ module.exports = {
 				postcss: {
 					options: {
 						plugins: [autoprefixer({
-							browsers: ['last 4 versions']
-							// flexbox: false
+							browsers: ['ie >= 9', 'ios > 7', 'Android > 4']
 						})]
 					}
 				}
 			}
 		}),
 		new extractTextPlugin({
-			filename: 'css/style[contenthash:6].css',
+			filename: 'css/style.css',
 			disable: false,
 			allChunks: true
 		})

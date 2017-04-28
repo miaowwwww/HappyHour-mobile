@@ -22,7 +22,7 @@ export class My extends Component {
 	}
 
 	render() {
-		let { account, name, img } = this.props.user.toJS();
+		let { account, name, img } = this.props.user;
 		return (
 			<div className='My'>
 				<header className='My-Top'>
@@ -47,7 +47,7 @@ export class My extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.get('user')
+		user: state.user
 	}
 }
 

@@ -1,14 +1,5 @@
 import React from 'react';
 
-// export default function VideoPlay(props) {
-// 	return (
-// 		<video controls autoPlay={true} poster="/images/poster.png">
-// 			<source src={props.flash} type={props.type} />
-// 			您的浏览器不支持 HTML5 video 标签。
-// 		</video>
-// 	)
-// }
-
 export default class VideoPlay extends React.Component {
 	componentDidMount() {
 		console.log('xxx');

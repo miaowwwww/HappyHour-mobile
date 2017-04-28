@@ -1,9 +1,7 @@
-import Immutable from 'immutable';
+// import Immutable from 'immutable';
 import { USER_REQUESTING, USER_REQUESTSUCCESS, USER_REQUESTERROR, USER_SYNCLOGIN } from '../actions/user.js';
 
-const initialState = Immutable.Map({
-
-});
+const initialState = {};
 
 export default function user( state = initialState, action){
 	switch(action.type) {
@@ -14,7 +12,7 @@ export default function user( state = initialState, action){
 		// case USER_REQUESTERROR:
 		// 	return state.merge({isLogining: false, requestErrorMsg: action.requestErrorMsg});
 		case USER_SYNCLOGIN:
-			return state.merge( action.user );
+			return action.user;
 		default:
 			return state;
 	}

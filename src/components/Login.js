@@ -13,9 +13,15 @@ export default class Login extends Model {
 	}
 
 	login = () => {
+		/* 判断输入 */
+		if(!this.refs.account.value || !this.refs.password.value) {
+			return Toast.show({text: '请完成输入'});
+		}
+
 		/* 防止二次点击 */
 		if( this.isloading ) { return ; }
 		this.isloading = true;
+
 		/* 发送请求 */
 		const user = {
 			account: this.refs.account.value,
@@ -27,13 +33,14 @@ export default class Login extends Model {
 				this._removeView();
 			})
 			.catch(err => {
+				console.log(err);
 				Toast.show({text: err})
 			})
 			.finally( () => this.isloading = false );
 	}
 
 	regist = () => {
-		/* 可以从注册返回注册过的账号密码，然而让他重新填吧 */
+		/* return Promise 可以从注册返回注册过的账号密码，然而让他重新填吧 */
 		Regist.show();
 	}
 
@@ -73,3 +80,4 @@ export default class Login extends Model {
 		)
 	}
 };
+

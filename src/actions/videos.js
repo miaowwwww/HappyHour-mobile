@@ -1,6 +1,12 @@
 export const VIDEO_REQUESTPOST = 'VIDEO_REQUESTPOST';
 export const VIDEO_REQUESTSUCCESS = 'VIDEO_REQUESTSUCCESS';
 export const VIDEO_REQUESTERROR = 'VIDEO_REQUESTERROR';
+export const QUERYVIDEOSING = 'queryVideosIng'
+export const QUERYVIDEOSEND = 'queryVideosEnd'
+export const QUERYVIDEOSERROR = 'queryVideosError'
+
+
+import { videoHttpServer } from '../api/HttpServer.js';
 
 // 模拟数据
 // import video from '../vdata/video.json';
@@ -39,3 +45,29 @@ export function getList(){
 
 }
 
+/* 获取视频列表 */
+function queryVideosIng() {
+	return {
+		type: QUERYVIDEOSING
+	}
+}
+function queryVideosEnd(list) {
+	return {
+		type: QUERYVIDEOSEND,
+		list
+	}
+}
+function queryVideosError(err) {
+	return {
+		type: QUERYVIDEOSERROR,
+		err
+	}
+}
+export const queryVideos = (type) => {
+	return (dispatch, getState) => {
+		dispatch(queryVideosIng());
+		videoHttpServer.queryVideos(type)
+			.then( list => dispatch(queryVideosEnd(list)))
+			.catch( err => dispatch(queryVideosError(err)))
+	}
+}

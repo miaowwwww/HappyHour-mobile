@@ -1,4 +1,5 @@
-const UserModel = require('../model/User.js');
+// import * as UserModel from '../model/User.js';
+const UserModel = require('../model/user.js');
 
 /*
  * 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
@@ -10,7 +11,7 @@ let registError = {
 */
 
 /* 注册 */
-export const regist = async(ctx) => {
+exports.regist = async(ctx) => {
 	let { account } = ctx.request.body;
 	/* 判断是否已经存在 */
 	let isExisted = await UserModel.findByAccount(account);
@@ -27,13 +28,13 @@ export const regist = async(ctx) => {
 }
 
 /* 登录 */
-export const login = async( ctx ) => {
+exports.login = async( ctx ) => {
 	let loginer = ctx.request.body;
-	console.log( ctx.request.body );
 	/* 判断一致性 */
 	let user = await UserModel.findByAccount( loginer.account );
 	if( !user || user.password !== loginer.password ) {
 		return ctx.body = { err: '账号密码不匹配' };
 	}
+	ctx.session.user = user;
 	return ctx.body = user;
 }

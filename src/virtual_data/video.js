@@ -8,7 +8,7 @@ const video = {
 	category: category,
 	title: 'istitle', //	String	10	标题
 	introduction: 'is introduction 简介',//	String	20	简介
-	poster: 'poster.png', //应该是一个id，	Img	--	海报
+	poster: '1493381916163.jpg', //应该是一个id，	Img	--	海报
 	flash: 'http://sssss.com',//	String	20	文件地址或者文件名
 	commentCount: 9,//	Number	--	评论数
 	favoriteCount: 10,//	Number	--	点赞数

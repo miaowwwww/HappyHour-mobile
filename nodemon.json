@@ -7,13 +7,13 @@
 	"verbose": true, 
 	"execMap": { 
 		"": "babel-node",
-		"js": "babel-node --harmony" 
+		"js": "babel-node" 
 	},
 	"events": {
 	 "start": "echo 'app start'",
 	 "restart": "echo 'app restart'"
 	},
-	"watch": "server/*",
+	"watch": ["server/*", "server.js"],
 	"ext": "js json",
 	"legacy-watch": false
 }

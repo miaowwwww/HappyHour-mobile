@@ -14,10 +14,12 @@ export default class GlobalNav extends Component {
 		return (
 			<div className='GlobalNav' >
 				<Link to={`/select`} activeClassName='GlobalNav-active-link' >精选</Link>
-				<Link to={`/found`} activeClassName='GlobalNav-active-link' >发现</Link>
 				<Link to={`/follow`} activeClassName='GlobalNav-active-link' >关注</Link>
+				<Link to={`/found`} activeClassName='GlobalNav-active-link' >上传</Link>
 				<Link to={`/my`} activeClassName='GlobalNav-active-link' >我的</Link>
 			</div>
 		)
 	}
 }
+
+				// <Link to={`/found`} activeClassName='GlobalNav-active-link' >发现</Link>

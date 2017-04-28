@@ -1,26 +1,34 @@
-import Immutable from 'immutable';
-import { VIDEO_REQUESTPOST, VIDEO_REQUESTSUCCESS, VIDEO_REQUESTERROR } from '../actions/videos.js';
+import { 
+	VIDEO_REQUESTPOST, 
+	VIDEO_REQUESTSUCCESS, 
+	VIDEO_REQUESTERROR,
+	QUERYVIDEOSING,
+	QUERYVIDEOSEND,
+	QUERYVIDEOSERROR
+} from '../actions/videos.js';
 
-const initialState = Immutable.Map({
-	list: Immutable.List(),
+const initialState = {
+	list: [],
 	isFetching: false,
 	lastFecthingTime: '',
 	requestErrorMsg: ''
-});
+};
 
 export default function videoReducer(state = initialState, action) {
 	switch (action.type) {
-		case VIDEO_REQUESTPOST:
-			return state.set('isFetching', true);
+		case QUERYVIDEOSING:
+			return {...state, isFetching: true};
 
-		case VIDEO_REQUESTSUCCESS:
-			return state.merge({
+		case QUERYVIDEOSEND:
+			return {
+				...state,
 				isFetching: false,
 				lastFecthingTime: new Date(),
-			}).updateIn(['list'], list => list.concat(action.videos));
+				list: state.list.concat(action.list)
+			};
 
-		case VIDEO_REQUESTERROR:
-			return state.merge({requestErrorMsg: '网络 错误', isFetching: false});
+		case QUERYVIDEOSERROR:
+			return {...state, requestErrorMsg: '网络 错误', isFetching: false};
 
 		default:
 			return state;
