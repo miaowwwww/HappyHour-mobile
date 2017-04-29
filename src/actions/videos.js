@@ -74,3 +74,33 @@ export const queryVideos = (type) => {
 	}
 }
 
+/* 点赞视频 */
+export const GOODVIDEOBEGIN = 'GOODVIDEOBEGIN'
+export const GOODVIDEOEND = 'GOODVIDEOEND'
+export const GOODVIDEOERROR = 'GOODVIDEOERROR'
+
+function goodVideoBegin() {
+	return {
+		type: GOODVIDEOBEGIN
+	}
+}
+function goodVideoEnd() {
+	return {
+		type: GOODVIDEOEND
+	}
+}
+function goodVideoError(err) {
+	return {
+		type: GOODVIDEOERROR,
+		err
+	}
+}
+export const goodVideo = ({videoId, userId}) => {
+	return (dispatch, getState) => {
+		dispatch(goodVideoBegin());
+		videoHttpServer.queryVideos({videoId, userId})
+			.then( ok => dispatch(goodVideoEnd(ok)))
+			.catch( err => dispatch(goodVideoError(err)))
+	}
+}
+

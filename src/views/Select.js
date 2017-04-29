@@ -34,7 +34,6 @@ class Select extends Component {
 }
 
 const mapStateToProps = (state) => {
-	console.log(state);
 	return {
 		videos: state.videos
 	}

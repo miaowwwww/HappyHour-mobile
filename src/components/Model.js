@@ -29,6 +29,14 @@ export default class Model extends Component {
 		this._container.remove();
 		unmountComponentAtNode(this._container);
 	}
+	_resolveView(data) {
+		this._resolve(data);
+		this._removeView();
+	}
+	_rejectView(data) {
+		this._reject(data);
+		this._removeView();
+	}
 };
 
 

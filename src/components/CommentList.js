@@ -2,6 +2,8 @@ import React, { PureComponent, Component, PropTypes } from 'react';
 
 import default_user from '../images/default_user.png';
 import '../css/CommentList.less';
+import CommentTextarea from './CommentTextarea.js';
+
 
 class CommentList extends Component {
 	constructor(props) {
@@ -13,10 +15,12 @@ class CommentList extends Component {
 			queryCommentList({videoId, pn: 1});
 		}
 	}
+  onChange = (val) => {
+    console.log(val);
+  }
 
 
 	render() {
-
 		return (
 			<ul className='CommentList' >
 				<li>

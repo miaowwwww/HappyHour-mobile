@@ -30,7 +30,7 @@ module.exports = {
 				}
 			},
 			{
-				test: /\.less$/,
+				test: /\.(less|css)$/,
 				use: extractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: ['css-loader', 'postcss-loader', 'less-loader'],
@@ -46,6 +46,10 @@ module.exports = {
 				use: 'json-loader'
 			}
 		]
+	},
+	resolve: {
+		// modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')],
+		extensions: ['.web.js', '.js', '.json'],
 	},
 	plugins: [
 		new htmlWebpackPlugin({

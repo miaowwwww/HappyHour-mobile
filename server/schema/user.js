@@ -32,6 +32,9 @@ const UserSchema = new Schema({
 	starVideos: [
 		{ type: ObjectId, ref: 'Video'}
 	],
+	goodVideos: [
+		{ type: ObjectId, ref: 'Video'}
+	],
 	meta: {
 		createAt: {	type: Date,	default: Date.now},
 		updateAt: {	type: Date,	default: Date.now}

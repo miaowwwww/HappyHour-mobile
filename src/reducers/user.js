@@ -13,6 +13,7 @@ export default function user( state = initialState, action){
 		// 	return state.merge({isLogining: false, requestErrorMsg: action.requestErrorMsg});
 		case USER_SYNCLOGIN:
 			return action.user;
+		
 		default:
 			return state;
 	}

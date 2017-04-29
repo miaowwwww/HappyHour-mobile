@@ -1,7 +1,10 @@
 import {
 	QUERYCOMMENTLISTING,
 	QUERYCOMMENTLISTEND,
-	QUERYCOMMENTLISTERROR
+	QUERYCOMMENTLISTERROR,
+	COMMENT_ADDBEGIN,
+	COMMENT_ADDEND,
+	COMMENT_ADDERROR
 } from '../actions/comment.js';
 
 const initialState = {
@@ -23,7 +26,6 @@ export default function comment(state = initialState, action) {
 				...state,
 				[videoId]: { list: [], ...state[videoId], isFetching: true }
 			};
-
 		case QUERYCOMMENTLISTEND:
 			return {
 				...state,
@@ -34,7 +36,6 @@ export default function comment(state = initialState, action) {
 					list: state[videoId].list.concat(list)
 				}
 			};
-
 		case QUERYCOMMENTLISTERROR:
 			return {
 				...state,
@@ -43,7 +44,20 @@ export default function comment(state = initialState, action) {
 					isFetching: false
 				}
 			};
-
+		/* 
+		 *	评论视频,都是id
+		 *	action: {type, comment: {video, from, to...}}	
+		 *
+		 * */ 
+		case COMMENT_ADDBEGIN:
+			return state;
+		case COMMENT_ADDEND:
+			return {
+				...state,
+				[action.video]: { list: [action.comment, ...list] }
+			}
+		case COMMENT_ADDERROR:
+			return state;
 		default:
 			return state;
 	}

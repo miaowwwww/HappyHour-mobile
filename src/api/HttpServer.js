@@ -71,6 +71,7 @@ class UserHttpServer extends HttpServer {
 		return this.post('login', AccountPwd);
 	}
 }
+/* video模块 */
 class VideoHttpServer extends HttpServer {
 	constructor(apiBaseUri){
 		super(apiBaseUri);
@@ -84,9 +85,9 @@ class VideoHttpServer extends HttpServer {
 	queryCommentList = ({videoId, pn}) => {
 		return this.get(`${videoId}/comment?pn=${pn}`);
 	}
-	/*登录*/
-	login = (AccountPwd) => {
-		return this.post('login', AccountPwd);
+	/* 评论视频 */
+	commentVideo = (data) => {
+		return this.post('comment', data);
 	}
 }
 

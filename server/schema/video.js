@@ -11,7 +11,7 @@ const VideoSchema = new Schema({
 	poster: String, //应该是一个id，	Img	--	海报
 	flash: String,//	String	20	文件地址或者文件名
 	commentCount: { type: Number, default: 0 },//	Number	--	评论数
-	favoriteCount: { type: Number, default: 0 },//	Number	--	点赞数
+	goodCount: { type: Number, default: 0 },//	Number	--	点赞数
 	collectCount: { type: Number, default: 0 },//	Number	--	收藏数
 	seeCount: { type: Number, default: 0 },//Number	--	观看次数（重复也+1）
 	status: { type: String, default: 1 },//Number	1	0， 1
@@ -32,6 +32,10 @@ const VideoSchema = new Schema({
 // 	next();
 // })
 
+const opt = [
+	{ path: 'user', select: 'account' }
+]
+
 VideoSchema.statics = {
 	queryList: function ({pn, size}) {
 		return new Promise( (resolve, reject ) => {
@@ -40,7 +44,7 @@ VideoSchema.statics = {
 				.sort({ 'meta.createAt': -1 })
 				.skip(size * pn)
 				.limit(size)
-				.populate('user')
+				.populate(opt)
 				.exec((err, list) => {
 					resolve(list);
 				})

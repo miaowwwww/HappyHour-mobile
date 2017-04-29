@@ -24,5 +24,8 @@ router.get('/video/list', videoCtrl.queryList)
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)
+/* 评论模块：发布评论 */
+router.post('/video/comment', commentCtrl.add)
+
 
 module.exports = router;

@@ -5,20 +5,32 @@ import utils from '../api/utils.js';
 import '../css/Video.less';
 import definedhistory from '../history';
 import CommentList from '../components/CommentList.js';
+import CommentTextarea from '../components/CommentTextarea.js';
 
 import header_img from '../images/default_user.png';
 
-export default class Video extends Component {
+
+
+class Video extends Component {
 	constructor(props) {
 		super(props);
 	}
 
-	handleClick = () => {
-
-	}
-
 	componentDidMount() {
 		
+	}
+
+	handlerComment = async() => {
+		const content = await CommentTextarea.show();
+		if(content) {
+			const { commentAdd } = this.props;
+			const { _id } = this.props.location.state.video;
+			commentAdd({content, video: _id})
+		}
+	}
+
+	handleClick = () => {
+
 	}
 
 	render() {
@@ -51,7 +63,7 @@ export default class Video extends Component {
 						<li><i className="iconfont icon-kanguo"></i> {video.seeCount}</li>
 						<li><i className="iconfont icon-shoucang"></i>收藏</li>
 						<li><i className="iconfont icon-zan"></i>点赞</li>
-						<li><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
+						<li onClick={this.handlerComment}><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
 					</ul>
 				</section>
 				<CommentList videoId={video._id} />
@@ -60,6 +72,10 @@ export default class Video extends Component {
 	}
 }
 
+
+import { goodVideo } from '../actions/videos.js';
+import { commentAdd } from '../actions/comment.js';
+import { connect } from 'react-redux';
 
 function findVideo(state) {
 	
@@ -71,12 +87,12 @@ function mapStateToProps(state) {
 	}
 }
 
-// import { queryCommentList } from '../actions/video.js';
 
 function mapDispatchToProps(dispatch) {
 	return {
-		queryCommentList: (videoId) => dispatch(queryCommentList(videoId))
+		goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),
+		commentAdd: (comment) => dispatch(commentAdd(comment)) 
 	}
 }
 
-// export default connect()
+export default connect(null, mapDispatchToProps)(Video);
