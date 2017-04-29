@@ -1,18 +1,16 @@
 import React, {Component, PropTypes} from 'react';
 
-
 import video from '../virtual_data/video.js';
 import utils from '../api/utils.js';
 import '../css/Video.less';
 import definedhistory from '../history';
+import CommentList from '../components/CommentList.js';
+
+import header_img from '../images/default_user.png';
 
 export default class Video extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			video: video
-		}
-		this._video = '';
 	}
 
 	handleClick = () => {
@@ -20,12 +18,16 @@ export default class Video extends Component {
 	}
 
 	componentDidMount() {
-		// this._video.play();
+		
 	}
 
 	render() {
 		const {video} = this.props.location.state;
-		console.log(video)
+		const {user} = video;
+		let header = header_img;
+		if(user.img) {
+			header = `/header/${user.img}`
+		}
 
 		return (
 			<div className='Video'>
@@ -42,21 +44,22 @@ export default class Video extends Component {
 					<header>
 						<h1>{video.title}</h1>
 						<p>{video.meta.createAt}</p>
-						<img src={`/header/${video.user.img}`} />
+						<img src={ header } />
 					</header>
 					<p>{video.introduction}</p>
 					<ul>
-						<li><i></i>观看</li>
-						<li><i></i>点赞</li>
-						<li><i></i>评论</li>
-						<li><i></i>收藏</li>
+						<li><i className="iconfont icon-kanguo"></i> {video.seeCount}</li>
+						<li><i className="iconfont icon-shoucang"></i>收藏</li>
+						<li><i className="iconfont icon-zan"></i>点赞</li>
+						<li><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
 					</ul>
 				</section>
-				<footer></footer>
+				<CommentList commentList />
 			</div>
 		)
 	}
 }
+
 
 function findVideo(state) {
 	
@@ -67,3 +70,13 @@ function mapStateToProps(state) {
 		video: findVideo(state)
 	}
 }
+
+// import { queryCommentList } from '../actions/video.js';
+
+function mapDispatchToProps(dispatch) {
+	return {
+		queryCommentList: (videoId) => dispatch(queryCommentList(videoId))
+	}
+}
+
+// export default connect()

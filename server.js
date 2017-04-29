@@ -22,13 +22,13 @@ const app = new Koa();
 
 // session
 // app.keys = ['some secret hurr'];
-const CONFIG = {
-	key: 'HH-session-id',
-	maxAge: 1000 * 30,
-	overwrite: true,
-	httpOnly: true,
-	signed: true,
-};
+// const CONFIG = {
+// 	key: 'HH-session-id',
+// 	maxAge: 1000 * 30,
+// 	overwrite: true,
+// 	httpOnly: true,
+// 	signed: true,
+// };
 
 // 依赖插件实例rs
 app.use(KoaLogger());

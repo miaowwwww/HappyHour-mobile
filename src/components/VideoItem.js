@@ -12,7 +12,7 @@ export default function VideoItem(props) {
 	}else {
 		backgroundImage = `url('/poster/${poster}')`
 	}
-	const style = {backgroundImage}
+	let style = {backgroundImage}
 	return (
 		<Link className='VideoItem' 
 					style={ style } 

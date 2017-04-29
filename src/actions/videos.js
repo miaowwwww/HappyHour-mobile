@@ -1,9 +1,7 @@
 export const VIDEO_REQUESTPOST = 'VIDEO_REQUESTPOST';
 export const VIDEO_REQUESTSUCCESS = 'VIDEO_REQUESTSUCCESS';
 export const VIDEO_REQUESTERROR = 'VIDEO_REQUESTERROR';
-export const QUERYVIDEOSING = 'queryVideosIng'
-export const QUERYVIDEOSEND = 'queryVideosEnd'
-export const QUERYVIDEOSERROR = 'queryVideosError'
+
 
 
 import { videoHttpServer } from '../api/HttpServer.js';
@@ -46,6 +44,10 @@ export function getList(){
 }
 
 /* 获取视频列表 */
+export const QUERYVIDEOSING = 'queryVideosIng'
+export const QUERYVIDEOSEND = 'queryVideosEnd'
+export const QUERYVIDEOSERROR = 'queryVideosError'
+
 function queryVideosIng() {
 	return {
 		type: QUERYVIDEOSING
@@ -71,3 +73,4 @@ export const queryVideos = (type) => {
 			.catch( err => dispatch(queryVideosError(err)))
 	}
 }
+

@@ -6,6 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 const CommentSchema = new mongoose.Schema({
 	movie: {type: ObjectId,	ref: 'Video'},
 	from: {	type: ObjectId,	ref: 'User'},
+	to: { type: ObjectId, ref: 'User'},
 	reply: [{
 		from: {	type: ObjectId,	ref: 'User'	},
 		to: {type: ObjectId,ref: 'User'	},

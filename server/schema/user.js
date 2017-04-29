@@ -44,6 +44,9 @@ UserSchema.pre('save', function(next) {
   if (!this.isNew) {
     this.meta.updateAt = Date.now()
   }
+	if (!this.name) {
+		this.name = this.account;
+	}
 	next();
   //对密码进行哈希加盐 
   /*bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {

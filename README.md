@@ -9,12 +9,11 @@ src
 	container
 	reducers
 	routers
-	store（history）
+	store
+	history
 	css
 	images
-	virtual_data
 config
-
 # 数据库设计MongoDB
 ```js
 user={
