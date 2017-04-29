@@ -3,16 +3,20 @@ export const QUERYCOMMENTLISTING = 'QUERYCOMMENTLISTING'
 export const QUERYCOMMENTLISTEND = 'QUERYCOMMENTLISTEND'
 export const QUERYCOMMENTLISTERROR = 'QUERYCOMMENTLISTERROR'
 
-function queryCommentListIng() {
+import { videoHttpServer } from '../api/HttpServer.js';
+
+function queryCommentListIng(videoId) {
 	return {
-		type: QUERYCOMMENTLISTING
+		type: QUERYCOMMENTLISTING,
+		videoId
 	}
 }
-function queryCommentListEnd({list, videoId}) {
+function queryCommentListEnd({list, videoId, nomore}) {
 	return {
 		type: QUERYCOMMENTLISTEND,
 		list,
-		videoId
+		videoId,
+		nomore
 	}
 }
 function queryCommentListError(err) {
@@ -21,11 +25,11 @@ function queryCommentListError(err) {
 		err
 	}
 }
-export const queryCommentList = (videoId) => {
+export const queryCommentList = ({videoId, pn}) => {
 	return (dispatch, getState) => {
-		dispatch(queryCommentListIng());
-		videoHttpServer.queryCommentList(type)
-			.then( list => dispatch(queryCommentListEnd({list, videoId})))
-			.catch( err => dispatch(queryCommentListError(err)))
+		dispatch(queryCommentListIng(videoId));
+		videoHttpServer.queryCommentList({videoId, pn})
+			.then( ({list, nomore}) => dispatch(queryCommentListEnd({list, nomore, videoId})))
+			.catch( ({err}) => dispatch(queryCommentListError({err, videoId})))
 	}
 }

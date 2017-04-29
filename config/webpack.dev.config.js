@@ -89,7 +89,22 @@ module.exports = {
 				target: "http://localhost:3000",
 				changeOrigin: true,
 				secure: false
-			}
+			},
+			"/header": {
+				target: "http://localhost:3000",
+				changeOrigin: true,
+				secure: false
+			},
+			"/poster": {
+				target: "http://localhost:3000",
+				changeOrigin: true,
+				secure: false
+			},
+			"/video": {
+				target: "http://localhost:3000",
+				changeOrigin: true,
+				secure: false
+			},
 		}
 	}
 

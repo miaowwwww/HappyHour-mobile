@@ -37,6 +37,21 @@ CommentSchema.pre('save', function(next) {
 })
 
 CommentSchema.statics = {
+	/* 根据videoId，获取commentlist */
+	queryList: function({videoId, pn, size}) {
+		return new Promise( (resolve, reject ) => {
+			this
+				.find({})
+				.sort({'meta.createAt': -1})
+				.skip(size * pn)
+				.limit(size)
+				.populate('form to')
+				.exec((err, list) => {
+					resolve(list)
+				})
+
+		})
+	},
 	fetch: function(cb) {
 		return this
 			.find({})

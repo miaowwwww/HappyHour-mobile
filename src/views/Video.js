@@ -54,7 +54,7 @@ export default class Video extends Component {
 						<li><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
 					</ul>
 				</section>
-				<CommentList commentList />
+				<CommentList videoId={video._id} />
 			</div>
 		)
 	}

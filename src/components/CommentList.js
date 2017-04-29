@@ -3,10 +3,17 @@ import React, { PureComponent, Component, PropTypes } from 'react';
 import default_user from '../images/default_user.png';
 import '../css/CommentList.less';
 
-export default class CommentList extends Component {
+class CommentList extends Component {
 	constructor(props) {
 		super(props);
 	}
+	componentDidMount() {
+		const { commentList, queryCommentList, videoId } = this.props;
+		if(!commentList.nomore) {
+			queryCommentList({videoId, pn: 1});
+		}
+	}
+
 
 	render() {
 
@@ -24,10 +31,17 @@ export default class CommentList extends Component {
 	}
 }
 
-CommentList.defaultProps = {
-	commentList: [
-		{
-			form: '就是一条狗'
-		}
-	]
+import { connect } from 'react-redux';
+import { queryCommentList } from '../actions/comment.js';
+
+function mapStateToProps(state, {videoId}) {
+	return {
+		commentList: state[videoId] || {list: []}
+	}
 }
+function mapDispatchToProps(dispatch) {
+	return {
+		queryCommentList: (videoId) => dispatch( queryCommentList(videoId) )
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

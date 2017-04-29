@@ -81,8 +81,8 @@ class VideoHttpServer extends HttpServer {
 		return this.get({uri: 'list', ...type});
 	}
 	/* 获取视频评论 id*/
-	queryCommentList = (videoId) => {
-		return this.get(`comment/list/${videoId}`);
+	queryCommentList = ({videoId, pn}) => {
+		return this.get(`${videoId}/comment?pn=${pn}`);
 	}
 	/*登录*/
 	login = (AccountPwd) => {

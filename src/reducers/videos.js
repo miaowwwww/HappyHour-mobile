@@ -14,7 +14,7 @@ const initialState = {
 	requestErrorMsg: ''
 };
 
-export default function videoReducer(state = initialState, action) {
+export default function video(state = initialState, action) {
 	switch (action.type) {
 		case QUERYVIDEOSING:
 			return {...state, isFetching: true};

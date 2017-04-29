@@ -1,28 +1,48 @@
-import { 
+import {
 	QUERYCOMMENTLISTING,
 	QUERYCOMMENTLISTEND,
 	QUERYCOMMENTLISTERROR
- } from '../actions/comment.js';
+} from '../actions/comment.js';
 
 const initialState = {
-
+	/*
+	 * videoId: {
+	 * 	list: [comment],
+	 *  isFetching: false,
+	 * 	lastFecthingTime: Date
+	 * } 
+	 * 
+	 */
 };
 
-export default function user( state = initialState, action){
-	switch(action.type) {
+export default function comment(state = initialState, action) {
+	const { videoId, list, type, nomore } = action;
+	switch (action.type) {
 		case QUERYCOMMENTLISTING:
-			return {...state, isFetching: true};
+			return {
+				...state,
+				[videoId]: { list: [], ...state[videoId], isFetching: true }
+			};
 
 		case QUERYCOMMENTLISTEND:
 			return {
 				...state,
-				isFetching: false,
-				lastFecthingTime: new Date(),
-				list: state.list.concat(action.list)
+				[videoId]: {
+					nomore,
+					isFetching: false,
+					lastFecthingTime: new Date(),
+					list: state[videoId].list.concat(list)
+				}
 			};
 
 		case QUERYCOMMENTLISTERROR:
-			return {...state, requestErrorMsg: '网络 错误', isFetching: false};
+			return {
+				...state,
+				[videoId]: {
+					requestErrorMsg: '网络 错误',
+					isFetching: false
+				}
+			};
 
 		default:
 			return state;
