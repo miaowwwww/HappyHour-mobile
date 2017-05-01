@@ -16,42 +16,43 @@ const UserSchema = new Schema({
 	summary: String,
 	tel: String,
 	email: String,
-	img: String,
-	status: {	type: Number,	default: 1},
+	header: String,
+	status: { type: Number, default: 1 },
 	videos: [
-		{type: ObjectId, ref: 'Video'}
+		{ type: ObjectId, ref: 'Video' }
 	],
 	authority: Number,
 	followCount: { type: Number, default: 0 },
 	followUser: [
-		{	type: ObjectId, ref: "User"	}
+		{ type: ObjectId, ref: "User" }
 	],
 	starUser: [
-		{	type: ObjectId, ref: "User"	}
+		{ type: ObjectId, ref: "User" }
 	],
-	starVideos: [
-		{ type: ObjectId, ref: 'Video'}
+	starVideo: [
+		{ type: ObjectId, ref: 'Video' }
 	],
 	goodVideos: [
-		{ type: ObjectId, ref: 'Video'}
+		// { type: ObjectId, ref: 'Video'}
+		{ type: String }
 	],
 	meta: {
-		createAt: {	type: Date,	default: Date.now},
-		updateAt: {	type: Date,	default: Date.now}
+		createAt: { type: Date, default: Date.now },
+		updateAt: { type: Date, default: Date.now }
 	}
 })
 
 // pre,在save之前执行的一些操作
-UserSchema.pre('save', function(next) {
-  var user = this 	//当前操作的user对象
-  if (!this.isNew) {
-    this.meta.updateAt = Date.now()
-  }
+UserSchema.pre('save', function (next) {
+	var user = this 	//当前操作的user对象
+	if (!this.isNew) {
+		this.meta.updateAt = Date.now()
+	}
 	if (!this.name) {
 		this.name = this.account;
 	}
 	next();
-  //对密码进行哈希加盐 
+	//对密码进行哈希加盐 
   /*bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     if (err) return next(err)
 
@@ -66,28 +67,30 @@ UserSchema.pre('save', function(next) {
 
 
 UserSchema.statics = {
-  qusery: function(cb) {
-    return this
-      .find({})
-      .sort('meta.updateAt')
-      .exec(cb)
-  },
-  findById: function(id, cb) {
-    return this
-      .findOne({_id: id})
-      .exec(cb)
-  },
-	findByAccount: function(account) {
-		return new Promise((resolve, reject) => {
-			this.findOne({account}, (err, user) => resolve(user));
-		}) 
+	qusery: function (cb) {
+		return this
+			.find({})
+			.sort('meta.updateAt')
+			.exec(cb)
 	},
-	save: function(user) {
+	findById: function (_id) {
+		return new Promise((resolve, reject) => {
+			this.findOne({ _id }, (err, user) => {
+				return resolve(user);
+			})
+		})
+	},
+	findByAccount: function (account) {
+		return new Promise((resolve, reject) => {
+			this.findOne({ account }, (err, user) => resolve(user));
+		})
+	},
+	save: function (user) {
 		return new Promise((resolve, reject) => {
 			/* 这里不能获取UserModel，循环依赖*/
 			// new UserModel(user).save((err, newuser) => resolve(newuser) ) 
 			let model = this.model('User');
-			new model(user).save((err, newuser) => resolve(newuser) )
+			new model(user).save((err, newuser) => resolve(newuser))
 		})
 	}
 }

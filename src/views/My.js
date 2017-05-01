@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Login from '../components/Login.js';
-
+import _history from '../store/history.js';
 import { connect } from 'react-redux';
 import { syncLogin } from '../actions/user.js';
 
@@ -16,6 +16,10 @@ export class My extends Component {
 	handleClick = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
+		if(this.props.user) {
+			_history.push('userinfo');
+			return ;
+		}
 		Login.show().then( user => {
 			this.props.dispatch( syncLogin( user ) );
 		})

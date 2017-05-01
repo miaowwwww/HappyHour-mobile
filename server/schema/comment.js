@@ -41,11 +41,11 @@ CommentSchema.statics = {
 	queryList: function({videoId, pn, size}) {
 		return new Promise( (resolve, reject ) => {
 			this
-				.find({})
+				.find({video:videoId})
 				.sort({'meta.createAt': -1})
 				.skip(size * pn)
 				.limit(size)
-				.populate('form to')
+				.populate('from to', '_id name header')
 				.exec((err, list) => {
 					resolve(list)
 				})

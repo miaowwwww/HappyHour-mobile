@@ -52,9 +52,10 @@ export default function comment(state = initialState, action) {
 		case COMMENT_ADDBEGIN:
 			return state;
 		case COMMENT_ADDEND:
+			const { video } = action.comment;
 			return {
 				...state,
-				[action.video]: { list: [action.comment, ...list] }
+				[video]: { list: [action.comment, ...state[video].list] }
 			}
 		case COMMENT_ADDERROR:
 			return state;

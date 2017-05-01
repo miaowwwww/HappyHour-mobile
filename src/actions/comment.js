@@ -34,9 +34,9 @@ export const queryCommentList = ({videoId, pn}) => {
 }
 
 /* 评论视频 */
-const COMMENT_ADDBEGIN = 'COMMENT_ADDBEGIN';
-const COMMENT_ADDEND = 'COMMENT_ADDEND';
-const COMMENT_ADDERROR = 'COMMENT_ADDERROR';
+export const COMMENT_ADDBEGIN = 'COMMENT_ADDBEGIN';
+export const COMMENT_ADDEND = 'COMMENT_ADDEND';
+export const COMMENT_ADDERROR = 'COMMENT_ADDERROR';
 function commentAddBegin(videoId) {
 	return {
 		type: COMMENT_ADDBEGIN
@@ -54,15 +54,13 @@ function commentAddError(err) {
 		err
 	}
 }
-/* comment: {from, to, video} */
+/* comment: {from: {_id, name}, to: {_Id, name}, video} */
 export const commentAdd = (comment) => {
 	return (dispatch, getState) => {
 		dispatch(commentAddBegin(comment));
-		let from = getState().user._id;
-		console.log(getState().user);
-		console.log(from);
-		videoHttpServer.commentVideo({...comment, from})
-			.then( ({comment}) => dispatch(commentAddEnd(comment)))
-			.catch( ({err}) => dispatch(commentAddError(err)))
+		let {_id, name, header} = getState().user;
+		videoHttpServer.commentVideo({...comment, from:{_id, name}})
+			.then( (data) => dispatch(commentAddEnd({...comment, ...data, from: {_id, name, header}})))
+			.catch( (err) => dispatch(commentAddError(err)))
 	}
 }

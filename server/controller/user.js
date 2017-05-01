@@ -1,6 +1,7 @@
 // import * as UserModel from '../model/User.js';
 const UserModel = require('../model/user.js');
-
+const tool = require('./tool.js');
+const fs = require('fs');
 /*
  * 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
 */
@@ -38,3 +39,22 @@ exports.login = async( ctx ) => {
 	ctx.session.user = user;
 	return ctx.body = user;
 }
+
+/* 更新 包括头像 */
+exports.update = async (ctx) => {
+	let headerFile = ctx.req.file;
+	let _user = ctx.req.body;
+
+	if( headerFile ) {
+		_user.header = await tool.uploadFile(headerFile, 'upload/header', 'png');
+	}
+
+	let user = await UserModel.findById(_user._id);
+	if(!user) { return ctx.body = {err: '找不到用户'}	}
+
+	Object.assign(user, _user);
+	await UserModel.save(user);
+	return ctx.body = {user}
+}
+
+

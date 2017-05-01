@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react';
 import video from '../virtual_data/video.js';
 import utils from '../api/utils.js';
 import '../css/Video.less';
-import definedhistory from '../history';
+import definedhistory from '../store/history.js';
 
 export default class Video extends Component {
 	constructor(props) {

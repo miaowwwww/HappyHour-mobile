@@ -1,6 +1,6 @@
 import React, { Component, PropTypes} from 'react';
 
-import History from '../history';
+import History from '../store/history.js';
 
 export default class Link extends Component {
 	static DefaultProps = {

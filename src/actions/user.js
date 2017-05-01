@@ -3,7 +3,7 @@ export const USER_REQUESTSUCCESS = 'USER_REQUESTSUCCESS'; // 请求成功
 export const USER_REQUESTERROR = 'USER_REQUESTERROR'; // 请求失败
 export const USER_SYNCLOGIN = 'USER_SYNCLOGIN'; //同步方式登录
 // 若需要修改路由，可通过react-router-redux，此处暂时将history引入
-import defineHistory from '../history';
+import defineHistory from '../store/history.js';
 import { userHttpServer } from '../api/HttpServer.js';
 
 function requestPost(user) {
@@ -61,6 +61,16 @@ export const asyncLogin = ( user ) => {
 export const syncLogin = ( user ) => {
 	return {
 		type: USER_SYNCLOGIN,
+		user
+	}
+}
+
+
+/* 更新user */
+export const USER_UPDATE = 'user_update'
+export const updateUser = (user) => {
+	return {
+		type: USER_UPDATE,
 		user
 	}
 }

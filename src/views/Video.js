@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react';
 import video from '../virtual_data/video.js';
 import utils from '../api/utils.js';
 import '../css/Video.less';
-import definedhistory from '../history';
+import definedhistory from '../store/history.js';
 import CommentList from '../components/CommentList.js';
 import CommentTextarea from '../components/CommentTextarea.js';
 
@@ -47,7 +47,7 @@ class Video extends Component {
 					controls 
 					poster={`/poster/${video.poster}`}
 					preload='ture'
-					autoPlay='ture'
+					// autoPlay='ture'
 					>
 					<source src={`/video/${video.flash}`} type="video/mp4" />
 					您的浏览器不支持 HTML5 video 标签。
@@ -76,17 +76,6 @@ class Video extends Component {
 import { goodVideo } from '../actions/videos.js';
 import { commentAdd } from '../actions/comment.js';
 import { connect } from 'react-redux';
-
-function findVideo(state) {
-	
-}
-
-function mapStateToProps(state) {
-	return {
-		video: findVideo(state)
-	}
-}
-
 
 function mapDispatchToProps(dispatch) {
 	return {
