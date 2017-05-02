@@ -45,8 +45,8 @@ export default class Regist extends Model {
 		/* 应该有loading 效果 */
 		userHttpServer.regist(user)
 			.then(newuser => {
-				Toast.show({text: '注册成功，2秒后返回', time: 2000});
-				setTimeout(() => {this._removeView()}, 2000);
+				Toast.show({text: '注册成功，2秒后返回', time: 2000})
+					.then(() => {this._removeView()});
 			})
 			.catch(err => {
 				Toast.show({text: err, time: 2000});
@@ -59,7 +59,7 @@ export default class Regist extends Model {
 			<div id="Regist" className='mask animate-from-bottom'>
 				<i className='Regist-close iconfont icon-guanbi' onClick={this.handleClose}></i>
 				<form>
-					<img />
+					{false && <img  />}
 					<label><i className="iconfont icon-geren" ></i><input type="text" ref="account" placeholder="请输入用户名" /></label>
 					<label><i className="iconfont icon-duanxin" ></i><input type="email" ref="email" placeholder="请输入邮箱" /></label>
 					<label><i className="iconfont icon-mima" ></i><input type="password" ref="password" placeholder="请输入密码" /></label>

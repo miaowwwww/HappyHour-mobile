@@ -7,16 +7,22 @@ const tool = require('./tool.js');
 */
 
 /* 获取列表 */
+const size = 100;
 exports.queryList = async (ctx) => {
-	console.log(ctx.query)
 	let {pn, sort} = ctx.query;
-	let videos = await VideoModel.queryList({pn: pn - 1, size: 10});
-	console.log(videos)
+	let videos = await VideoModel.queryList({pn: pn - 1, size});
 	ctx.body = videos;
 }
 
 /* 保存 */
 exports.save = async (ctx) => {
+	let user = ctx.session.user || {};
+	if(!user || !user._id) {
+		user = {_id: '590731e9a3399c1f6cd20865'}
+	}
+	if(!user._id) { 
+		return ctx.body = { err: '无法获取用户信息,请重新登录'} 
+	}
 
 	let video = await VideoModel.saveVideo({user: user._id, ...ctx.req.body});
 	return ctx.body = {success: 'ok'};
@@ -28,20 +34,18 @@ exports.uploadPoster = async (ctx, next) => {
 	/* 没有海报 */
 	if (!posterFile) { return next(); }
 
-	let poster = await tool.uploadFile(posterFile, 'update/poster', 'png');
+	let poster = await tool.uploadFile(posterFile, 'upload/poster', 'png');
 
 	ctx.req.body.poster = poster
 	await next()
 }
 
-
-
 /* 上传视频 */
 exports.uploadVideo = async (ctx, next) => {
 	// 确认是否登录
-	let user = ctx.session.user;
+	let user = ctx.session.user || {};
 	if(!user || !user._id) {
-		user = {_id: '58f6e27cd768e226481aa756'}
+		user = {_id: '590731e9a3399c1f6cd20865'}
 	}
 	if(!user._id) { 
 		return ctx.body = { err: '无法获取用户信息,请重新登录'} 
@@ -53,8 +57,9 @@ exports.uploadVideo = async (ctx, next) => {
 		return ctx.body = {err: '视频上传出错'}; 
 	}
 
-	let flash = await tool.uploadFile(videoFile, 'update/video', 'mp4');
+	let flash = await tool.uploadFile(videoFile, 'upload/video', 'mp4');
 
+	ctx.req.body.flash = flash;
 	await next();
 }
 

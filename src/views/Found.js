@@ -1,11 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import '../css/UploadVideoFrom.less';
 import utils from '../api/utils.js';
+import Toast from '../components/Toast';
 
 export default class UploadVideoFrom extends Component {
 
 	handleClick = () => {
 		utils.uploadVideo('videouploadform')
+			.then(() => {
+				Toast.show({text: '上传成功', time: 500});
+			})
 	}
 
 	render() {

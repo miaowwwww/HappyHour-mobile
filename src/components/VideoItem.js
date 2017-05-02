@@ -7,20 +7,18 @@ import { Link } from 'react-router';
 export default function VideoItem(props) {
 	const { title, poster, introduction, _id } = props.video;
 	let backgroundImage = '';
-	if(!poster) {
-		backgroundImage = `url('/images/bg_v.jpg')`;
-	}else {
+	if(poster) {
 		backgroundImage = `url('/poster/${poster}')`
 	}
 	let style = {backgroundImage}
 	return (
 		<Link className='VideoItem' 
 					style={ style } 
-					to={ {
-						pathname: `/videos/${_id}`, 
-						state: {video:props.video} } }>
-			<h1>{ title }</h1>
-			<p>{ introduction }</p>
+					to={`/videos/${_id}`}>
+			<div className="mask">
+				<h1>{ title }</h1>
+				<p>{ introduction }</p>
+			</div>
 		</Link>
 	)
 }

@@ -5,14 +5,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import configStore from './store/configStore.js';
 import RootRouter from './routers';
+// import configStore from './store/configStore.js';
+// const store = configStore();
+import store from './store/configStore.js';
 import './css/reset.less';
 import './font/iconfont.less';
 import './css/index.less';
 import './css/animate.less';
 import './api/reset.js';
-const store = configStore();
 // import { AppContainer } from 'react-hot-loader'
 
 // const render = Component => {

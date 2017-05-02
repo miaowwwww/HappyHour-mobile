@@ -19,6 +19,10 @@ router.post('/user/login', userCtrl.login)
 router.post('/user/regist', userCtrl.regist);
 /* 用户模块： 修改个人信息 表单修改，包括头像 */
 router.post('/user/update', updateUserInfo.single('header'), userCtrl.update);
+/* 用户模块: 修改密码 body: {_id, oldpwd, newpwd} */
+router.post('/user/update/password', userCtrl.updatePassword);
+/* 用户模块： 登出 id*/
+router.get('/user/logout/:id', userCtrl.logout);
 
 /* 视频模块：上传 */
 router.post('/video/upload', uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save )

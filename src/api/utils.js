@@ -63,6 +63,9 @@ utils.xhrUpload = (url, formName, config) => {
 		// Triggered when upload fails:
 		xhr.onerror = function (ev) {
 			console.log('err')
+			let resObj = JSON.parse(`${xhr.responseText}`);
+			reject(resObj)
+
 		};
 
 		/**异步状态判断 */
@@ -116,8 +119,6 @@ utils.getFileData = function(fil) {
     let reader = new FileReader();
     reader.onload = function(e) {
 		let result = event.target.result; //返回的dataURL  
-            console.log('result')
-            console.log(result)
 		resolve(result)
     }
     reader.readAsDataURL(fil);

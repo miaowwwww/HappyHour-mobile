@@ -12,7 +12,7 @@ const UserSchema = new Schema({
 	account: String,
 	password: String,
 	name: String,
-	sex: Number,
+	sex: { type: Number, default: 1 },
 	summary: String,
 	tel: String,
 	email: String,

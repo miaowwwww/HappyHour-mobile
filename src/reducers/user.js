@@ -1,28 +1,38 @@
-import { USER_SYNCLOGIN, USER_UPDATE } from '../actions/user.js';
+import { 
+	USER_REQUESTING,
+	USER_REQUESTSUCCESS,
+	USER_REQUESTERROR,
+	USER_SYNCLOGIN, 
+	USER_UPDATE,
+	USER_UPDATEPASSWORD,
+	USER_LOGOUT
+} from '../actions/user.js';
 
 const initialState = {
-	_id: "58f6e27cd768e226481aa756",
-	account: "123",
-	email: "123",
-	name: '123',
-	followCount: 0,
-	header:	"1493573287449.png"
+
 };
 
 export default function user(state = initialState, action) {
 	switch (action.type) {
-		// case USER_REQUESTING:
-		// 	return state.merge({isLogining: true, requestErrorMsg: '', loginErrorMsg: ''});
-		// case USER_REQUESTSUCCESS:
-		// 	return state.merge({isLogining: false, ...action.user});
-		// case USER_REQUESTERROR:
-		// 	return state.merge({isLogining: false, requestErrorMsg: action.requestErrorMsg});
+		/* 通过异步action 触发 */
+		case USER_REQUESTING:
+			return {...state, isLogining: true, requestErrorMsg: '', loginErrorMsg: ''};
+		case USER_REQUESTSUCCESS:
+			return {...state, isLogining: false, ...action.user};
+		case USER_REQUESTERROR:
+			return {...state, isLogining: false, requestErrorMsg: action.requestErrorMsg};
+		/* 通过同步action 来触发 */
 		case USER_SYNCLOGIN:
 			return {...state, ...action.user};
+		/* 更新用户 */
 		case USER_UPDATE:
-			console.log(action)
 			return {...state, ...action.user};
-
+		/* 修改密码 */
+		case USER_UPDATEPASSWORD:
+			return {...state, _id: action._id}
+		/* 登出 */
+		case USER_LOGOUT:
+			return initialState
 		default:
 			return state;
 	}

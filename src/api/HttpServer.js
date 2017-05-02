@@ -8,7 +8,16 @@ class HttpServer {
 		this.apiBaseUri = apiBaseUri;
 	}
 
-	/* 拼接uri */
+	/* 
+	 * 拼接uri 
+	 * params={
+	 * 	uri: 拼接uri
+	 * 	rest1: xxx1,
+	 * 	rest2: xxx2
+	 * }
+	 * return `${apiBaseUri}/${uri}?rest1=xxx1&rest2=xxx2
+	 */
+
 	getUri = (param) => {
 		if(typeof(param) != 'object') {
 			return `${DATABASE}/${this.apiBaseUri}/${param}`;
@@ -37,6 +46,7 @@ class HttpServer {
 				return res.json();
 			})
 			.then(result => {
+				console.log(result)
 				return result.err && Promise.reject(result.err) || Promise.resolve(result);
 			})
 	}
@@ -66,9 +76,17 @@ class UserHttpServer extends HttpServer {
 	update = (user) => {
 		return this.post('update', user)
 	}
+	/* 修改密码 {_id, oldpwd, newpwd} */
+	updatePassword = (user) => {
+		return this.post('update/password', user);
+	}
 	/*登录*/
 	login = (AccountPwd) => {
 		return this.post('login', AccountPwd);
+	}
+	/* 退出登录 */
+	logout = (userId) => {
+		return this.get(`logout/${userId}`);
 	}
 }
 /* video模块 */

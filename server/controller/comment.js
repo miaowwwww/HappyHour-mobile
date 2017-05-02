@@ -8,7 +8,7 @@ const UserModel = require('../model/user.js');
 */
 
 /* 列表分页size */
-const size = 10;
+const size = 100;
 /* 通过视频id获取comment */
 exports.query = async (ctx) => {
 	const { pn = 1 } = ctx.query;

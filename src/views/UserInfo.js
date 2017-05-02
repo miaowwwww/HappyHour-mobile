@@ -1,30 +1,39 @@
 import React, { Component, PropTypes } from 'react';
 import _history from '../store/history';
-
-import { NavBar, List, InputItem, TextareaItem} from 'antd-mobile';
+import Toast from '../components/Toast.js';
+import { NavBar, List, InputItem, TextareaItem, Button, WhiteSpace, WingBlank} from 'antd-mobile';
 import '../css/UserInfo.less';
 import utils from '../api/utils.js';
+import { Link } from 'react-router';
 
 export class UserInfo extends Component {
 
 	constructor(props, context) {
 		super(props);
 		this.state = {
-			header: ''
+			header: '',
+			summary: this.props.user.summary
 		}
+	}
+
+	handleSummaryChange = (value) => {
+		this.setState({summary: value})
 	}
 
 	handleClick = async () => {
 		let {user} = await utils.updateUserInfo('userInfoForm');
+		await Toast.show({text: '保存成功', time: 500});
 		this.props.updateUser(user);
-		
 	}
 
 	handleChangeHeader = (e) => {
-		console.log(e.target.files);
 		utils.getFileData(e.target.files[0]).then(data => {
 			this.setState({header: data});
 		})
+	}
+
+	handleLogout = (e) => {
+		this.props.logout(this.props.user);
 	}
 
 	render() {
@@ -40,12 +49,10 @@ export class UserInfo extends Component {
 					个人信息
 				</NavBar>
 				<form name="userInfoForm"
-						className="UploadVideoFrom" 
 						encType="multipart/form-data" 
 						>
-						<input type="hidden" name="_id" value={user._id}/>
+					<input type="hidden" name="_id" value={user._id || ''}/>
 					<List>
-
 						<List.Item
 							extra={ <input type='file' 
 												ref={input => this.fileInput = input} 
@@ -70,13 +77,17 @@ export class UserInfo extends Component {
 						>昵称</InputItem>
 						<List.Item
 							extra={
-								<select defaultValue={user.sex} style={{float: 'right', width: '1em'}}>
-									<option value="1">男</option>
-									<option value="2" disabled>女</option>
-								</select>
+								// <select name="sex" >
+								// 	<option value='1'>男</option>
+								// 	<option value='0'>女</option>
+								// </select>
+								<div>
+									<input type='radio' className="my-radio" name='sex' value='1' defaultChecked={user.sex == '1'} />男
+									<input type='radio' className="my-radio" name='sex' value='0' defaultChecked={user.sex == '0'} />女
+								</div>
 							}
 							name="sex"
-							arrow="horizontal">
+							>
 							性别
 						</List.Item>
 						<InputItem
@@ -91,13 +102,20 @@ export class UserInfo extends Component {
 						>邮箱</InputItem>
 						<TextareaItem
 							title="简介"
-							defaultValue={user.summery}
-							name="summery"
-							placeholder="说点什么..."
-							rows={3}
 							count={140}
+							rows={3}
+							value={this.state.summary}
+							onChange={this.handleSummaryChange}
+							name="summary"
+							placeholder="说点什么..."
 						/>
 					</List>
+					<WhiteSpace size='xl' />
+					<WingBlank size="xl">
+					<Button onClick={() => {_history.push('/updatewpd')}} className="btn" type="ghost">修改密码</Button>
+					<WhiteSpace size='md' />
+					<Button onClick={this.handleLogout} className="btn" type="warning">退出登录</Button>
+					</WingBlank>
 				</form>
 			</div>
 		)
@@ -105,7 +123,7 @@ export class UserInfo extends Component {
 }
 
 import { connect } from 'react-redux';
-import { updateUser } from '../actions/user.js';
+import { updateUser, logout } from '../actions/user.js';
 
 const mapStateToProps = (state) => {
 	return {
@@ -114,7 +132,8 @@ const mapStateToProps = (state) => {
 }
 function mapDispatchToProps (dispatch) {
 	return {
-		updateUser: (user) => dispatch(updateUser(user))
+		updateUser: (user) => dispatch(updateUser(user)),
+		logout: user => dispatch(logout(user))
 	}
 }
 

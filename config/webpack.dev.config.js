@@ -9,7 +9,9 @@ const svgDirs = [
   require.resolve('antd-mobile').replace(/warn\.js$/, ''),  // 1. 属于 antd-mobile 内置 svg 文件
   // path.resolve(__dirname, 'src/my-project-svg-foler'),  // 2. 自己私人的 svg 存放目录
 ];
-
+ let ss = require.resolve('antd-mobile').replace(/warn\.js$/, '');
+//  console.log(ss);
+//  console.log('1111111111111111111')
 
 module.exports = {
 	// devtool: 'cheap-module-eval-source-map',
@@ -45,14 +47,15 @@ module.exports = {
 			},
 			{
 				test: /\.(jpe?g|png|woff|svg|eot|ttf)$/,
-				exclude: svgDirs,
+				// exclude: svgDirs,
 				use: 'url-loader?limit=4092&name=images/[name].[ext]'
 			},
-      {
-        test: /\.(svg)$/i,
-        use: 'svg-sprite-loader',
-        include: svgDirs,  // 把 svgDirs 路径下的所有 svg 文件交给 svg-sprite-loader 插件处理
-      },
+      // {
+      //   test: /\.(svg)$/i,
+      //   use: 'svg-sprite-loader',
+		//   include: ss
+      // //   include: svgDirs,  // 把 svgDirs 路径下的所有 svg 文件交给 svg-sprite-loader 插件处理
+      // },
 			{
 				test: /\.json$/,
 				use: 'json-loader'
@@ -67,7 +70,8 @@ module.exports = {
 		new htmlWebpackPlugin({
 			template: path.resolve(__dirname, '../src/index.html'),
 			filename: 'index.html',
-			title: 'HappyHour-m'
+			title: 'HappyHour-m',
+			favicon: path.resolve(__dirname, '../src/favicon.ico'),
 		}),
 		new webpackMd5Hash(),
 		new webpack.optimize.CommonsChunkPlugin({

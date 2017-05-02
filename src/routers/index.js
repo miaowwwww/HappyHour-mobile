@@ -9,11 +9,12 @@ import Found from '../views/Found.js';
 import My from '../views/My.js';
 import Select from '../views/Select.js';
 
-import UserInfo from '../views/UserInfo.js';
+// 独立页
 import Video from '../views/Video.js';
-
-import VideoPlay from '../components/VideoPlay';
-
+import UserInfo from '../views/UserInfo.js';
+import UserPwd from '../views/UserPwd.js';
+import UserView from '../views/UserView.js';
+// import VideoPlay from '../components/VideoPlay';
 
 const routers = (
 	<Router history={ defineHistory } >
@@ -24,8 +25,10 @@ const routers = (
 			<Route path='select' component={Select}></Route>
 			<Route path='my' component={My}></Route>
 			<Route path='/videos/:id' component={Video}></Route>
+			<Route path='/userinfo' component={UserInfo}></Route>
+			<Route path='/updatewpd' component={UserPwd}></Route>
+			<Route path='/person/:id' component={UserView}></Route>
 		</Route>
-		<Route path='/userinfo' component={UserInfo}></Route>
 	</Router>
 )
 

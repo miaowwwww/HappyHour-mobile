@@ -8,6 +8,5 @@ const userCtrl = require('../controller/user.js');
 UserRouter.post('/user/login', userCtrl.login)
 /* 注册 */
 UserRouter.post('/user/regist', userCtrl.regist);
-
 module.exports = UserRouter;
 

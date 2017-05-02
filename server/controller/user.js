@@ -4,12 +4,9 @@ const tool = require('./tool.js');
 const fs = require('fs');
 /*
  * 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
+ * {err} {ok/data}
 */
-/*
-let registError = {
-	err: '账号已存在'
-}
-*/
+
 
 /* 注册 */
 exports.regist = async(ctx) => {
@@ -40,6 +37,13 @@ exports.login = async( ctx ) => {
 	return ctx.body = user;
 }
 
+/* 退出 */
+exports.logout = async (ctx) => {
+	const {id} = ctx.params;
+	ctx.session.user = null;
+	ctx.body = {ok: 'ok'};
+	
+}
 /* 更新 包括头像 */
 exports.update = async (ctx) => {
 	let headerFile = ctx.req.file;
@@ -57,4 +61,16 @@ exports.update = async (ctx) => {
 	return ctx.body = {user}
 }
 
+/*修改密码 body: {_id, oldpwd, newpwd}*/
+exports.updatePassword = async (ctx) => {
+	let {_id, oldpwd, newpwd} = ctx.request.body;
+	let _user = await UserModel.findById(_id);
+	if(!_user) {return ctx.body = {err: '找不到用户'}};
+	if(_user.password !== oldpwd) {
+		return ctx.body = {err: '旧密码错误'}
+	}
+	_user.password = newpwd;
+	await UserModel.save(_user);
+	return ctx.body = {ok: 'ok'};
 
+}

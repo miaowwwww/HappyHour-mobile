@@ -3,12 +3,8 @@ import React, {Component, PropTypes} from 'react';
 import video from '../virtual_data/video.js';
 import utils from '../api/utils.js';
 import '../css/Video.less';
-import definedhistory from '../store/history.js';
 import CommentList from '../components/CommentList.js';
 import CommentTextarea from '../components/CommentTextarea.js';
-
-import header_img from '../images/default_user.png';
-
 
 
 class Video extends Component {
@@ -16,36 +12,26 @@ class Video extends Component {
 		super(props);
 	}
 
-	componentDidMount() {
-		
-	}
-
 	handlerComment = async() => {
 		const content = await CommentTextarea.show();
 		if(content) {
-			const { commentAdd } = this.props;
-			const { _id } = this.props.location.state.video;
-			commentAdd({content, video: _id})
+			const { video, commentAdd } = this.props;
+			commentAdd({content, video: video._id})
 		}
-	}
-
-	handleClick = () => {
-
 	}
 
 	render() {
-		const {video} = this.props.location.state;
+		const {video} = this.props;
 		const {user} = video;
-		let header = header_img;
-		if(user.img) {
-			header = `/header/${user.img}`
-		}
-
+		console.log(this.props);
 		return (
 			<div className='Video'>
+				<i className="icon-back iconfont icon-roundclose"
+					onClick={() => this.props.router.goBack()}
+				></i>
 				<video 
 					controls 
-					poster={`/poster/${video.poster}`}
+					poster={utils.poster(video.poster)}
 					preload='ture'
 					// autoPlay='ture'
 					>
@@ -56,7 +42,7 @@ class Video extends Component {
 					<header>
 						<h1>{video.title}</h1>
 						<p>{video.meta.createAt}</p>
-						<img src={ header } />
+						<img src={ utils.header(video.user.header) } />
 					</header>
 					<p>{video.introduction}</p>
 					<ul>
@@ -77,6 +63,12 @@ import { goodVideo } from '../actions/videos.js';
 import { commentAdd } from '../actions/comment.js';
 import { connect } from 'react-redux';
 
+function mapStateToProps(state, ownProps) {
+	const { id } = ownProps.params;
+	return {
+		video: state.videos.list.find( item => item._id == id)
+	}
+}
 function mapDispatchToProps(dispatch) {
 	return {
 		goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),
@@ -84,4 +76,4 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Video);
+export default connect(mapStateToProps, mapDispatchToProps)(Video);

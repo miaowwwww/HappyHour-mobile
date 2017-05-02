@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import Login from '../components/Login.js';
 import _history from '../store/history.js';
-import { connect } from 'react-redux';
-import { syncLogin } from '../actions/user.js';
+import utils from '../api/utils';
 
 import '../css/My.less';
 
@@ -16,22 +15,22 @@ export class My extends Component {
 	handleClick = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
-		if(this.props.user) {
+		if(this.props.user._id) {
 			_history.push('userinfo');
 			return ;
 		}
 		Login.show().then( user => {
-			this.props.dispatch( syncLogin( user ) );
+			this.props.syncLogin( user );
 		})
 	}
 
 	render() {
-		let { account, name, img } = this.props.user;
+		let { account, name, header } = this.props.user;
 		return (
 			<div className='My'>
 				<header className='My-Top'>
 					<i className='icon iconfont icon-xitongcaidan' ></i>
-					<img src={ img } onClick={this.handleClick} />
+					<img src={ utils.header(header) } onClick={this.handleClick} />
 					<p>{ name || account || '点击登陆后可评论'}</p>
 					<ul>
 						<li><i className='iconfont icon-xiangqufill' ></i>我的收藏</li>
@@ -49,10 +48,18 @@ export class My extends Component {
 	}
 }
 
+import { connect } from 'react-redux';
+import { syncLogin } from '../actions/user.js';
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user
 	}
 }
+function mapDispatchToProps (dispatch) {
+	return {
+		syncLogin: (user) => dispatch(syncLogin(user))
+	}
+}
 
-export default connect(mapStateToProps)(My);
+export default connect(mapStateToProps, mapDispatchToProps)(My);

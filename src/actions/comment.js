@@ -54,7 +54,7 @@ function commentAddError(err) {
 		err
 	}
 }
-/* comment: {from: {_id, name}, to: {_Id, name}, video} */
+/* comment: {to: {_id, name}, video, content} ,from从state中获取 */
 export const commentAdd = (comment) => {
 	return (dispatch, getState) => {
 		dispatch(commentAddBegin(comment));

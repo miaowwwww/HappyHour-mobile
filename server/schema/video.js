@@ -44,7 +44,7 @@ VideoSchema.statics = {
 				.sort({ 'meta.createAt': -1 })
 				.skip(size * pn)
 				.limit(size)
-				.populate(opt)
+				.populate('user', '_id, header')
 				.exec((err, list) => {
 					resolve(list);
 				})

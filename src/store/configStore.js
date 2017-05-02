@@ -5,7 +5,7 @@ import createLogger from 'redux-logger'; //开发版要去掉的
 
 import rootReducers from '../reducers/index.js';
 
-export default function configStore(preloadedState) {
+function configStore(preloadedState) {
 	return createStore(
 		rootReducers,
 		preloadedState,
@@ -15,3 +15,6 @@ export default function configStore(preloadedState) {
 		)
 	)
 }
+
+const store = configStore();
+export default store;

@@ -5,6 +5,7 @@ export const USER_SYNCLOGIN = 'USER_SYNCLOGIN'; //同步方式登录
 // 若需要修改路由，可通过react-router-redux，此处暂时将history引入
 import defineHistory from '../store/history.js';
 import { userHttpServer } from '../api/HttpServer.js';
+import Toast from '../components/Toast.js';
 
 function requestPost(user) {
 	return {
@@ -27,7 +28,7 @@ function requestError(err) {
 	}
 }
 
-/* 登录 action */
+/* 1.异步登录 action */
 function requestLogining(user) {
 	return {
 		type: USER_REQUESTING
@@ -53,12 +54,14 @@ export const asyncLogin = ( user ) => {
 		userHttpServer.login( user )
 			.then( user => {
 				dispatch( requestLogined( user ) );
-				defineHistory.goBack();
+				// defineHistory.goBack();
 			} )
 			.catch( err => dispatch( requestLoginError( err )))
 	}
 }
-export const syncLogin = ( user ) => {
+
+/* 2.通过LoginModel 同步登陆 */
+export const syncLogin = (user) => {
 	return {
 		type: USER_SYNCLOGIN,
 		user
@@ -66,11 +69,52 @@ export const syncLogin = ( user ) => {
 }
 
 
-/* 更新user */
+/* 3.更新user */
 export const USER_UPDATE = 'user_update'
 export const updateUser = (user) => {
 	return {
 		type: USER_UPDATE,
 		user
+	}
+}
+
+/* 4.修改密码 */
+export const USER_UPDATEPASSWORD = 'USER_UPDATEPASSWORD';
+const updatePasswordEnd = (_id) => {
+	return {
+		type: USER_UPDATEPASSWORD,
+		_id
+	}
+}
+/* user:{_id, oldpwd, newpwd } */
+export const updatePassword = (user) => {
+	return (dispatch, getState) => {
+		userHttpServer.updatePassword(user)
+			.then(ok => {
+				dispatch(updatePasswordEnd(user._id));
+				defineHistory.goBack();
+			})
+			.catch(err => Toast.show({text:err, time:500}))
+	}
+}
+
+/* 5.退出登录 */
+export const USER_LOGOUT = 'USER_LOGOUT';
+/* user: {_id} */
+export const logout = (user) => (dispatch, getState) => {
+	userHttpServer.logout(user._id)
+		.then(ok => {
+			dispatch(userLogout())
+			defineHistory.replace('/my');
+		})
+		.catch(err => {
+			console.log(err);
+			Toast.show({text: err, time: 500})
+		})
+}
+
+function userLogout() {
+	return {
+		type: USER_LOGOUT
 	}
 }

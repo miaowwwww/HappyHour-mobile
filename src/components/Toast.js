@@ -18,7 +18,7 @@ export default class Toast extends Model {
 
 	componentDidMount() {
 		this.timer = setTimeout(() => {
-			this._removeView();
+			this._resolveView();
 		}, this.props.time);
 	}
 

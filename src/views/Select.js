@@ -5,6 +5,7 @@ import '../css/Select.less';
 import VideoItem from '../components/VideoItem.js';
 import Banner from '../components/Banner.js';
 import { queryVideos } from '../actions/videos.js';
+import img_banner from '../images/brand.png';
 
 
 class Select extends Component {
@@ -23,10 +24,12 @@ class Select extends Component {
 	}
 
 	render() {
-
 		return (
 			<div className='Select'>
-				<Banner/>
+				<Banner img={img_banner} 
+						text={'星期一 11月3日'} 
+						icon={<a href='#/person/11' className="iconfont icon-sousuo"></a>}
+						 />
 				{ this.videoList }
 			</div>
 		)
