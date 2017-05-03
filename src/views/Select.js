@@ -28,7 +28,7 @@ class Select extends Component {
 			<div className='Select'>
 				<Banner img={img_banner} 
 						text={'星期一 11月3日'} 
-						icon={<a href='#/person/11' className="iconfont icon-sousuo"></a>}
+						icon={<a href='#/person/590731e9a3399c1f6cd20865' className="iconfont icon-sousuo"></a>}
 						 />
 				{ this.videoList }
 			</div>

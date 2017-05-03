@@ -4,41 +4,39 @@ var ObjectId = Schema.Types.ObjectId
 
 var CategorySchema = new Schema({
   name: String,
-  movies: [{type: ObjectId, ref: 'Video'}],
-  meta: {
-    createAt: {
-      type: Date,
-      default: Date.now()
-    },
-    updateAt: {
-      type: Date,
-      default: Date.now()
-    }
+  movies: [{ type: ObjectId, ref: 'Video' }],
+  createAt: {
+    type: Date,
+    default: Date.now()
+  },
+  updateAt: {
+    type: Date,
+    default: Date.now()
   }
 })
 
 // var ObjectId = mongoose.Schema.Types.ObjectId
-CategorySchema.pre('save', function(next) {
+CategorySchema.pre('save', function (next) {
   if (this.isNew) {
-    this.meta.createAt = this.meta.updateAt = Date.now()
+    this.createAt = this.updateAt = Date.now()
   }
   else {
-    this.meta.updateAt = Date.now()
+    this.updateAt = Date.now()
   }
 
   next()
 })
 
 CategorySchema.statics = {
-  fetch: function(cb) {
+  fetch: function (cb) {
     return this
       .find({})
-      .sort('meta.updateAt')
+      .sort('createAt')
       .exec(cb)
   },
-  findById: function(id, cb) {
+  findById: function (id, cb) {
     return this
-      .findOne({_id: id})
+      .findOne({ _id: id })
       .exec(cb)
   }
 }

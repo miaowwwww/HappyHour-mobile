@@ -5,7 +5,8 @@ import utils from '../api/utils.js';
 import '../css/Video.less';
 import CommentList from '../components/CommentList.js';
 import CommentTextarea from '../components/CommentTextarea.js';
-
+import { Link } from 'react-router';
+import { NavBar } from 'antd-mobile';
 
 class Video extends Component {
 	constructor(props) {
@@ -26,9 +27,15 @@ class Video extends Component {
 		console.log(this.props);
 		return (
 			<div className='Video'>
-				<i className="icon-back iconfont icon-roundclose"
-					onClick={() => this.props.router.goBack()}
-				></i>
+
+				<NavBar
+					className="navbar"
+					mode="light"
+					iconName={false}
+					onLeftClick={() => this.props.router.goBack()}
+					leftContent={<i className="iconfont icon-roundclose"></i>}
+					>
+				</NavBar>
 				<video 
 					controls 
 					poster={utils.poster(video.poster)}
@@ -41,8 +48,8 @@ class Video extends Component {
 				<section>
 					<header>
 						<h1>{video.title}</h1>
-						<p>{video.meta.createAt}</p>
-						<img src={ utils.header(video.user.header) } />
+						<p>{video.createAt}</p>
+						<Link to={`person/${video.user._id}`}><img src={ utils.header(video.user.header)  } /></Link>
 					</header>
 					<p>{video.introduction}</p>
 					<ul>
@@ -63,12 +70,21 @@ import { goodVideo } from '../actions/videos.js';
 import { commentAdd } from '../actions/comment.js';
 import { connect } from 'react-redux';
 
+// 通过location.state来拿吧
 function mapStateToProps(state, ownProps) {
-	const { id } = ownProps.params;
+	console.log(ownProps)
+	const video = ownProps.location.state.video;
 	return {
-		video: state.videos.list.find( item => item._id == id)
+		video: video
 	}
 }
+// 通过redux
+// function mapStateToProps(state, ownProps) {
+// 	const { id } = ownProps.params;
+// 	return {
+// 		video: state.videos.list.find( item => item._id == id)
+// 	}
+// }
 function mapDispatchToProps(dispatch) {
 	return {
 		goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),

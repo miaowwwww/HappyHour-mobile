@@ -29,12 +29,11 @@ exports.add = async( ctx ) => {
 	const comment = ctx.request.body;
 	const { from, to, video, content } = comment;
 	const _comment = await CommentModel.save({video, content, from: from._id, to: to && to._id})
-	console.log(_comment)
 	/* 视频commentCount + 1 */
 	await VideoModel.update({_id: video}, {$inc: {commentCount: 1}});
 	ctx.body = { 
 		_id: _comment._id, 
-		meta: _comment.meta,
+		createAt: _comment.createAt,
 	}
 }
 

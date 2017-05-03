@@ -46,7 +46,6 @@ class HttpServer {
 				return res.json();
 			})
 			.then(result => {
-				console.log(result)
 				return result.err && Promise.reject(result.err) || Promise.resolve(result);
 			})
 	}
@@ -72,6 +71,14 @@ class UserHttpServer extends HttpServer {
 	regist = (newUser) => {
 		return this.post('regist', newUser);
 	}
+	/*登录*/
+	login = (AccountPwd) => {
+		return this.post('login', AccountPwd);
+	}
+	/* 退出登录 */
+	logout = (userId) => {
+		return this.get(`logout/${userId}`);
+	}
 	/*更新*/
 	update = (user) => {
 		return this.post('update', user)
@@ -80,13 +87,13 @@ class UserHttpServer extends HttpServer {
 	updatePassword = (user) => {
 		return this.post('update/password', user);
 	}
-	/*登录*/
-	login = (AccountPwd) => {
-		return this.post('login', AccountPwd);
+	/* 根据id 获取用户 */
+	personFetchById = (id) => {
+		return this.get(`fetchOne/${id}`);
 	}
-	/* 退出登录 */
-	logout = (userId) => {
-		return this.get(`logout/${userId}`);
+	/* 关注用户 userid，personid*/
+	personFollow = (userId, personId) => {
+		return this.get(`follow?user=${userId}&person=${personId}`);
 	}
 }
 /* video模块 */
@@ -96,8 +103,12 @@ class VideoHttpServer extends HttpServer {
 	}
 	
 	/* 获取列表 */
-	queryVideos = (type) => {
-		return this.get({uri: 'list', ...type});
+	queryVideos = (opt) => {
+		return this.get({uri: 'list', ...opt});
+	}
+	/* 获取某用户的视频 {id, pn}*/
+	queryPersonVideo = (opt) => {
+		return this.get({uri: 'person', ...opt})
 	}
 	/* 获取视频评论 id*/
 	queryCommentList = ({videoId, pn}) => {

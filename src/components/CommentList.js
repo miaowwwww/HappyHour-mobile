@@ -3,10 +3,16 @@ import React, { PureComponent, Component, PropTypes } from 'react';
 import default_user from '../images/default_user.png';
 import '../css/CommentList.less';
 import CommentTextarea from './CommentTextarea.js';
+import _history from '../store/history.js';
 
 class CommentListItem extends Component {
 	constructor(props) {
 		super(props);
+	}
+	handleClickImg = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		_history.push(`/person/${this.props.comment.from._id}`)
 	}
 
 	handlerComment = async() => {
@@ -18,14 +24,14 @@ class CommentListItem extends Component {
 		}
 	}
 	render() {
-		const { from, meta, to, content } = this.props.comment;
+		const { from, createAt, to, content } = this.props.comment;
 		const { header, name, account } = from;
 		return (
 			<li className="CommentListItem"
 					onClick={this.handlerComment}>
-				<img src={`header/${header}`} className="header_img" />
+				<img src={`header/${header}`} className="header_img" onClick={this.handleClickImg} />
 				<div>
-					<h1>{name || account} <small>{meta.createAt}</small></h1>
+					<h1>{name || account} <small>{createAt}</small></h1>
 					<p>
 						{ to && <em>回复 {to.name}：</em> }
 						{ content }

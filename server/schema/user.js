@@ -29,49 +29,57 @@ const UserSchema = new Schema({
 	starUser: [
 		{ type: ObjectId, ref: "User" }
 	],
+	startCount: { type: Number, default: 0 },
 	starVideo: [
 		{ type: ObjectId, ref: 'Video' }
 	],
 	goodVideos: [
-		// { type: ObjectId, ref: 'Video'}
-		{ type: String }
+		{ type: ObjectId, ref: 'Video'}
 	],
-	meta: {
-		createAt: { type: Date, default: Date.now },
-		updateAt: { type: Date, default: Date.now }
-	}
+	createAt: { type: Date, default: Date.now },
+	updateAt: { type: Date, default: Date.now }
+
 })
 
 // pre,在save之前执行的一些操作
 UserSchema.pre('save', function (next) {
 	var user = this 	//当前操作的user对象
 	if (!this.isNew) {
-		this.meta.updateAt = Date.now()
+		this.updateAt = Date.now()
 	}
 	if (!this.name) {
 		this.name = this.account;
 	}
 	next();
 	//对密码进行哈希加盐 
-  /*bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err)
-
-    bcrypt.hash(user.password, salt, null,function(err, hash) {
-      if (err) return next(err)
-
-      user.password = hash
-      next()
-    })
-  })*/
+	/*bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+	  if (err) return next(err)
+ 
+	  bcrypt.hash(user.password, salt, null,function(err, hash) {
+		 if (err) return next(err)
+ 
+		 user.password = hash
+		 next()
+	  })
+	})*/
 })
 
 
 UserSchema.statics = {
-	qusery: function (cb) {
-		return this
-			.find({})
-			.sort('meta.updateAt')
-			.exec(cb)
+	findPersonById: function (_id) {
+		return new Promise((resolve, reject) => {
+			this
+				.findOne({ _id })
+				.populate({
+					path: 'videos',
+					populate: { path: 'user', select: 'name _id header' }
+				})
+				// .populate('videos')
+				// .populate('videos.user', 'name, _id, header')
+				.exec((err, person) => {
+					resolve(person);
+				})
+		})
 	},
 	findById: function (_id) {
 		return new Promise((resolve, reject) => {

@@ -4,18 +4,14 @@ const ObjectId = Schema.Types.ObjectId;
 
 
 const CommentSchema = new mongoose.Schema({
-	video: {type: ObjectId,	ref: 'Video'},
-	from: {	type: ObjectId,	ref: 'User'},
-	to: { type: ObjectId, ref: 'User'},
+	video: { type: ObjectId, ref: 'Video' },
+	from: { type: ObjectId, ref: 'User' },
+	to: { type: ObjectId, ref: 'User' },
 	reply: [{
-		from: {	type: ObjectId,	ref: 'User'	},
-		to: {type: ObjectId,ref: 'User'	},
+		from: { type: ObjectId, ref: 'User' },
+		to: { type: ObjectId, ref: 'User' },
 		content: String,
-		status: { type: Number, default: 1}
-	}],
-	content: String,
-	status: {	type: Number,	default: 1 },
-	meta: {
+		status: { type: Number, default: 1 },
 		createAt: {
 			type: Date,
 			default: Date.now()
@@ -24,25 +20,35 @@ const CommentSchema = new mongoose.Schema({
 			type: Date,
 			default: Date.now()
 		}
+	}],
+	content: String,
+	status: { type: Number, default: 1 },
+	createAt: {
+		type: Date,
+		default: Date.now()
+	},
+	updateAt: {
+		type: Date,
+		default: Date.now()
 	}
 })
 
-CommentSchema.pre('save', function(next) {
+CommentSchema.pre('save', function (next) {
 	if (this.isNew) {
-		this.meta.createAt = this.meta.updateAt = Date.now();
+		this.createAt = this.updateAt = Date.now();
 	} else {
-		this.meta.updateAt = Date.now();
+		this.updateAt = Date.now();
 	};
 	next();
 })
 
 CommentSchema.statics = {
 	/* 根据videoId，获取commentlist */
-	queryList: function({videoId, pn, size}) {
-		return new Promise( (resolve, reject ) => {
+	queryList: function ({ videoId, pn, size }) {
+		return new Promise((resolve, reject) => {
 			this
-				.find({video:videoId})
-				.sort({'meta.createAt': -1})
+				.find({ video: videoId })
+				.sort({ 'updateAt': -1 })
 				.skip(size * pn)
 				.limit(size)
 				.populate('from to', '_id name header')
@@ -52,14 +58,14 @@ CommentSchema.statics = {
 
 		})
 	},
-	save: function(comment) {
+	save: function (comment) {
 		return new Promise((resolve, reject) => {
 			let model = this.model('Comment');
 			new model(comment).save((err, data) => resolve(data))
 		})
 	},
-	fetchOne: function(id) {
-		return new Promise( (resolve, reject ) => {
+	fetchOne: function (id) {
+		return new Promise((resolve, reject) => {
 			this
 				.find({
 					_id: id
@@ -71,10 +77,10 @@ CommentSchema.statics = {
 
 		})
 	},
-	fetch: function(cb) {
+	fetch: function (cb) {
 		return this
 			.find({})
-			.sort('meta.updateAt')
+			.sort('updateAt')
 			.exec(cb)
 	},
 }

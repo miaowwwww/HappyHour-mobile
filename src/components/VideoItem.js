@@ -14,7 +14,10 @@ export default function VideoItem(props) {
 	return (
 		<Link className='VideoItem' 
 					style={ style } 
-					to={`/videos/${_id}`}>
+					to={ {
+						pathname: `/videos/${_id}`,
+						state: {video: props.video}
+					} }>
 			<div className="mask">
 				<h1>{ title }</h1>
 				<p>{ introduction }</p>

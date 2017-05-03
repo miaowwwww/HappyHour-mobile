@@ -16,32 +16,30 @@ const VideoSchema = new Schema({
 	seeCount: { type: Number, default: 0 },//Number	--	观看次数（重复也+1）
 	status: { type: String, default: 1 },//Number	1	0， 1
 	durations: String, //String	--	视频时长
-	meta: {
-		createAt: { type: Date, default: Date.now() }
-		// updateAt: {	type: Date,	default: Date.now()	}
-	}
+	createAt: { type: Date, default: Date.now() }
+
 })
 
-// VideoSchema.pre('save',function(next){
-// 	if(this.isNew){
-// 		this.meta.createAt = this.meta.updateAt = Date.now();
-// 	}
-// 	else{
-// 		this.meta.updateAt = Date.now();
-// 	};
-// 	next();
-// })
+VideoSchema.pre('save',function(next){
+	if(this.isNew){
+		this.createAt = this.updateAt = Date.now();
+	}
+	else{
+		this.updateAt = Date.now();
+	};
+	next();
+})
 
 const opt = [
 	{ path: 'user', select: 'account' }
 ]
 
 VideoSchema.statics = {
-	queryList: function ({pn, size}) {
+	queryList: function ({ pn, size, select={} }) {
 		return new Promise( (resolve, reject ) => {
 			this
-				.find({})
-				.sort({ 'meta.createAt': -1 })
+				.find(select)
+				.sort({ 'createAt': -1 })
 				.skip(size * pn)
 				.limit(size)
 				.populate('user', '_id, header')

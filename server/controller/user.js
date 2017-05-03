@@ -1,5 +1,6 @@
 // import * as UserModel from '../model/User.js';
 const UserModel = require('../model/user.js');
+const VideoModel = require('../model/video.js');
 const tool = require('./tool.js');
 const fs = require('fs');
 /*
@@ -72,5 +73,33 @@ exports.updatePassword = async (ctx) => {
 	_user.password = newpwd;
 	await UserModel.save(_user);
 	return ctx.body = {ok: 'ok'};
+
+}
+
+/* 获取某个用户 ctx.params.id*/
+exports.fetchOne = async (ctx) => {
+	const { id } = ctx.params;
+	let person = await UserModel.findPersonById(id);
+
+	if(person) { 
+		person = person.toJSON();
+		const { user } = ctx.session;
+		person.isUser = user && user._id.toString() == person._id.toString()
+		return ctx.body = {person};
+	};
+	return ctx.body = {err: '找不到用户'}
+}
+
+/* 关注用户 */
+exports.personFollow = async (ctx) => {
+	const { user, person } = ctx.query;
+	if(user !== ctx.session.user._id) { return ctx.body = {err: '用户不匹配'} }
+	/* 更新用户 */
+	await UserModel.update({_id: user}, {$inc: {starCount: 1}, $push: {starUser: person}});
+	/* 更新被关注者 */
+	await UserModel.update({_id: person}, {$inc: {followCount: 1}, $push: {followUser: user}});
+}
+/* 取消关注 */
+function unfollow() {
 
 }

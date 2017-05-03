@@ -23,11 +23,17 @@ router.post('/user/update', updateUserInfo.single('header'), userCtrl.update);
 router.post('/user/update/password', userCtrl.updatePassword);
 /* 用户模块： 登出 id*/
 router.get('/user/logout/:id', userCtrl.logout);
+/* 用户模块： 获取某个用户person */
+router.get('/user/fetchOne/:id', userCtrl.fetchOne);
+/* 用户模块：关注、取消关注 ?user=x&person=xx */
+router.get('/user/follow', userCtrl.personFollow)
 
 /* 视频模块：上传 */
 router.post('/video/upload', uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save )
 /* 视屏模块：获取列表 */
 router.get('/video/list', videoCtrl.queryList)
+/* 视频模块：获取特定用户的视屏 */
+router.get('/video/person', videoCtrl.queryPersonVideo);
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)

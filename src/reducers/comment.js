@@ -11,8 +11,9 @@ const initialState = {
 	/*
 	 * videoId: {
 	 * 	list: [comment],
-	 *  isFetching: false,
-	 * 	lastFecthingTime: Date
+	 *  	isFetching: false,
+	 * 	lastFecthingTime: Date,
+	 * 	nomore: false
 	 * } 
 	 * 
 	 */
@@ -48,14 +49,17 @@ export default function comment(state = initialState, action) {
 		 *	评论视频,都是id
 		 *	action: {type, comment: {video, from, to...}}	
 		 *
-		 * */ 
+		 * */
 		case COMMENT_ADDBEGIN:
 			return state;
 		case COMMENT_ADDEND:
 			const { video } = action.comment;
 			return {
 				...state,
-				[video]: { list: [action.comment, ...state[video].list] }
+				[video]: { 
+					...state[video],
+					list: [action.comment, ...state[video].list] 
+				}
 			}
 		case COMMENT_ADDERROR:
 			return state;

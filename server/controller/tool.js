@@ -1,4 +1,7 @@
 const fs = require('fs');
+const mongoose = require('mongoose');
+
+
 
 /* 读取文件async */
 const readFilePromise = (filePath) => {
