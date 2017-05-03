@@ -1,5 +1,8 @@
+
 const imgpath = '/images';
 const utils = {};
+
+
 
 utils.img = (name) => {
 	return `/images/${name}`;
@@ -34,6 +37,8 @@ utils.reg = {
 	idCardNo: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
 }
 
+import { getToken } from './HttpServer.js';
+
 utils.xhrUpload = (url, formName, config) => {
 	return new Promise((resolve, reject) => {
 		//0.预处理
@@ -57,7 +62,12 @@ utils.xhrUpload = (url, formName, config) => {
 		// Triggered when upload is completed:
 		xhr.onload = function (e) {
 			let resObj = JSON.parse(`${xhr.responseText}`);
-			resolve(resObj)
+			if(resObj.err) {
+				reject(resObj.err);
+			}
+			else {
+				resolve(resObj)
+			}
 		};
 
 		// Triggered when upload fails:
@@ -68,38 +78,9 @@ utils.xhrUpload = (url, formName, config) => {
 
 		};
 
-		/**异步状态判断 */
-		// xhr.onreadystatechange = () => {
-
-		// 	let readyState = xhr.readyState;
-		// 	let status = `${xhr.status}`;
-
-		// 	if (readyState === 4) {
-		// 		if (status.indexOf('2') === 0 || status.indexOf('3') === 0) {
-		// 			let resObj = {};
-		// 			try {
-		// 				console.log(xhr)
-		// 				// resObj = JSON.parse(`${xhr.responseText}`);
-		// 				// console.log(resObj)
-		// 				// config.success(resObj);
-		// 			} catch (e) {
-		// 				// config.error(e);
-		// 				// config.complete();
-		// 			}
-
-		// 			/**客户端、服务端错误 */
-		// 		} else if (status.indexOf('4') === 0 || status.indexOf('0') === 0 || status.indexOf('5') === 0) {
-		// 			// config.error(status);
-		// 			// config.complete();
-		// 		} else {
-		// 			config.error(status)
-		// 			config.complete();
-		// 		}
-
-		// 	}
-		// }
 
 		xhr.open('POST', url);
+		xhr.setRequestHeader('x-access-token', getToken());
 
 		//2.开始上传文件了
 		xhr.send(formData);

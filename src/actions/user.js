@@ -4,7 +4,7 @@ export const USER_REQUESTERROR = 'USER_REQUESTERROR'; // 请求失败
 export const USER_SYNCLOGIN = 'USER_SYNCLOGIN'; //同步方式登录
 // 若需要修改路由，可通过react-router-redux，此处暂时将history引入
 import defineHistory from '../store/history.js';
-import { userHttpServer } from '../api/HttpServer.js';
+import { userHttpServer, setToken } from '../api/HttpServer.js';
 import Toast from '../components/Toast.js';
 
 function requestPost(user) {
@@ -52,8 +52,10 @@ export const asyncLogin = ( user ) => {
 		dispatch( requestLogining() );
 
 		userHttpServer.login( user )
-			.then( user => {
+			.then( ({user, token}) => {
+				setToken(token)
 				dispatch( requestLogined( user ) );
+
 				// defineHistory.goBack();
 			} )
 			.catch( err => dispatch( requestLoginError( err )))

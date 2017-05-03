@@ -1,6 +1,6 @@
 @import './tool.less';
 .App{
-	position: fixed;
+	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -9,11 +9,14 @@
 	.flex();
 	.flex-v();
 
+
+
 	&-content{
 		.flex-n(1);
-		// overflow: hidden;
 		position: relative;
-		overflow: scroll;
-		// -webkit-overflow-scrolling: touch;
+		overflow: auto;
+		overflow: hidden;
+		-webkit-overflow-scrolling: touch;
+
 	}
 }

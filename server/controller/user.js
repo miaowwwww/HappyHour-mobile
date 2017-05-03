@@ -2,6 +2,8 @@
 const UserModel = require('../model/user.js');
 const VideoModel = require('../model/video.js');
 const tool = require('./tool.js');
+const jwk = require('./jwk.js');
+
 // const mongoose = require('mongoose');
 // const ObjectId = mongoose.Types.ObjectId
 /*
@@ -35,14 +37,17 @@ exports.login = async( ctx ) => {
 	if( !user || user.password !== loginer.password ) {
 		return ctx.body = { err: '账号密码不匹配' };
 	}
-	ctx.session.user = user;
-	return ctx.body = user;
+	let token = jwk.createToken({userId: user._id, timetamp: new Date().getTime()});
+	// ctx.session.user = user;
+	return ctx.body = {
+		user,
+		token
+	};
 }
 
 /* 退出 */
 exports.logout = async (ctx) => {
 	const {id} = ctx.params;
-	ctx.session.user = null;
 	ctx.body = {ok: 'ok'};
 	
 }
@@ -51,12 +56,12 @@ exports.update = async (ctx) => {
 	let headerFile = ctx.req.file;
 	let _user = ctx.req.body;
 
+	let user = await UserModel.findById(_user._id);
+	if(!user) { return ctx.body = {err: '找不到用户'}	}
+
 	if( headerFile ) {
 		_user.header = await tool.uploadFile(headerFile, 'upload/header', 'png');
 	}
-
-	let user = await UserModel.findById(_user._id);
-	if(!user) { return ctx.body = {err: '找不到用户'}	}
 
 	Object.assign(user, _user);
 	await UserModel.save(user);
@@ -94,7 +99,6 @@ exports.fetchOne = async (ctx) => {
 /* 关注用户 */
 exports.personFollow = async (ctx) => {
 	const { user, person } = ctx.query;
-	if(user !== ctx.session.user._id.toString()) { return ctx.body = {err: '用户不匹配'} }
 	/* 判断用户是否存在 */
 	let _user = await UserModel.findById(user);
 	if(!_user) { return ctx.body = { err: '用户信息错误，请从新登陆'}}
@@ -118,3 +122,4 @@ async function unfollow(user, person) {
 	await UserModel.update({_id: person}, {$inc: {followCount: -1}, $pull: {followUser: user}});
 	return '取消关注成功';
 }
+

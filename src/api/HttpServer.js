@@ -1,6 +1,13 @@
 import utils from './utils.js';
 
 const DATABASE = '/api';
+let HttpServerToken = '';
+export const setToken = (token) => {
+	HttpServerToken = token;
+}
+export const getToken = () => {
+	return HttpServerToken;
+}
 
 /* 请求服务 */
 class HttpServer {
@@ -37,11 +44,15 @@ class HttpServer {
 	}
 	
 	/* 发送请求 */
-	request = (Uri, method, body, rest) => {
+	request = ({Uri, method, body, withToken}) => {
 		let headers = new Headers({'Content-Type' : 'application/json'});
+		/* 添加token 后期应该添加参数，只有某些请求添加token*/
+		if(withToken) {
+			headers.set("x-access-token", HttpServerToken);
+		}
 		body = JSON.stringify(body);
-		// const req = new Request(_getUri(Uri), {method, body, headers, ...rest});
-		return fetch(this.getUri(Uri), {credentials: 'include', method, headers, body, ...rest})
+		// const req = new Request(_getUri(Uri), {method, body, headers});
+		return fetch(this.getUri(Uri), {credentials: 'include', method, headers, body})
 			.then(res => {
 				return res.json();
 			})
@@ -51,57 +62,60 @@ class HttpServer {
 	}
 
 	/* 以id 获取单例 */
-	get = (params) => {
-		return this.request(params, 'GET')
+	get = (params, withToken) => {
+		return this.request({
+			Uri: params, 
+			method: 'GET',
+			withToken
+		})
 	}
 
 	/* 添加尾地址，和postdata */
-	post = (params, data) => {
-		return this.request(params, 'POST', data)
+	post = (params, data, withToken) => {
+		return this.request({
+			Uri: params, 
+			method: 'POST', 
+			body: data,
+			withToken
+		})
 	}
+
 }
 
 /*用户user模块*/
 class UserHttpServer extends HttpServer {
-	constructor(apiBaseUri){
-		super(apiBaseUri);
-	}
-	
 	/*注册*/
 	regist = (newUser) => {
-		return this.post('regist', newUser);
+		return this.post('regist', newUser, false);
 	}
 	/*登录*/
 	login = (AccountPwd) => {
-		return this.post('login', AccountPwd);
+		return this.post('login', AccountPwd, false);
 	}
 	/* 退出登录 */
 	logout = (userId) => {
-		return this.get(`logout/${userId}`);
+		return this.get(`logout/${userId}`, true);
 	}
 	/*更新*/
 	update = (user) => {
-		return this.post('update', user)
+		console.log('update user ')
+		return this.post('update', user, true)
 	}
 	/* 修改密码 {_id, oldpwd, newpwd} */
 	updatePassword = (user) => {
-		return this.post('update/password', user);
+		return this.post('update/password', user, true);
 	}
 	/* 根据id 获取用户 */
 	personFetchById = (id) => {
-		return this.get(`fetchOne/${id}`);
+		return this.get(`fetchOne/${id}`, false);
 	}
 	/* 关注用户 userid，personid*/
 	personFollow = (userId, personId) => {
-		return this.get(`follow?user=${userId}&person=${personId}`);
+		return this.get(`follow?user=${userId}&person=${personId}`, true);
 	}
 }
 /* video模块 */
 class VideoHttpServer extends HttpServer {
-	constructor(apiBaseUri){
-		super(apiBaseUri);
-	}
-	
 	/* 获取列表 */
 	queryVideos = (opt) => {
 		return this.get({uri: 'list', ...opt});
@@ -116,9 +130,12 @@ class VideoHttpServer extends HttpServer {
 	}
 	/* 评论视频 */
 	commentVideo = (data) => {
-		return this.post('comment', data);
+		return this.post('comment', data, true);
 	}
 }
 
 export const userHttpServer = new UserHttpServer('user');
 export const videoHttpServer = new VideoHttpServer('video');
+
+
+

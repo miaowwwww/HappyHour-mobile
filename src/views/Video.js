@@ -41,7 +41,7 @@ class Video extends Component {
 					preload='ture'
 					// autoPlay='ture'
 					>
-					<source src={`/video/${video.flash}`} type="video/*" />
+					<source src={`/video/${video.flash}`} type="video/mp4" />
 					您的浏览器不支持 HTML5 video 标签。
 				</video>
 				<section>

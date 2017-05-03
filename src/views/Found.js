@@ -7,9 +7,10 @@ export default class UploadVideoFrom extends Component {
 
 	handleClick = () => {
 		utils.uploadVideo('videouploadform')
-			.then(() => {
-				Toast.show({text: '上传成功', time: 500});
+			.then((data) => {
+				Toast.show({text: JSON.stringify(data), time: 500});
 			})
+			.catch( err => Toast.shwo({text: err.toString()}))
 	}
 
 	render() {
