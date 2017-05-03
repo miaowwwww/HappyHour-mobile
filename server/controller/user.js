@@ -2,7 +2,8 @@
 const UserModel = require('../model/user.js');
 const VideoModel = require('../model/video.js');
 const tool = require('./tool.js');
-const fs = require('fs');
+// const mongoose = require('mongoose');
+// const ObjectId = mongoose.Types.ObjectId
 /*
  * 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
  * {err} {ok/data}
@@ -93,13 +94,27 @@ exports.fetchOne = async (ctx) => {
 /* 关注用户 */
 exports.personFollow = async (ctx) => {
 	const { user, person } = ctx.query;
-	if(user !== ctx.session.user._id) { return ctx.body = {err: '用户不匹配'} }
-	/* 更新用户 */
+	if(user !== ctx.session.user._id.toString()) { return ctx.body = {err: '用户不匹配'} }
+	/* 判断用户是否存在 */
+	let _user = await UserModel.findById(user);
+	if(!_user) { return ctx.body = { err: '用户信息错误，请从新登陆'}}
+	/* 判断当前是关注状态还是非关注状态 */
+	let isfollowing = _user.starUser.indexOf(person); // > -1;
+
+	let ok = 'ok';
+	ok = (isfollowing > -1) ? await unfollow(user, person) : await addfollow(user, person);
+	console.log(ok);
+	return ctx.body = {ok}
+}
+/* 关注 */
+async function addfollow(user, person) {
 	await UserModel.update({_id: user}, {$inc: {starCount: 1}, $push: {starUser: person}});
-	/* 更新被关注者 */
 	await UserModel.update({_id: person}, {$inc: {followCount: 1}, $push: {followUser: user}});
+	return '关注成功';
 }
 /* 取消关注 */
-function unfollow() {
-
+async function unfollow(user, person) {
+	await UserModel.update({_id: user}, {$inc: {starCount: -1}, $pull: {starUser: person}});
+	await UserModel.update({_id: person}, {$inc: {followCount: -1}, $pull: {followUser: user}});
+	return '取消关注成功';
 }

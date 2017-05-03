@@ -24,7 +24,6 @@ class Video extends Component {
 	render() {
 		const {video} = this.props;
 		const {user} = video;
-		console.log(this.props);
 		return (
 			<div className='Video'>
 
@@ -42,7 +41,7 @@ class Video extends Component {
 					preload='ture'
 					// autoPlay='ture'
 					>
-					<source src={`/video/${video.flash}`} type="video/mp4" />
+					<source src={`/video/${video.flash}`} type="video/*" />
 					您的浏览器不支持 HTML5 video 标签。
 				</video>
 				<section>
@@ -72,7 +71,6 @@ import { connect } from 'react-redux';
 
 // 通过location.state来拿吧
 function mapStateToProps(state, ownProps) {
-	console.log(ownProps)
 	const video = ownProps.location.state.video;
 	return {
 		video: video

@@ -29,7 +29,7 @@ const UserSchema = new Schema({
 	starUser: [
 		{ type: ObjectId, ref: "User" }
 	],
-	startCount: { type: Number, default: 0 },
+	starCount: { type: Number, default: 0 },
 	starVideo: [
 		{ type: ObjectId, ref: 'Video' }
 	],

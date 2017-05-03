@@ -3,12 +3,21 @@ import { TextareaItem } from 'antd-mobile';
 import '../css/CommentTextarea.less';
 import Model from './Model.js';
 
-
+import _history from '../store/history.js';
 
 export default class CommentTextarea extends Model {
 	constructor(props) {
 		super(props);
 		this.state = {text: ''};
+	}
+
+
+	componentDidMount() {
+		window.addEventListener('hashchange', this.handleHide);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('hashchange', this.handleHide)
 	}
 
 	handleChange = (value) => {
