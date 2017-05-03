@@ -5,7 +5,14 @@ import Toast from '../components/Toast.js';
 export const PERSON_FETCHBYID = 'PERSON_FETCHBYID';
 export const personFetchById = (id) => (dispatch, getState) => {
 	userHttpServer.personFetchById(id)
-		.then( ({person}) => dispatch(personFetchByIdEnd(person)))
+		.then( ({person}) => {
+			const { user } = getState();
+			if(user && user._id ) {
+				person.isUser =  user._id == person._id;
+				person.isFollow = (user.starUser.indexOf(person._id) > -1);
+			}
+			dispatch(personFetchByIdEnd(person))
+		})
 		.catch(err => Toast.show({text: err.toString()}))
 }
 function personFetchByIdEnd(person) {
@@ -21,7 +28,7 @@ export const personFollow = (personId) => (dispatch, getState) => {
 	const { user } = getState();
 	dispatch(personFollowEnd(personId));
 	userHttpServer.personFollow(user._id, personId)
-		.then( ok => {})
+		.then( ({ok}) => {Toast.show({text: ok, time: 500})})
 		.catch( err => Toast.show({text: err.toString()}))
 }
 function personFollowEnd (personId) {

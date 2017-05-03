@@ -42,3 +42,11 @@ const uploadFile = async (file, dirpath, type) => {
 }
 
 module.exports = {readFilePromise, writeFilePromise, uploadFile}
+
+
+global.myconsole = (...rest) => {
+	rest.map(item => {
+		console.log(item);
+	})
+}
+

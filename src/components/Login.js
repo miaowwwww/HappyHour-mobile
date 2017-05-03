@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { userHttpServer } from '../api/HttpServer';
+import { userHttpServer, setToken } from '../api/HttpServer';
 import Model from './Model.js';
 import '../css/Login.less';
 import Regist from './Regist.js';
 import Toast from './Toast.js';
+
 
 export default class Login extends Model {
 	
@@ -28,7 +29,8 @@ export default class Login extends Model {
 			password: this.refs.password.value
 		};
 		userHttpServer.login(user)
-			.then(user => {
+			.then(({user, token}) => {
+				setToken(token);
 				this._resolve(user);
 				this._removeView();
 			})

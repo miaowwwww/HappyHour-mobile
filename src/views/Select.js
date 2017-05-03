@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		queryVideos: ({pn}) => dispatch(queryVideos({sort:'select', pn}))
+		queryVideos: ({pn}) => dispatch(queryVideos({type:'select', pn}))
 	}
 }
 

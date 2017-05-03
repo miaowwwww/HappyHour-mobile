@@ -86,14 +86,10 @@ exports.updatePassword = async (ctx) => {
 exports.fetchOne = async (ctx) => {
 	const { id } = ctx.params;
 	let person = await UserModel.findPersonById(id);
+	if( !person ) { return ctx.body = { err: '找不到用户'}};
 
-	if(person) { 
-		person = person.toJSON();
-		const { user } = ctx.session;
-		person.isUser = user && user._id.toString() == person._id.toString()
-		return ctx.body = {person};
-	};
-	return ctx.body = {err: '找不到用户'}
+	/* 判断是否当前用户 person == user */
+	return ctx.body = {person};
 }
 
 /* 关注用户 */

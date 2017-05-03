@@ -13,7 +13,7 @@ const commentCtrl = require('../controller/comment.js');
 const { isLogined } = require('../controller/jwk.js');
 
 const uploadVideo = Multer({ dest: 'upload/cache/video' });
-const updateUserInfo = Multer( {dest: 'upload/cache/header'})
+const updateUserInfo = Multer({ dest: 'upload/cache/header' })
 
 /* 用户模块: 登录 */
 router.post('/user/login', userCtrl.login)
@@ -31,11 +31,14 @@ router.get('/user/fetchOne/:id', userCtrl.fetchOne);
 router.get('/user/follow', isLogined, userCtrl.personFollow)
 
 /* 视频模块：上传 */
-router.post('/video/upload', isLogined, uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save )
+router.post('/video/upload', isLogined, uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save)
 /* 视屏模块：获取列表 */
 router.get('/video/list', videoCtrl.queryList)
 /* 视频模块：获取特定用户的视屏 */
 router.get('/video/person', videoCtrl.queryPersonVideo);
+/* 视频模块：获取关注的用户的视频列表*/
+router.get('/video/followlist', isLogined, videoCtrl.followList);
+
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)

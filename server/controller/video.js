@@ -10,10 +10,14 @@ const tool = require('./tool.js');
 /* 获取列表 */
 const size = 100;
 exports.queryList = async (ctx) => {
-	let { pn, sort } = ctx.query;
+	let { pn, type, key } = ctx.query;
+	/* type: select | search 。 关注follow另起一个，需要登录 */
+
 	let videos = await VideoModel.queryList({ pn: pn - 1, size });
 	ctx.body = videos;
 }
+
+
 /* 获取某用户的视频列表 */
 exports.queryPersonVideo = async (ctx) => {
 	const { id, pn } = ctx.query;
@@ -22,6 +26,7 @@ exports.queryPersonVideo = async (ctx) => {
 	ctx.body = { videos };
 }
 
+// exports.
 
 /* 保存视频 不仅要保存，同时应该在user信息中，添加videos */
 exports.save = async (ctx) => {
@@ -31,7 +36,7 @@ exports.save = async (ctx) => {
 		{ _id: userId },
 		{ $push: { videos: video._id } }
 	);
-	return ctx.body = { ok: 'ok' };
+	return ctx.body = { ok: '上传成功' };
 }
 
 /* 上传海报 */
@@ -61,3 +66,19 @@ exports.uploadVideo = async (ctx, next) => {
 	await next();
 }
 
+exports.followList = async (ctx) => {
+	const token_userId = ctx.token.userId;
+	const { userId, pn } = ctx.query;
+	myconsole(userId, token_userId, pn);
+	if(token_userId !== userId) { return ctx.body = {err: '用户信息不匹配,请重新登录'}};
+	
+	let user = await UserModel.findById(userId);
+	if( !user ) { return ctx.body = {err: '找不到当前用户'}}
+
+	let videos = await VideoModel.find({user: user.starUser})
+								.populate('user', 'name _id header')
+								.sort({createAt: -1})
+
+	ctx.body = { videos }
+
+}	

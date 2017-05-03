@@ -46,7 +46,7 @@ module.exports = {
 				})
 			},
 			{
-				test: /\.(jpe?g|png|woff|svg|eot|ttf)$/,
+				test: /\.(jpe?g|gif|png|woff|svg|eot|ttf)$/,
 				// exclude: svgDirs,
 				use: 'url-loader?limit=4092&name=images/[name].[ext]'
 			},

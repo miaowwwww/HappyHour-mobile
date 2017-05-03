@@ -8,7 +8,9 @@ export const setToken = (token) => {
 export const getToken = () => {
 	return HttpServerToken;
 }
-
+export const clearToken = () => {
+	return HttpServerToken = '';
+}
 /* 请求服务 */
 class HttpServer {
 	constructor(apiBaseUri) {
@@ -58,6 +60,9 @@ class HttpServer {
 			})
 			.then(result => {
 				return result.err && Promise.reject(result.err) || Promise.resolve(result);
+			})
+			.catch(err => {
+				return Promise.reject(err.toString())
 			})
 	}
 
@@ -120,7 +125,12 @@ class VideoHttpServer extends HttpServer {
 	queryVideos = (opt) => {
 		return this.get({uri: 'list', ...opt});
 	}
-	/* 获取某用户的视频 {id, pn}*/
+	/* 获取关注的用户的视频列表?userId&pn */
+	queryFollowVideos = (userId, pn) => {
+		return this.get({uri: 'followlist', userId, pn}, true)
+	}
+
+	/* 获取某用户的视频列表 {id, pn}*/
 	queryPersonVideo = (opt) => {
 		return this.get({uri: 'person', ...opt})
 	}

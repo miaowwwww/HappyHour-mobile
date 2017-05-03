@@ -7,8 +7,8 @@ export default class UploadVideoFrom extends Component {
 
 	handleClick = () => {
 		utils.uploadVideo('videouploadform')
-			.then((data) => {
-				Toast.show({text: JSON.stringify(data), time: 500});
+			.then( ({ok}) => {
+				Toast.show({text: ok, time: 500});
 			})
 			.catch( err => Toast.shwo({text: err.toString()}))
 	}

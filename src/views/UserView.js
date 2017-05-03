@@ -55,7 +55,7 @@ export class UserView extends Component {
 						{ 
 							person.isUser &&
 							<Link to='/userinfo'>编辑个人信息</Link> ||
-							<a onClick={this.handleFollow}>关注</a>
+							<a onClick={this.handleFollow}>{person.isFollow && '取消'}关注</a>
 						}
 						<div>{person.summary}</div>
 						</div>
