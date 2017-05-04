@@ -66,6 +66,7 @@ exports.uploadVideo = async (ctx, next) => {
 	await next();
 }
 
+/* 获取所有关注的人的视频 */
 exports.followList = async (ctx) => {
 	const token_userId = ctx.token.userId;
 	const { userId, pn } = ctx.query;
@@ -82,3 +83,16 @@ exports.followList = async (ctx) => {
 	ctx.body = { videos }
 
 }	
+
+/* 搜索视频keyword&pn */
+exports.search = async (ctx) => {
+	const { keyword, pn } = ctx.query;
+	const size = 100;
+	let reg = new RegExp(keyword, 'gi');
+	let videos = await VideoModel.find({title: reg})
+										// .sort({followCount: -1})
+										.skip((pn-1) * size)
+										.limit(size);
+	console.log(videos)
+	return ctx.body = {videos}
+}

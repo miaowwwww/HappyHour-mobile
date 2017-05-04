@@ -16,7 +16,7 @@ const uploadVideo = Multer({ dest: 'upload/cache/video' });
 const updateUserInfo = Multer({ dest: 'upload/cache/header' })
 
 /* 用户模块: 登录 */
-router.post('/user/login', userCtrl.login)
+router.post('/user/login', userCtrl.login);
 /* 用户模块: 注册 */
 router.post('/user/regist', userCtrl.regist);
 /* 用户模块： 修改个人信息 表单修改，包括头像 */
@@ -28,7 +28,9 @@ router.get('/user/logout/:id', isLogined, userCtrl.logout);
 /* 用户模块： 获取某个用户person */
 router.get('/user/fetchOne/:id', userCtrl.fetchOne);
 /* 用户模块：关注、取消关注 ?user=x&person=xx */
-router.get('/user/follow', isLogined, userCtrl.personFollow)
+router.get('/user/follow', isLogined, userCtrl.personFollow);
+/* 用户模块：搜索keyword--name搜素用户*/
+router.get('/user/search', userCtrl.search)
 
 /* 视频模块：上传 */
 router.post('/video/upload', isLogined, uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save)
@@ -38,7 +40,8 @@ router.get('/video/list', videoCtrl.queryList)
 router.get('/video/person', videoCtrl.queryPersonVideo);
 /* 视频模块：获取关注的用户的视频列表*/
 router.get('/video/followlist', isLogined, videoCtrl.followList);
-
+/* 视频模块：通过keyword获取视频 */
+router.get('/video/search', videoCtrl.search)
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)

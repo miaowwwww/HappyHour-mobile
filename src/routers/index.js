@@ -1,19 +1,20 @@
 import { Router, Route, browserHistory, IndexRoute, IndexRedirect, Redirect } from 'react-router';
 import React from 'react';
-import defineHistory from '../store/history.js';
+import defineHistory from '../store/history';
 // 主页app
-import App from '../components/App.js';
+import App from '../components/App';
 // 4page
-import Follow from '../views/Follow.js';
-import Found from '../views/Found.js';
-import My from '../views/My.js';
-import Select from '../views/Select.js';
+import Follow from '../views/Follow';
+import Found from '../views/Found';
+import My from '../views/My';
+import Select from '../views/Select';
 
 // 独立页
-import Video from '../views/Video.js';
-import UserInfo from '../views/UserInfo.js';
-import UserPwd from '../views/UserPwd.js';
-import UserView from '../views/UserView.js';
+import Video from '../views/Video';
+import UserInfo from '../views/UserInfo';
+import UserPwd from '../views/UserPwd';
+import UserView from '../views/UserView';
+import Search from '../views/Search';
 // import VideoPlay from '../components/VideoPlay';
 
 const routers = (
@@ -28,6 +29,7 @@ const routers = (
 			<Route path='/userinfo' component={UserInfo}></Route>
 			<Route path='/updatewpd' component={UserPwd}></Route>
 			<Route path='/person/:id' component={UserView}></Route>
+			<Route path='/search' component={Search}></Route>
 		</Route>
 	</Router>
 )

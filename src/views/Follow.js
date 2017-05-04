@@ -1,30 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-import VideoItem from '../components/VideoItem.js'
+import VideoItem from '../components/VideoItem'
 import { Link } from 'react-router';
-import utils from '../api/utils.js';
+import utils from '../api/utils';
 import "../css/Follow.less";
-import Toast from '../components/Toast.js';
+import Toast from '../components/Toast';
 
-import { videoHttpServer } from '../api/HttpServer.js';
-import store from '../store/configStore.js';
+import { videoHttpServer } from '../api/HttpServer';
+import store from '../store/configStore';
 import img_meiyouxinxi from '../images/meiyouxinxi.gif';
 
-
-function FollowUserVideo( { video={ user: {} } } ) {
-	return (
-		<div className="FollowUserVideo">
-			<header className="FollowUserVideo-top">
-					<Link to={`/person/${video.user._id}`}>
-						<img src={utils.header(video.user.header)} />
-					</Link>
-					<strong>{video.user.name}</strong>
-					<span>{video.createAt}</span>
-			</header>
-			<VideoItem video={video} />
-		</div>
-	)
-}
-
+import UserVideo from '../components/UserVideo';
 
 export default class Follow extends Component {
 	constructor(props) {
@@ -36,20 +21,19 @@ export default class Follow extends Component {
 	}
 	componentDidMount() {
 		const { user } = store.getState();
-		console.log(user)
 		if(!user || !user._id) { return ;}
 		videoHttpServer.queryFollowVideos(user._id, this.state.pn )
 			.then(({ videos }) => {
 				console.log(videos)
 				this.setState({videos: videos})
 			})
-			// .catch( err => Toast.show({text: err}))
+			.catch( err => Toast.show({text: err}))
 	}
 
 	get VideoList() {
 		return this.state.videos.map(item => {
 			return (
-				<FollowUserVideo key={item._id} video={item} />
+				<UserVideo key={item._id} video={item} />
 			)
 		})
 	}

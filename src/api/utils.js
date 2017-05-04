@@ -2,8 +2,6 @@
 const imgpath = '/images';
 const utils = {};
 
-
-
 utils.img = (name) => {
 	return `/images/${name}`;
 }
@@ -20,11 +18,7 @@ utils.video = (name) => {
 	return name && `/video/${name}`
 }
 
-utils.typeof = (param) => {
-	let _str = Object.prototype.toString.call(param);
-	_str = _str.slice(8, -1);
-	return _str;
-}
+
 
 utils.reg = {
 	email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
@@ -36,6 +30,21 @@ utils.reg = {
 	datetime: /^(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}):(\d{2})$/,
 	idCardNo: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import { getToken } from './HttpServer.js';
 

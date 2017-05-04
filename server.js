@@ -7,8 +7,8 @@ const KoaLogger = require('koa-logger');
 const KoaStatic = require('koa-static');
 // const KoaStatic2 = require('koa-static2');
 // const Multer = require('koa-multer');
-const KoaSession = require('koa-session');
-const KoaSessionMinimal = require('koa-session-minimal');
+// const KoaSession = require('koa-session');
+// const KoaSessionMinimal = require('koa-session-minimal');
 
 const Router = require('./server/router/index.js');
 
@@ -35,16 +35,17 @@ app.use(KoaLogger());
 app.use(KoaStatic(__dirname + "/upload", { extensions: ['png', 'jpg', 'jpeg', 'mp4'] }));
 app.use(KoaStatic(__dirname + "/dist", { extensions: ['html', 'css', 'js'] }));
 app.use(BodyParser());
-app.use(KoaSessionMinimal({
-	key: 'session-id',          // cookie 中存储 session-id 时的键名, 默认为 koa:sess
-	cookie: {                   // 与 cookie 相关的配置
-		domain: 'localhost',    // 写 cookie 所在的域名
-		path: '/',              // 写 cookie 所在的路径
-		maxAge: 1000 * 60 * 60,      // cookie 有效时长
-		httpOnly: true,         // 是否只用于 http 请求中获取
-		overwrite: false        // 是否允许重写
-	}
-}))
+// 移动端没办法使用session，每一个请求都会重新发送一个sessionId
+// app.use(KoaSessionMinimal({
+// 	key: 'session-id',          // cookie 中存储 session-id 时的键名, 默认为 koa:sess
+// 	cookie: {                   // 与 cookie 相关的配置
+// 		domain: 'localhost',    // 写 cookie 所在的域名
+// 		path: '/',              // 写 cookie 所在的路径
+// 		maxAge: 1000 * 60 * 60,      // cookie 有效时长
+// 		httpOnly: true,         // 是否只用于 http 请求中获取
+// 		overwrite: false        // 是否允许重写
+// 	}
+// }))
 app.use(Router.routes(), Router.allowedMethods());
 // app.use(KoaSession(CONFIG, app));
 

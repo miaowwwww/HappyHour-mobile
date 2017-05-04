@@ -118,6 +118,10 @@ class UserHttpServer extends HttpServer {
 	personFollow = (userId, personId) => {
 		return this.get(`follow?user=${userId}&person=${personId}`, true);
 	}
+	/* 搜索用户 key */
+	search = (keyword, pn = 1) => {
+		return this.get(`search?keyword=${keyword}&pn=${pn}`)
+	}
 }
 /* video模块 */
 class VideoHttpServer extends HttpServer {
@@ -141,6 +145,10 @@ class VideoHttpServer extends HttpServer {
 	/* 评论视频 */
 	commentVideo = (data) => {
 		return this.post('comment', data, true);
+	}
+	/* 搜索视频 */
+	search = (keyword, pn = 1) => {
+		return this.get(`search?keyword=${keyword}&pn=${pn}`)
 	}
 }
 
