@@ -80,7 +80,20 @@ class Video extends Component {
 	}
 
 	handleCollect = () => {
-
+		const { video, isCollecting } = this.state;
+		if(!this.user._id) { return Toast.show({text: '请先登录'})}
+		videoHttpServer.collectVideo(video._id, this.user._id)
+			.then( ({ok}) => {
+				this.setState({
+					isCollecting: !isCollecting
+				})
+				Toast.show({text: ok});
+				/* 收藏或取消收藏成功，需要更新this.user的信息，并WinllUNmout的时候dispatch出去 */
+				!isCollecting && 
+				this.user.collectVideo.push(video._id) || 
+				this.user.collectVideo.filter(value => value != video._id)
+			})
+			.catch( err => Toast.show({text: err}))
 	}
 
 
@@ -119,7 +132,7 @@ class Video extends Component {
 						<li onClick={this.handleCollect}
 							className={this.state.isCollecting && 'select-collect'}
 						>
-							<i className="iconfont icon-shoucang"></i>收藏
+							<i className="iconfont icon-shoucang"></i>{this.state.isCollecting && '已'}收藏
 						</li>
 						<li onClick={this.handleGoodClick}
 							className={this.state.isGooding && 'select-good'}

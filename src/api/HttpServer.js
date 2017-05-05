@@ -156,6 +156,10 @@ class VideoHttpServer extends HttpServer {
 	goodVideo = (videoId, userId) => {
 		return this.get(`good?videoId=${videoId}&userId=${userId}`, true)
 	}
+	/* 收藏视频 */
+	collectVideo = (videoId, userId) => {
+		return this.get(`collect?videoId=${videoId}&userId=${userId}`, true)
+	}
 }
 
 export const userHttpServer = new UserHttpServer('user');

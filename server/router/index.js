@@ -46,6 +46,8 @@ router.get('/video/search', videoCtrl.search)
 router.get('/video/fetchOne/:id', videoCtrl.getVideo);
 /* 视频模块：为视频点赞user&video */
 router.get('/video/good', isLogined, videoCtrl.goodVideo)
+/* 视频模块：收藏user&video */
+router.get('/video/collect', isLogined, videoCtrl.collectVideo)
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)

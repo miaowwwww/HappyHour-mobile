@@ -12,7 +12,7 @@ const VideoSchema = new Schema({
 	flash: String,//	String	20	文件地址或者文件名
 	commentCount: { type: Number, default: 0 },//	Number	--	评论数
 	goodCount: { type: Number, default: 0 },//	Number	--	点赞数
-	collectCount: { type: Number, default: 0 },//	Number	--	收藏数
+	// collectCount: { type: Number, default: 0 },//	Number	--	收藏数
 	seeCount: { type: Number, default: 0 },//Number	--	观看次数（重复也+1）
 	status: { type: String, default: 1 },//Number	1	0， 1
 	durations: String, //String	--	视频时长

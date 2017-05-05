@@ -108,7 +108,6 @@ exports.getVideo = async (ctx) => {
 /* 为视频点赞 user&video */
 exports.goodVideo = async (ctx) => {
 	const { userId, videoId } = ctx.query;
-	console.log(userId)
 	let user = await UserModel.findById(userId);
 	if (!user) { return { err: '找不到当前用户，请重新登录' } };
 	let result = user.goodVideo.indexOf(videoId) > -1 &&
@@ -132,4 +131,28 @@ async function cancelGood(user, video) {
 	result = await UserModel.update({ _id: user }, { $pull: { goodVideo: video } });
 	if (!result.ok) { return { err: '取消点赞失败' } }
 	return { ok: '取消点赞成功' }
+}
+
+/* 收藏视频 user&video */
+exports.collectVideo = async (ctx) => {
+	const { userId, videoId } = ctx.query;
+	let user = await UserModel.findById(userId);
+	if (!user) { return { err: '找不到当前用户，请重新登录' } };
+	let result = user.collectVideo.indexOf(videoId) > -1 &&
+		await cancelCollect(userId, videoId) ||
+		await addCollect(userId, videoId);
+	console.log(result);
+	return ctx.body = result;
+}
+/* 收藏 */
+async function addCollect(user, video) {
+	let result = await UserModel.update({ _id: user }, { $push: { collectVideo: video } });
+	if (!result.ok) { return { err: '收藏失败' } }
+	return { ok: '收藏成功' }
+}
+/* 取消收藏 */
+async function cancelCollect(user, video) {
+	let result = await UserModel.update({ _id: user }, { $pull: { collectVideo: video } });
+	if (!result.ok) { return { err: '取消收藏失败' } }
+	return { ok: '取消收藏成功' }
 }
