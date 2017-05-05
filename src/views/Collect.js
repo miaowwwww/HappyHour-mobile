@@ -4,12 +4,12 @@ import { Link } from 'react-router';
 import utils from '../api/utils';
 import "../css/Follow.less";
 import Toast from '../components/Toast';
-
+import { NavBar } from 'antd-mobile';
 import { videoHttpServer } from '../api/HttpServer';
 import store from '../store/configStore';
-import img_meiyouxinxi from '../images/meiyouxinxi.gif';
-
+import NoFound from '../components/NoFound';
 import UserVideo from '../components/UserVideo';
+import _history from '../store/history';
 
 export default class Follow extends Component {
 	constructor(props) {
@@ -22,7 +22,7 @@ export default class Follow extends Component {
 	componentDidMount() {
 		const { user } = store.getState();
 		if(!user || !user._id) { return ;}
-		videoHttpServer.queryFollowVideos(user._id, this.state.pn )
+		videoHttpServer.queryCollectVideo(user._id, this.state.pn )
 			.then(({ videos }) => {
 				this.setState({videos: videos})
 			})
@@ -39,14 +39,19 @@ export default class Follow extends Component {
 
 	render() {
 		return (
-			<div className="Follow">
+			<div className="Collect">
+				<NavBar
+					className="Collect-navbar"
+					mode="light"
+					iconName={false}
+					onLeftClick={() => _history.goBack()}
+					leftContent={<i className="iconfont icon-roundclose"></i>}
+					>
+					我的收藏
+				</NavBar>
 				{ this.state.videos.length > 0 && 
 					this.VideoList ||
-					<div className="no-info">
-						<img src={img_meiyouxinxi} />
-						<p>你没有关注的用户或被关注用户没有视频</p>
-						<p>快去发现好视频吧</p>
-					</div>
+					<NoFound text='没有视频了啦' />
 				}
 			</div>
 		)

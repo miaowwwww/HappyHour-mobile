@@ -4,7 +4,7 @@ const UserModel = require('../model/user.js');
 const path = require('path');
 const tool = require('./tool.js');
 /*
- * 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
+* 约定： 如果一个请求发出非sql语句错误，必有 err 返回，若err == undefined 即成功
 */
 
 /* 获取列表 */
@@ -155,4 +155,16 @@ async function cancelCollect(user, video) {
 	let result = await UserModel.update({ _id: user }, { $pull: { collectVideo: video } });
 	if (!result.ok) { return { err: '取消收藏失败' } }
 	return { ok: '取消收藏成功' }
+}
+
+exports.getCollectList = async (ctx) => {
+	const { userId, pn } = ctx.query;
+	let user = await UserModel.findById(userId);
+	if(!user) { return ctx.body = {err: '找不到当前用户，请重新登录'}};
+	let videos = await VideoModel.find({_id: user.collectVideo})
+									.populate('user', 'name _id header')
+									.sort({createAt: -1})
+									.skip(size * pn)
+									.limit(size)
+	return ctx.body = {videos}
 }

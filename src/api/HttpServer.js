@@ -136,6 +136,10 @@ class VideoHttpServer extends HttpServer {
 	queryPersonVideo = (opt) => {
 		return this.get({uri: 'person', ...opt})
 	}
+	/* 获取收藏的视频列表 {id, pn}*/
+	queryCollectVideo = (userId, pn=1) => {
+		return this.get(`collectlist?pn=${pn-1}&userId=${userId}`, true)
+	}
 	/* 根据id 获取特定的video*/
 	getVideo = (id) => {
 		return this.get(`fetchOne/${id}`);

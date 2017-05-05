@@ -33,7 +33,9 @@ export class My extends Component {
 					<img src={ utils.header(header) } onClick={this.handleClick} />
 					<p>{ name || account || '点击登陆后可评论'}</p>
 					<ul>
-						<li><i className='iconfont icon-xiangqufill' ></i>我的收藏</li>
+						<li>
+							<Link to='/collect'><i className='iconfont icon-xiangqufill' ></i>我的收藏</Link>
+						</li>
 						<li><i className='iconfont icon-duanxin'></i>我的评论</li>
 					</ul>
 				</header>

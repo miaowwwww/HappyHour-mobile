@@ -44,10 +44,10 @@ export class UserView extends Component {
 					{person.name}
 				</NavBar>
 				<Banner 
-					className="banner"
+					className="UserView-banner"
 					img={utils.header(person.header)} 
 					text={
-						<div className="info">
+						<div className="UserView-info">
 						<h1>{person.name}</h1>
 						<section>
 							<span>{person.followCount} 粉丝</span>丨<span>{person.starCount} 关注</span>
@@ -61,7 +61,9 @@ export class UserView extends Component {
 						</div>
 					}
 					/>
+				<div className="UserView-content">
 				{ this.videoList }
+				</div>
 			</div>
 		)
 	}
