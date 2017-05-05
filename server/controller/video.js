@@ -71,38 +71,65 @@ exports.followList = async (ctx) => {
 	const token_userId = ctx.token.userId;
 	const { userId, pn } = ctx.query;
 	myconsole(userId, token_userId, pn);
-	if(token_userId !== userId) { return ctx.body = {err: '用户信息不匹配,请重新登录'}};
-	
-	let user = await UserModel.findById(userId);
-	if( !user ) { return ctx.body = {err: '找不到当前用户'}}
+	if (token_userId !== userId) { return ctx.body = { err: '用户信息不匹配,请重新登录' } };
 
-	let videos = await VideoModel.find({user: user.starUser})
-								.populate('user', 'name _id header')
-								.sort({createAt: -1})
+	let user = await UserModel.findById(userId);
+	if (!user) { return ctx.body = { err: '找不到当前用户' } }
+
+	let videos = await VideoModel.find({ user: user.starUser })
+		.populate('user', 'name _id header')
+		.sort({ createAt: -1 })
 
 	ctx.body = { videos }
 
-}	
+}
 
 /* 搜索视频keyword&pn */
 exports.search = async (ctx) => {
 	const { keyword, pn } = ctx.query;
 	const size = 100;
 	let reg = new RegExp(keyword, 'gi');
-	let videos = await VideoModel.find({title: reg})
-										// .sort({followCount: -1})
-										.skip((pn-1) * size)
-										.limit(size);
-	return ctx.body = {videos}
+	let videos = await VideoModel.find({ title: reg })
+		// .sort({followCount: -1})
+		.skip((pn - 1) * size)
+		.limit(size);
+	return ctx.body = { videos }
 }
 
 /* 通过id获取特定的视频 */
 exports.getVideo = async (ctx) => {
 	const { id } = ctx.params;
-	console.log(id);
 	let video = await VideoModel.findById(id).populate('user', 'name _id header');
-	
-	console.log(video);
-	if( !video ) { return ctx.body = { err: '找不到视频'}};
-	return ctx.body = {video}
+
+	if (!video) { return ctx.body = { err: '找不到视频' } };
+	return ctx.body = { video }
+}
+
+/* 为视频点赞 user&video */
+exports.goodVideo = async (ctx) => {
+	const { userId, videoId } = ctx.query;
+	console.log(userId)
+	let user = await UserModel.findById(userId);
+	if (!user) { return { err: '找不到当前用户，请重新登录' } };
+	let result = user.goodVideo.indexOf(videoId) > -1 &&
+		await cancelGood(userId, videoId) ||
+		await addGood(userId, videoId);
+	console.log(result);
+	return ctx.body = result;
+}
+/* 点赞 */
+async function addGood(user, video) {
+	let result = await VideoModel.update({ _id: video }, { $inc: { goodCount: 1 } });
+	if (!result.ok) { return { err: '找不到视频,请刷新' } }
+	result = await UserModel.update({ _id: user }, { $push: { goodVideo: video } });
+	if (!result.ok) { return { err: '点赞失败' } }
+	return { ok: '点赞成功' }
+}
+/* 取消点赞 */
+async function cancelGood(user, video) {
+	let result = await VideoModel.update({ _id: video }, { $inc: { goodCount: -1 } });
+	if (!result.ok) { return { err: '找不到视频,请刷新' }; }
+	result = await UserModel.update({ _id: user }, { $pull: { goodVideo: video } });
+	if (!result.ok) { return { err: '取消点赞失败' } }
+	return { ok: '取消点赞成功' }
 }

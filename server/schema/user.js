@@ -30,10 +30,10 @@ const UserSchema = new Schema({
 		{ type: ObjectId, ref: "User" }
 	],
 	starCount: { type: Number, default: 0 },
-	starVideo: [
+	collectVideo: [
 		{ type: ObjectId, ref: 'Video' }
 	],
-	goodVideos: [
+	goodVideo: [
 		{ type: ObjectId, ref: 'Video'}
 	],
 	createAt: { type: Date, default: Date.now },

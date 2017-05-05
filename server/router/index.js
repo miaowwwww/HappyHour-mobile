@@ -44,7 +44,8 @@ router.get('/video/followlist', isLogined, videoCtrl.followList);
 router.get('/video/search', videoCtrl.search)
 /* 视频模块：通过id获取特定的视频 */
 router.get('/video/fetchOne/:id', videoCtrl.getVideo);
-
+/* 视频模块：为视频点赞user&video */
+router.get('/video/good', isLogined, videoCtrl.goodVideo)
 
 /* 评论模块：获取视频评论 */
 router.get('/video/:videoId/comment', commentCtrl.query)

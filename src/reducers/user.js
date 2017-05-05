@@ -9,6 +9,30 @@ import {
 } from '../actions/user.js';
 
 const initialState = {
+	account: '',
+	password: '',
+	name: '',
+	sex: '',
+	summary: '',
+	tel: '',
+	email: '',
+	header: '',
+	status: '',
+	videos: [
+	],
+	authority: '',
+	followCount: 0,
+	followUser: [
+	],
+	starUser: [
+	],
+	starCount: '',
+	collectVideo: [
+	],
+	goodVideo: [
+	],
+	createAt:'',
+	updateAt: ''
 
 };
 

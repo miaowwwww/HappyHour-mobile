@@ -103,7 +103,6 @@ exports.personFollow = async (ctx) => {
 
 	let ok = 'ok';
 	ok = (isfollowing > -1) ? await unfollow(user, person) : await addfollow(user, person);
-	console.log(ok);
 	return ctx.body = { ok }
 }
 /* 关注 */

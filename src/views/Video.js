@@ -19,26 +19,70 @@ class Video extends Component {
 			video: { 
 				user: {}, 
 				// flash: '1493878750367.mp4'
-			}
+			},
+			isCollecting: false,
+			isGooding: false,
 		}
+		this.user = {...this.props.user};
 	}
-
+	
 	componentDidMount() {
 		const { id } = this.props.params;
 		videoHttpServer.getVideo(id)
 			.then(({video}) => {
-				this.setState({video})
+				/* 检查是否已经收藏了，是否已经点赞了,
+				 * 服务器应该保存一份user信息，通过服务器保存的那份，
+				 * 判断是否已经点赞，是否已经为收藏 
+				 * */
+				let isGooding = this.user.goodVideo.indexOf(video._id) > -1;
+				let isCollecting = this.user.collectVideo.indexOf(video._id) > -1;
+				this.setState({video, isGooding, isCollecting})
 			})
 			.catch(err => Toast.show({text: err.toString()}))
 	}
 
-	handlerComment = async() => {
+	componentWillUnmount() {
+		this.props.updateUser(this.user);
+	}
+
+	handleComment = async() => {
 		const content = await CommentTextarea.show();
 		if(content) {
 			const { video, commentAdd } = this.props;
-			commentAdd({content, video: video._id})
+			const { _id } = this.state.video;
+			commentAdd({content, video: _id})
 		}
 	}
+
+	handleGoodClick = () => {
+		const { video, isGooding } = this.state;
+		if(!this.user._id) { return Toast.show({text: '请先登录'})}
+		videoHttpServer.goodVideo(video._id, this.user._id)
+			.then( ({ok}) => {
+				let { goodCount } = this.state.video;
+				goodCount = !isGooding ? ++goodCount : --goodCount;
+				this.setState({
+					isGooding: !isGooding,
+					video: {
+						...this.state.video,
+						goodCount: goodCount
+					}
+				})
+				Toast.show({text: ok});
+				/* 关注或取消关注成功，需要更新this.user的信息，并WinllUNmout的时候dispatch出去 */
+				console.log(!isGooding)
+				!isGooding && 
+				this.user.goodVideo.push(video._id) || 
+				this.user.goodVideo.filter(value => value != video._id)
+
+			})
+			.catch( err => Toast.show({text: err}))
+	}
+
+	handleCollect = () => {
+
+	}
+
 
 	render() {
 		const {video} = this.state;
@@ -54,17 +98,15 @@ class Video extends Component {
 					leftContent={<i className="iconfont icon-roundclose"></i>}
 					>
 				</NavBar>
-				{ video.flash &&
 				<video 
 					controls 
 					poster={utils.poster(video.poster)}
 					preload={false}
 					// autoPlay='ture'
 					>
-					<source src={`/video/${video.flash}`} type="video/mp4" />
+					{ video.flash && <source src={`/video/${video.flash}`} type="video/mp4" />}
 					您的浏览器不支持 HTML5 video 标签。
 				</video>
-				}
 				<section>
 					<header>
 						<h1>{video.title}</h1>
@@ -74,9 +116,20 @@ class Video extends Component {
 					<p>{video.introduction}</p>
 					<ul>
 						<li><i className="iconfont icon-kanguo"></i> {video.seeCount}</li>
-						<li><i className="iconfont icon-shoucang"></i>收藏</li>
-						<li><i className="iconfont icon-zan"></i>点赞</li>
-						<li onClick={this.handlerComment}><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
+						<li onClick={this.handleCollect}
+							className={this.state.isCollecting && 'select-collect'}
+						>
+							<i className="iconfont icon-shoucang"></i>收藏
+						</li>
+						<li onClick={this.handleGoodClick}
+							className={this.state.isGooding && 'select-good'}
+						>
+							<i className="iconfont icon-zan"></i> {video.goodCount}
+						</li>
+						<li onClick={this.handleComment}>
+							<i className="iconfont icon-pinglun"></i> 
+							{video.commentCount}
+						</li>
 					</ul>
 				</section>
 				<CommentList videoId={this.props.params.id} />
@@ -86,8 +139,9 @@ class Video extends Component {
 }
 
 
-import { goodVideo } from '../actions/videos.js';
-import { commentAdd } from '../actions/comment.js';
+// import { goodVideo } from '../actions/videos.js';
+import { updateUser } from '../actions/user'
+import { commentAdd } from '../actions/comment';
 import { connect } from 'react-redux';
 
 // 通过location.state来拿吧
@@ -98,17 +152,17 @@ import { connect } from 'react-redux';
 // 	}
 // }
 // 通过redux
-// function mapStateToProps(state, ownProps) {
-// 	const { id } = ownProps.params;
-// 	return {
-// 		video: state.videos.list.find( item => item._id == id)
-// 	}
-// }
+function mapStateToProps(state) {
+	return {
+		user: state.user
+	}
+}
 function mapDispatchToProps(dispatch) {
 	return {
 		// goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),
-		commentAdd: (comment) => dispatch(commentAdd(comment)) 
+		commentAdd: (comment) => dispatch(commentAdd(comment)),
+		updateUser: (user) => dispatch(updateUser(user))
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Video);
+export default connect(mapStateToProps, mapDispatchToProps)(Video);
