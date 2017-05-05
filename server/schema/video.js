@@ -48,11 +48,7 @@ VideoSchema.statics = {
 				})
 		})
 	},
-	findById: function (id, cb) {
-		return this
-			.findOne({ _id: id })
-			.exec(cb)
-	},
+
 	saveVideo: function(video) {
 		return new Promise((resolve, reject) => {
 			let model = this.model('Video');

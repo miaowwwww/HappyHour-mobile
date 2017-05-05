@@ -93,6 +93,16 @@ exports.search = async (ctx) => {
 										// .sort({followCount: -1})
 										.skip((pn-1) * size)
 										.limit(size);
-	console.log(videos)
 	return ctx.body = {videos}
+}
+
+/* 通过id获取特定的视频 */
+exports.getVideo = async (ctx) => {
+	const { id } = ctx.params;
+	console.log(id);
+	let video = await VideoModel.findById(id).populate('user', 'name _id header');
+	
+	console.log(video);
+	if( !video ) { return ctx.body = { err: '找不到视频'}};
+	return ctx.body = {video}
 }

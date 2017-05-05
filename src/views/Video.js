@@ -8,9 +8,28 @@ import CommentTextarea from '../components/CommentTextarea.js';
 import { Link } from 'react-router';
 import { NavBar } from 'antd-mobile';
 
+/* 脱离redux */
+import { videoHttpServer } from '../api/HttpServer';
+import Toast from '../components/Toast';
+
 class Video extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			video: { 
+				user: {}, 
+				// flash: '1493878750367.mp4'
+			}
+		}
+	}
+
+	componentDidMount() {
+		const { id } = this.props.params;
+		videoHttpServer.getVideo(id)
+			.then(({video}) => {
+				this.setState({video})
+			})
+			.catch(err => Toast.show({text: err.toString()}))
 	}
 
 	handlerComment = async() => {
@@ -22,7 +41,7 @@ class Video extends Component {
 	}
 
 	render() {
-		const {video} = this.props;
+		const {video} = this.state;
 		const {user} = video;
 		return (
 			<div className='Video'>
@@ -35,15 +54,17 @@ class Video extends Component {
 					leftContent={<i className="iconfont icon-roundclose"></i>}
 					>
 				</NavBar>
+				{ video.flash &&
 				<video 
 					controls 
 					poster={utils.poster(video.poster)}
-					preload='ture'
+					preload={false}
 					// autoPlay='ture'
 					>
 					<source src={`/video/${video.flash}`} type="video/mp4" />
 					您的浏览器不支持 HTML5 video 标签。
 				</video>
+				}
 				<section>
 					<header>
 						<h1>{video.title}</h1>
@@ -58,7 +79,7 @@ class Video extends Component {
 						<li onClick={this.handlerComment}><i className="iconfont icon-pinglun"></i> {video.commentCount}</li>
 					</ul>
 				</section>
-				<CommentList videoId={video._id} />
+				<CommentList videoId={this.props.params.id} />
 			</div>
 		)
 	}
@@ -70,12 +91,12 @@ import { commentAdd } from '../actions/comment.js';
 import { connect } from 'react-redux';
 
 // 通过location.state来拿吧
-function mapStateToProps(state, ownProps) {
-	const video = ownProps.location.state.video;
-	return {
-		video: video
-	}
-}
+// function mapStateToProps(state, ownProps) {
+// 	const video = ownProps.location.state.video;
+// 	return {
+// 		video: video
+// 	}
+// }
 // 通过redux
 // function mapStateToProps(state, ownProps) {
 // 	const { id } = ownProps.params;
@@ -85,9 +106,9 @@ function mapStateToProps(state, ownProps) {
 // }
 function mapDispatchToProps(dispatch) {
 	return {
-		goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),
+		// goodVideo: ({videoId, userId}) => dispatch(queryCommentList(videoId)),
 		commentAdd: (comment) => dispatch(commentAdd(comment)) 
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Video);
+export default connect(null, mapDispatchToProps)(Video);

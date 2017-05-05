@@ -103,7 +103,6 @@ class UserHttpServer extends HttpServer {
 	}
 	/*更新*/
 	update = (user) => {
-		console.log('update user ')
 		return this.post('update', user, true)
 	}
 	/* 修改密码 {_id, oldpwd, newpwd} */
@@ -133,10 +132,13 @@ class VideoHttpServer extends HttpServer {
 	queryFollowVideos = (userId, pn) => {
 		return this.get({uri: 'followlist', userId, pn}, true)
 	}
-
 	/* 获取某用户的视频列表 {id, pn}*/
 	queryPersonVideo = (opt) => {
 		return this.get({uri: 'person', ...opt})
+	}
+	/* 根据id 获取特定的video*/
+	getVideo = (id) => {
+		return this.get(`fetchOne/${id}`);
 	}
 	/* 获取视频评论 id*/
 	queryCommentList = ({videoId, pn}) => {
@@ -149,6 +151,10 @@ class VideoHttpServer extends HttpServer {
 	/* 搜索视频 */
 	search = (keyword, pn = 1) => {
 		return this.get(`search?keyword=${keyword}&pn=${pn}`)
+	}
+	/* 点赞视频 */
+	goodVideo = (videoId, userId) => {
+		return this.get(`good?video=${videoId}&user=${userId}`, true)
 	}
 }
 

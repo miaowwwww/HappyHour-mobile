@@ -6,21 +6,33 @@ import VideoItem from '../components/VideoItem.js';
 import Banner from '../components/Banner.js';
 import { queryVideos } from '../actions/videos.js';
 import img_banner from '../images/brand.png';
+import Toast from '../components/Toast';
 
 
-class Select extends Component {
+/* 脱离redux */
+import { videoHttpServer } from '../api/HttpServer';
+
+export default class Select extends Component {
 	constructor(props) {
 		super(props);
-	}
-
-	componentDidMount() {
-		if(this.props.videos.list.length === 0) {
-			this.props.queryVideos({pn:1});
+		this.state = {
+			videos: []
 		}
 	}
 
+	componentDidMount() {
+		// if(this.props.videos.list.length === 0) {
+		// 	this.props.queryVideos({pn:1});
+		// }
+		videoHttpServer.queryVideos({uri: 'list', type: 'select', pn: 1})
+			.then( videos => {
+				this.setState({videos})
+			})
+			.catch( err => Toast.show({text: err.toString()}))
+	}
+
 	get videoList() {
-		return this.props.videos.list.map(video => <VideoItem video={video} key={video._id} />)
+		return this.state.videos.map(video => <VideoItem video={video} key={video._id} />)
 	}
 
 	render() {
@@ -36,16 +48,16 @@ class Select extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		videos: state.videos
-	}
-}
+// const mapStateToProps = (state) => {
+// 	return {
+// 		videos: state.videos
+// 	}
+// }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		queryVideos: ({pn}) => dispatch(queryVideos({type:'select', pn}))
-	}
-}
+// const mapDispatchToProps = (dispatch) => {
+// 	return {
+// 		queryVideos: ({pn}) => dispatch(queryVideos({type:'select', pn}))
+// 	}
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Select)
+// export default connect(mapStateToProps, mapDispatchToProps)(Select)
