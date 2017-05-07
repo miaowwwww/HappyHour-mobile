@@ -16,6 +16,7 @@ import UserPwd from '../views/UserPwd';
 import UserView from '../views/UserView';
 import Search from '../views/Search';
 import Collect from '../views/Collect';
+import StarUser from '../views/StarUser';
 // import VideoPlay from '../components/VideoPlay';
 
 const routers = (
@@ -32,6 +33,7 @@ const routers = (
 			<Route path='/person/:id' component={UserView}></Route>
 			<Route path='/search' component={Search}></Route>
 			<Route path='/collect' component={Collect}></Route>
+			<Route path='/star' component={StarUser}></Route>
 		</Route>
 	</Router>
 )

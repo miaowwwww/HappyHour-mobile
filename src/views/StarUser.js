@@ -1,57 +1,55 @@
 import React, {Component, PropTypes} from 'react';
-import VideoItem from '../components/VideoItem'
 import { Link } from 'react-router';
 import utils from '../api/utils';
-import "../css/Collect.less";
 import Toast from '../components/Toast';
 import { NavBar } from 'antd-mobile';
-import { videoHttpServer } from '../api/HttpServer';
+import { userHttpServer } from '../api/HttpServer';
 import store from '../store/configStore';
 import NoFound from '../components/NoFound';
-import UserVideo from '../components/UserVideo';
 import _history from '../store/history';
+import UserItem from '../components/UserItem';
+import "../css/StarUser.less";
 
-export default class Collect extends Component {
+export default class StarUser extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			videos: [],
+			users: [],
 			pn: 1
 		};
 	}
 	componentDidMount() {
 		const { user } = store.getState();
 		if(!user || !user._id) { return ;}
-		videoHttpServer.queryCollectVideo(user._id, this.state.pn )
-			.then(({ videos }) => {
-				this.setState({videos: videos})
+		userHttpServer.queryStarUser(user._id, this.state.pn )
+			.then(({ users }) => {
+				this.setState({users})
 			})
 			.catch( err => Toast.show({text: err}))
 	}
 
-	get VideoList() {
-		return this.state.videos.map(item => {
-			return (
-				<UserVideo key={item._id} video={item} />
-			)
+
+	get userslist() {
+		return this.state.users.map(user => {
+			return <UserItem key={user._id} user={user} />
 		})
 	}
 
 	render() {
 		return (
-			<div className="Collect">
+			<div className="StarUser">
 				<NavBar
-					className="Collect-navbar"
+					className="StarUser-navbar"
 					mode="light"
 					iconName={false}
 					onLeftClick={() => _history.goBack()}
 					leftContent={<i className="iconfont icon-roundclose"></i>}
 					>
-					我的收藏
+					我的关注
 				</NavBar>
-				<div className="Collect-content">
-					{ this.state.videos.length > 0 && 
-						this.VideoList ||
+				<div className="StarUser-content">
+					{ this.state.users.length > 0 && 
+						this.userslist ||
 						<NoFound text='没有视频了啦' />
 					}
 				</div>

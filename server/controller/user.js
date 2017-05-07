@@ -130,3 +130,16 @@ exports.search = async (ctx) => {
 	return ctx.body = {users}
 
 }
+
+/* 获取用户关注的人的列表 */
+exports.getStarUser = async (ctx) => {
+	const { userId, pn } = ctx.query;
+	const size = 100;
+	let user = await UserModel.findById(userId);
+	if(!user) { return ctx.body = { err: '没有找到当前用户，请重新登录'}};
+	let users = await UserModel.find({_id: user.starUser}, '_id name header summary')
+								.skip(size * pn)
+								.limit(size)
+								.sort({createAt: -1})
+	return ctx.body = {users};
+}

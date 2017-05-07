@@ -31,6 +31,9 @@ router.get('/user/fetchOne/:id', userCtrl.fetchOne);
 router.get('/user/follow', isLogined, userCtrl.personFollow);
 /* 用户模块：搜索keyword--name搜素用户*/
 router.get('/user/search', userCtrl.search)
+/* 用户模块：获取用户关注的用户列表 */
+router.get('/user/star', isLogined, userCtrl.getStarUser);
+
 
 /* 视频模块：上传 */
 router.post('/video/upload', isLogined, uploadVideo.any(), videoCtrl.uploadVideo, videoCtrl.uploadPoster, videoCtrl.save)
@@ -50,6 +53,8 @@ router.get('/video/good', isLogined, videoCtrl.goodVideo)
 router.get('/video/collect', isLogined, videoCtrl.collectVideo)
 /* 视频模块：获取收藏列表 userId&pn */
 router.get('/video/collectlist', isLogined, videoCtrl.getCollectList)
+/* 视频模块：删除视频 userId, videoId */
+router.get('/video/delete', isLogined, videoCtrl.deleteVideo)
 
 
 /* 评论模块：获取视频评论 */

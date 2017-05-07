@@ -34,7 +34,7 @@ const UserSchema = new Schema({
 		{ type: ObjectId, ref: 'Video' }
 	],
 	goodVideo: [
-		{ type: ObjectId, ref: 'Video'}
+		{ type: ObjectId, ref: 'Video' }
 	],
 	createAt: { type: Date, default: Date.now },
 	updateAt: { type: Date, default: Date.now }
@@ -72,10 +72,15 @@ UserSchema.statics = {
 				.findOne({ _id })
 				.populate({
 					path: 'videos',
-					populate: { path: 'user', select: 'name _id header' }
+					select: 'title _id poster introduction', 
+					match: { status: {$lte:2} } ,
+					options: { 
+						populate: { 
+							path: 'user'
+						},
+						sort: {createAt: -1}
+					}
 				})
-				// .populate('videos')
-				// .populate('videos.user', 'name, _id, header')
 				.exec((err, person) => {
 					resolve(person);
 				})

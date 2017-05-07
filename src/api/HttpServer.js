@@ -121,6 +121,10 @@ class UserHttpServer extends HttpServer {
 	search = (keyword, pn = 1) => {
 		return this.get(`search?keyword=${keyword}&pn=${pn}`)
 	}
+	/* 获取关注的用户列表 */
+	queryStarUser = (userId, pn) => {
+		return this.get(`star?userId=${userId}&pn=${pn - 1 }`, true);
+	}
 }
 /* video模块 */
 class VideoHttpServer extends HttpServer {
@@ -164,6 +168,11 @@ class VideoHttpServer extends HttpServer {
 	collectVideo = (videoId, userId) => {
 		return this.get(`collect?videoId=${videoId}&userId=${userId}`, true)
 	}
+	/* 删除视频 */
+	deleteVideo = (videoId, userId) => {
+		return this.get(`delete?videoId=${videoId}&userId=${userId}`, true)
+	}
+
 }
 
 export const userHttpServer = new UserHttpServer('user');

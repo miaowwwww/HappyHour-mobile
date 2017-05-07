@@ -14,7 +14,7 @@ const VideoSchema = new Schema({
 	goodCount: { type: Number, default: 0 },//	Number	--	点赞数
 	// collectCount: { type: Number, default: 0 },//	Number	--	收藏数
 	seeCount: { type: Number, default: 0 },//Number	--	观看次数（重复也+1）
-	status: { type: String, default: 1 },//Number	1	0， 1
+	status: { type: String, default: 1 },//Number	1：正常，2：管理员删除，3：用户删除
 	durations: String, //String	--	视频时长
 	createAt: { type: Date, default: Date.now() }
 
@@ -42,7 +42,7 @@ VideoSchema.statics = {
 				.sort({ 'createAt': -1 })
 				.skip(size * pn)
 				.limit(size)
-				.populate('user', '_id, header')
+				.populate('user', '_id header name')
 				.exec((err, list) => {
 					resolve(list);
 				})

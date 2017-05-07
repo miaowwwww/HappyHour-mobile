@@ -22,6 +22,7 @@ class Video extends Component {
 			},
 			isCollecting: false,
 			isGooding: false,
+			isUser: false,
 		}
 		this.user = {...this.props.user};
 	}
@@ -36,7 +37,8 @@ class Video extends Component {
 				 * */
 				let isGooding = this.user.goodVideo.indexOf(video._id) > -1;
 				let isCollecting = this.user.collectVideo.indexOf(video._id) > -1;
-				this.setState({video, isGooding, isCollecting})
+				let isUser = this.user._id == video.user._id;
+				this.setState({video, isGooding, isCollecting, isUser})
 			})
 			.catch(err => Toast.show({text: err.toString()}))
 	}
@@ -70,7 +72,6 @@ class Video extends Component {
 				})
 				Toast.show({text: ok});
 				/* 关注或取消关注成功，需要更新this.user的信息，并WinllUNmout的时候dispatch出去 */
-				console.log(!isGooding)
 				!isGooding && 
 				this.user.goodVideo.push(video._id) || 
 				this.user.goodVideo.filter(value => value != video._id)
@@ -96,6 +97,17 @@ class Video extends Component {
 			.catch( err => Toast.show({text: err}))
 	}
 
+	handleDelect = () => {
+		const { video } = this.state
+		console.log(this.state.video._id)
+		videoHttpServer.deleteVideo(video._id, this.user._id)
+			.then(({ok}) => {
+				Toast.show({text: ok}).then(() => {
+					this.props.router.goBack();
+				})
+			})
+			.catch(err => Toast.show({text: err}))
+	}
 
 	render() {
 		const {video} = this.state;
@@ -143,6 +155,12 @@ class Video extends Component {
 							<i className="iconfont icon-pinglun"></i> 
 							{video.commentCount}
 						</li>
+						{
+							this.state.isUser &&
+							<li onClick={this.handleDelect}>
+								<i className="iconfont icon-shanchu"></i> 
+							</li>
+						}
 					</ul>
 				</section>
 				<CommentList videoId={this.props.params.id} />

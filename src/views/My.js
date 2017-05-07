@@ -15,35 +15,41 @@ export class My extends Component {
 	handleClick = (e) => {
 		e.stopPropagation();
 		e.preventDefault();
-		if(this.props.user._id) {
+		if (this.props.user._id) {
 			_history.push('userinfo');
-			return ;
+			return;
 		}
-		Login.show().then( user => {
-			this.props.syncLogin( user );
+		Login.show().then(user => {
+			this.props.syncLogin(user);
 		})
 	}
 
+	handleLogout = (e) => {
+		this.props.logout(this.props.user);
+	}
+
 	render() {
-		let { account, name, header } = this.props.user;
+		let { user } = this.props;
 		return (
 			<div className='My'>
 				<header className='My-Top'>
 					<i className='icon iconfont icon-xitongcaidan' ></i>
-					<img src={ utils.header(header) } onClick={this.handleClick} />
-					<p>{ name || account || '点击登陆后可评论'}</p>
+					<img src={utils.header(user.header)} onClick={this.handleClick} />
+					<p>{user.name || '点击登陆后可评论'}</p>
 					<ul>
 						<li>
 							<Link to='/collect'><i className='iconfont icon-xiangqufill' ></i>我的收藏</Link>
 						</li>
-						<li><i className='iconfont icon-duanxin'></i>我的评论</li>
+						<li>
+							<Link to='/star'><i className='iconfont icon-geren'></i>我的关注</Link>
+						</li>
 					</ul>
 				</header>
 				<dl className="My-List" >
-					<dt>我的消息</dt>
-					<dt>我的关注</dt>
-					<dt>我的缓存</dt>
-					<dt>功能开关</dt>
+					<dt><Link to={`/person/${user._id}`}>我的主页</Link></dt>
+					<dt><Link to={`/follow`}>我的关注</Link></dt>
+					<dt><Link to={`/updatewpd`}>修改密码</Link></dt>
+					<dt onClick={this.handleLogout} style={{color: 'red'}}>退出登录</dt>
 				</dl>
 			</div>
 		)
@@ -51,16 +57,17 @@ export class My extends Component {
 }
 
 import { connect } from 'react-redux';
-import { syncLogin } from '../actions/user.js';
+import { syncLogin, logout } from '../actions/user.js';
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user
 	}
 }
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
 	return {
-		syncLogin: (user) => dispatch(syncLogin(user))
+		syncLogin: (user) => dispatch(syncLogin(user)),
+		logout: user => dispatch(logout(user))
 	}
 }
 

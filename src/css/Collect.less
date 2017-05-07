@@ -1,0 +1,17 @@
+@import './tool.less';
+
+.Collect {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	.flex();
+	.flex-v();
+
+	.Collect-content {
+		.flex-1();
+		overflow: auto;
+		-webkit-overflow-scrolling: true;
+	}
+}

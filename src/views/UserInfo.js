@@ -32,9 +32,9 @@ export class UserInfo extends Component {
 		})
 	}
 
-	handleLogout = (e) => {
-		this.props.logout(this.props.user);
-	}
+	// handleLogout = (e) => {
+	// 	this.props.logout(this.props.user);
+	// }
 
 	render() {
 		let { user } = this.props;
@@ -77,10 +77,6 @@ export class UserInfo extends Component {
 						>昵称</InputItem>
 						<List.Item
 							extra={
-								// <select name="sex" >
-								// 	<option value='1'>男</option>
-								// 	<option value='0'>女</option>
-								// </select>
 								<div>
 									<input type='radio' className="my-radio" name='sex' value='1' defaultChecked={user.sex == '1'} />男
 									<input type='radio' className="my-radio" name='sex' value='0' defaultChecked={user.sex == '0'} />女
@@ -110,17 +106,17 @@ export class UserInfo extends Component {
 							placeholder="说点什么..."
 						/>
 					</List>
-					<WhiteSpace size='xl' />
-					<WingBlank size="xl">
-					<Button onClick={() => {_history.push('/updatewpd')}} className="btn" type="ghost">修改密码</Button>
-					<WhiteSpace size='md' />
-					<Button onClick={this.handleLogout} className="btn" type="warning">退出登录</Button>
-					</WingBlank>
 				</form>
 			</div>
 		)
 	}
 }
+					// <WhiteSpace size='xl' />
+					// <WingBlank size="xl">
+					// <Button onClick={() => {_history.push('/updatewpd')}} className="btn" type="ghost">修改密码</Button>
+					// <WhiteSpace size='md' />
+					// <Button onClick={this.handleLogout} className="btn" type="warning">退出登录</Button>
+					// </WingBlank>
 
 import { connect } from 'react-redux';
 import { updateUser, logout } from '../actions/user.js';
@@ -133,7 +129,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps (dispatch) {
 	return {
 		updateUser: (user) => dispatch(updateUser(user)),
-		logout: user => dispatch(logout(user))
+		// logout: user => dispatch(logout(user))
 	}
 }
 
