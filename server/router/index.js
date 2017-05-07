@@ -61,6 +61,7 @@ router.get('/video/delete', isLogined, videoCtrl.deleteVideo)
 router.get('/video/:videoId/comment', commentCtrl.query)
 /* 评论模块：发布评论 */
 router.post('/video/comment', isLogined, commentCtrl.add)
-
+/* 评论模块：用户删除评论 */
+router.get('/video/comment/delete', isLogined, commentCtrl.deleteComment)
 
 module.exports = router;

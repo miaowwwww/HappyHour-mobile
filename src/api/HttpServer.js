@@ -148,14 +148,6 @@ class VideoHttpServer extends HttpServer {
 	getVideo = (id) => {
 		return this.get(`fetchOne/${id}`);
 	}
-	/* 获取视频评论 id*/
-	queryCommentList = ({videoId, pn}) => {
-		return this.get(`${videoId}/comment?pn=${pn}`);
-	}
-	/* 评论视频 */
-	commentVideo = (data) => {
-		return this.post('comment', data, true);
-	}
 	/* 搜索视频 */
 	search = (keyword, pn = 1) => {
 		return this.get(`search?keyword=${keyword}&pn=${pn}`)
@@ -173,6 +165,19 @@ class VideoHttpServer extends HttpServer {
 		return this.get(`delete?videoId=${videoId}&userId=${userId}`, true)
 	}
 
+
+	// 评论----------------
+	/* 获取视频评论 id*/
+	queryCommentList = ({videoId, pn}) => {
+		return this.get(`${videoId}/comment?pn=${pn}`);
+	}
+	/* 评论视频 */
+	commentVideo = (data) => {
+		return this.post('comment', data, true);
+	}
+	deleteComment = (fromId, commentId, videoId) => {
+		return this.get(`comment/delete?fromId=${fromId}&commentId=${commentId}&videoId=${videoId}`, true)
+	}
 }
 
 export const userHttpServer = new UserHttpServer('user');

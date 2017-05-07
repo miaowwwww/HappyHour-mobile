@@ -21,7 +21,7 @@ const UserSchema = new Schema({
 	videos: [
 		{ type: ObjectId, ref: 'Video' }
 	],
-	authority: Number,
+	authority: { type: Number, default: 0 },//0：用户，1：提升的管理员，9：最高管理员 
 	followCount: { type: Number, default: 0 },
 	followUser: [
 		{ type: ObjectId, ref: "User" }
@@ -73,7 +73,7 @@ UserSchema.statics = {
 				.populate({
 					path: 'videos',
 					select: 'title _id poster introduction', 
-					match: { status: {$lte:2} } ,
+					match: { status: 1 } ,
 					options: { 
 						populate: { 
 							path: 'user'

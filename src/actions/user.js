@@ -105,12 +105,11 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 /* user: {_id} */
 export const logout = (user) => (dispatch, getState) => {
 	userHttpServer.logout(user._id)
-		.then(ok => {
-			dispatch(userLogout())
-			defineHistory.replace('/my');
+		.then(res => {
+			dispatch(userLogout());
+			Toast.show({text: res.ok})
 		})
 		.catch(err => {
-			console.log(err);
 			Toast.show({text: err, time: 500})
 		})
 }

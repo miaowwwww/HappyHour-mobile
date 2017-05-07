@@ -4,6 +4,7 @@ export const QUERYCOMMENTLISTING = 'QUERYCOMMENTLISTING'
 export const QUERYCOMMENTLISTEND = 'QUERYCOMMENTLISTEND'
 export const QUERYCOMMENTLISTERROR = 'QUERYCOMMENTLISTERROR'
 
+
 function queryCommentListIng(videoId) {
 	return {
 		type: QUERYCOMMENTLISTING,
@@ -62,5 +63,17 @@ export const commentAdd = (comment) => {
 		videoHttpServer.commentVideo({...comment, from:{_id, name}})
 			.then( (data) => dispatch(commentAddEnd({...comment, ...data, from: {_id, name, header}})))
 			.catch( (err) => dispatch(commentAddError(err)))
+	}
+}
+
+
+
+/* 删除评论：用户删除 */
+export const COMMENT_DELETE = 'comment_delete';
+export const commentDelete = (commentId, videoId) => {
+	return {
+		type: COMMENT_DELETE,
+		commentId,
+		videoId
 	}
 }

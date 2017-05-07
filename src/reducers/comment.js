@@ -4,7 +4,8 @@ import {
 	QUERYCOMMENTLISTERROR,
 	COMMENT_ADDBEGIN,
 	COMMENT_ADDEND,
-	COMMENT_ADDERROR
+	COMMENT_ADDERROR,
+	COMMENT_DELETE,
 } from '../actions/comment.js';
 
 const initialState = {
@@ -20,7 +21,7 @@ const initialState = {
 };
 
 export default function comment(state = initialState, action) {
-	const { videoId, list, type, nomore } = action;
+	const { videoId, commentId, list, type, nomore } = action;
 	switch (action.type) {
 		case QUERYCOMMENTLISTING:
 			return {
@@ -28,13 +29,15 @@ export default function comment(state = initialState, action) {
 				[videoId]: { list: [], ...state[videoId], isFetching: true }
 			};
 		case QUERYCOMMENTLISTEND:
+	console.log(action)
+	console.log(videoId)
 			return {
 				...state,
 				[videoId]: {
 					nomore,
 					isFetching: false,
 					lastFecthingTime: new Date(),
-					list: state[videoId].list.concat(list)
+					list: [...list, ...state[videoId].list]
 				}
 			};
 		case QUERYCOMMENTLISTERROR:
@@ -63,6 +66,15 @@ export default function comment(state = initialState, action) {
 			}
 		case COMMENT_ADDERROR:
 			return state;
+		/* 删除评论：用户删除 commentId, videoId */
+		case COMMENT_DELETE:
+			return {
+				...state,
+				[videoId]: {
+					...state[videoId],
+					list: state[videoId].list.filter(item => item._id != commentId)
+				}
+			}
 		default:
 			return state;
 	}

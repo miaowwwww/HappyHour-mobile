@@ -48,7 +48,7 @@ exports.login = async (ctx) => {
 /* 退出 */
 exports.logout = async (ctx) => {
 	const { id } = ctx.params;
-	ctx.body = { ok: 'ok' };
+	ctx.body = { ok: '退出成功' };
 
 }
 /* 更新 包括头像 */

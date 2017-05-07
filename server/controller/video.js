@@ -13,7 +13,7 @@ exports.queryList = async (ctx) => {
 	let { pn, type, key } = ctx.query;
 	/* type: select | search 。 关注follow另起一个，需要登录 */
 
-	let videos = await VideoModel.queryList({ pn: pn - 1, size,select:{status: {$lte: 2}} });
+	let videos = await VideoModel.queryList({ pn: pn - 1, size, select: { status: 1 } });
 	ctx.body = videos;
 }
 
@@ -21,7 +21,7 @@ exports.queryList = async (ctx) => {
 /* 获取某用户的视频列表 */
 exports.queryPersonVideo = async (ctx) => {
 	const { id, pn } = ctx.query;
-	let videos = await VideoModel.queryList({ pn: pn - 1, size, select: { user: id, status: {$lte: 2} } })
+	let videos = await VideoModel.queryList({ pn: pn - 1, size, select: { user: id, status: 1 } })
 	if (!videos) { return ctx.body = { err: '查找用户视频错误' } };
 	ctx.body = { videos };
 }
@@ -74,7 +74,7 @@ exports.followList = async (ctx) => {
 	let user = await UserModel.findById(userId);
 	if (!user) { return ctx.body = { err: '找不到当前用户' } }
 
-	let videos = await VideoModel.find({ user: user.starUser, status: {$lte: 2} })
+	let videos = await VideoModel.find({ user: user.starUser, status: 1 })
 		.populate('user', 'name _id header')
 		.sort({ createAt: -1 })
 
@@ -87,10 +87,10 @@ exports.search = async (ctx) => {
 	const { keyword, pn } = ctx.query;
 	const size = 100;
 	let reg = new RegExp(keyword, 'gi');
-	let videos = await VideoModel.find({ title: reg, status: {$lte: 2}})
-										// .sort({followCount: -1})
-										.skip((pn - 1) * size)
-										.limit(size);
+	let videos = await VideoModel.find({ title: reg, status: 1 })
+		// .sort({followCount: -1})
+		.skip((pn - 1) * size)
+		.limit(size);
 	return ctx.body = { videos }
 }
 
@@ -159,19 +159,19 @@ async function cancelCollect(user, video) {
 exports.getCollectList = async (ctx) => {
 	const { userId, pn } = ctx.query;
 	let user = await UserModel.findById(userId);
-	if(!user) { return ctx.body = {err: '找不到当前用户，请重新登录'}};
-	let videos = await VideoModel.find({_id: user.collectVideo, status: {$lte: 2}})
-									.populate('user', 'name _id header')
-									.sort({createAt: -1})
-									.skip(size * pn)
-									.limit(size)
+	if (!user) { return ctx.body = { err: '找不到当前用户，请重新登录' } };
+	let videos = await VideoModel.find({ _id: user.collectVideo, status: 1 })
+		.populate('user', 'name _id header')
+		.sort({ createAt: -1 })
+		.skip(size * pn)
+		.limit(size)
 	return ctx.body = { videos }
 }
 
 /* 用户删除自己的视频视频，仅修改video.status, 不从user.videos中删除 */
-exports.deleteVideo = async(ctx) => {
+exports.deleteVideo = async (ctx) => {
 	const { userId, videoId } = ctx.query;
-	let result = await VideoModel.update({_id: videoId, user: userId}, {$set: {status: 3}});
-	if(!result.ok) { return ctx.body = {err: '参数失败，删除视频失败'}};
-	return ctx.body = {ok: '删除视频成功'};
+	let result = await VideoModel.update({ _id: videoId, user: userId }, { $set: { status: 3 } });
+	if (!result.ok) { return ctx.body = { err: '参数失败，删除视频失败' } };
+	return ctx.body = { ok: '删除视频成功' };
 }

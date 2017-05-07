@@ -41,9 +41,18 @@ exports.add = async( ctx ) => {
 exports.good = async( ctx ) => {
 	const { videoId } = ctx.params;
 	const { _id } = ctx.session.user;
-	console.log(video + '--' + _id);
 	/* 视频commentCount + 1 */
 	await VideoModel.update({_id: videoId}, {$inc: {goodCount: 1}});
 	await UserModel.update({_id: _id}, {$push: {goodVideos: videoId}});
 	ctx.body = {ok: 'ok'}
+}
+
+/* 用户删除自己的评论 */
+exports.deleteComment = async (ctx) => {
+	const { fromId, commentId, videoId } = ctx.query;
+	if(fromId != ctx.token.userId) {return ctx.body = { err: '这不是你的评论'}};
+	let result = await CommentModel.update({from: fromId, _id: commentId}, {$set: {status: 3}});
+	if(!result.ok) { return ctx.body = {err: '删除失败'}};
+	result = await VideoModel.update({_id: videoId}, {$inc: {commentCount: -1}});
+	return ctx.body = {ok: '删除成功', commentId, videoId };
 }

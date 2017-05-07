@@ -27,6 +27,7 @@ const routers = (
 			<Route path='follow' component={Follow}></Route>
 			<Route path='select' component={Select}></Route>
 			<Route path='my' component={My}></Route>
+		</Route>
 			<Route path='/videos/:id' component={Video}></Route>
 			<Route path='/userinfo' component={UserInfo}></Route>
 			<Route path='/updatewpd' component={UserPwd}></Route>
@@ -34,7 +35,6 @@ const routers = (
 			<Route path='/search' component={Search}></Route>
 			<Route path='/collect' component={Collect}></Route>
 			<Route path='/star' component={StarUser}></Route>
-		</Route>
 	</Router>
 )
 

@@ -22,7 +22,7 @@ const CommentSchema = new mongoose.Schema({
 		}
 	}],
 	content: String,
-	status: { type: Number, default: 1 },
+	status: { type: Number, default: 1 }, //1: 正常， 2：管理员删除，3：用户删除
 	createAt: {
 		type: Date,
 		default: Date.now()
@@ -41,13 +41,15 @@ CommentSchema.pre('save', function (next) {
 	};
 	next();
 })
-
+CommentSchema.pre('update', function(next) {
+	next();
+})
 CommentSchema.statics = {
 	/* 根据videoId，获取commentlist */
 	queryList: function ({ videoId, pn, size }) {
 		return new Promise((resolve, reject) => {
 			this
-				.find({ video: videoId })
+				.find({ video: videoId, status: 1 })
 				.sort({ 'updateAt': -1 })
 				.skip(size * pn)
 				.limit(size)
@@ -55,7 +57,6 @@ CommentSchema.statics = {
 				.exec((err, list) => {
 					resolve(list)
 				})
-
 		})
 	},
 	save: function (comment) {
