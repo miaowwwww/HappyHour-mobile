@@ -50,9 +50,20 @@ exports.good = async( ctx ) => {
 /* 用户删除自己的评论 */
 exports.deleteComment = async (ctx) => {
 	const { fromId, commentId, videoId } = ctx.query;
-	if(fromId != ctx.token.userId) {return ctx.body = { err: '这不是你的评论'}};
-	let result = await CommentModel.update({from: fromId, _id: commentId}, {$set: {status: 3}});
-	if(!result.ok) { return ctx.body = {err: '删除失败'}};
-	result = await VideoModel.update({_id: videoId}, {$inc: {commentCount: -1}});
+	// 判断是不是管理员删除的
+	let user = await UserModel.findById(ctx.token.userId);
+	if(!user) { return ctx.body = {err: '无法获取当前用户，请重新登录'}};
+	let result;
+	// 管理员删除的
+	if(user.authority > 0) {
+		result = await CommentModel.update({_id: commentId}, {$set: {status: 2}});
+	}
+	// 用户删除的
+	else{
+		if(fromId != ctx.token.userId) {return ctx.body = { err: '这不是你的评论'}};
+		result = await CommentModel.update({from: fromId, _id: commentId}, {$set: {status: 3}});
+	}
+	if(!result.n) { return ctx.body = {err: '删除失败'}};
+	await VideoModel.update({_id: videoId}, {$inc: {commentCount: -1}});
 	return ctx.body = {ok: '删除成功', commentId, videoId };
 }

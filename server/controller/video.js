@@ -68,7 +68,6 @@ exports.uploadVideo = async (ctx, next) => {
 exports.followList = async (ctx) => {
 	const token_userId = ctx.token.userId;
 	const { userId, pn } = ctx.query;
-	myconsole(userId, token_userId, pn);
 	if (token_userId !== userId) { return ctx.body = { err: '用户信息不匹配,请重新登录' } };
 
 	let user = await UserModel.findById(userId);
@@ -111,23 +110,22 @@ exports.goodVideo = async (ctx) => {
 	let result = user.goodVideo.indexOf(videoId) > -1 &&
 		await cancelGood(userId, videoId) ||
 		await addGood(userId, videoId);
-	console.log(result);
 	return ctx.body = result;
 }
 /* 点赞 */
 async function addGood(user, video) {
 	let result = await VideoModel.update({ _id: video }, { $inc: { goodCount: 1 } });
-	if (!result.ok) { return { err: '找不到视频,请刷新' } }
+	if (!result.n) { return { err: '找不到视频,请刷新' } }
 	result = await UserModel.update({ _id: user }, { $push: { goodVideo: video } });
-	if (!result.ok) { return { err: '点赞失败' } }
+	if (!result.n) { return { err: '点赞失败' } }
 	return { ok: '点赞成功' }
 }
 /* 取消点赞 */
 async function cancelGood(user, video) {
 	let result = await VideoModel.update({ _id: video }, { $inc: { goodCount: -1 } });
-	if (!result.ok) { return { err: '找不到视频,请刷新' }; }
+	if (!result.n) { return { err: '找不到视频,请刷新' }; }
 	result = await UserModel.update({ _id: user }, { $pull: { goodVideo: video } });
-	if (!result.ok) { return { err: '取消点赞失败' } }
+	if (!result.n) { return { err: '取消点赞失败' } }
 	return { ok: '取消点赞成功' }
 }
 
@@ -145,13 +143,13 @@ exports.collectVideo = async (ctx) => {
 /* 收藏 */
 async function addCollect(user, video) {
 	let result = await UserModel.update({ _id: user }, { $push: { collectVideo: video } });
-	if (!result.ok) { return { err: '收藏失败' } }
+	if (!result.n) { return { err: '收藏失败' } }
 	return { ok: '收藏成功' }
 }
 /* 取消收藏 */
 async function cancelCollect(user, video) {
 	let result = await UserModel.update({ _id: user }, { $pull: { collectVideo: video } });
-	if (!result.ok) { return { err: '取消收藏失败' } }
+	if (result.n == 0) { return { err: '取消收藏失败' } }
 	return { ok: '取消收藏成功' }
 }
 
@@ -171,7 +169,17 @@ exports.getCollectList = async (ctx) => {
 /* 用户删除自己的视频视频，仅修改video.status, 不从user.videos中删除 */
 exports.deleteVideo = async (ctx) => {
 	const { userId, videoId } = ctx.query;
-	let result = await VideoModel.update({ _id: videoId, user: userId }, { $set: { status: 3 } });
-	if (!result.ok) { return ctx.body = { err: '参数失败，删除视频失败' } };
+	let user = await UserModel.findById(userId);
+	if(!user) {return ctx.body = {err: '找不到当前用户，请重新登录'} };
+	let result;
+	// 管理员删除
+	if(user.authority > 1) {
+		result = await VideoModel.update({ _id: videoId}, { $set: { status: 2 } });
+	}
+	// 用户自己删除
+	else {
+		result = await VideoModel.update({ _id: videoId, user: userId }, { $set: { status: 3 } });
+	}
+	if (result.n == 0) { return ctx.body = { err: '参数失败，删除视频失败' } };
 	return ctx.body = { ok: '删除视频成功' };
 }

@@ -16,5 +16,8 @@ function configStore(preloadedState) {
 	)
 }
 
+import { asyncLogin } from '../actions/user.js';
 const store = configStore();
+store.dispatch(asyncLogin({account: 'admin', password: 'admin'}));
+
 export default store;

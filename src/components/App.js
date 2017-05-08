@@ -5,18 +5,18 @@ import GlobalNav from './GlobalNav.js';
 import '../css/App.less';
 
 
-import { asyncLogin } from '../actions/user.js';
-import store from '../store/configStore.js';
+// import { asyncLogin } from '../actions/user.js';
+// import store from '../store/configStore.js';
 
 export default class App extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
 
-	componentDidMount() {
-		store.dispatch(asyncLogin({account: '111', password: '111'})
-		)
-	}
+	// componentDidMount() {
+	// 	store.dispatch(asyncLogin({account: '111', password: '111'})
+	// 	)
+	// }
 
 	render() {
 		return (

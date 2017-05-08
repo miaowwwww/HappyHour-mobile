@@ -154,7 +154,7 @@ class Video extends Component {
 								{video.commentCount}
 							</li>
 							{
-								this.state.isUser &&
+								 (this.user.authority > 1 || this.state.isUser)  &&
 								<li onClick={this.handleDelect}>
 									<i className="iconfont icon-shanchu"></i>
 								</li>

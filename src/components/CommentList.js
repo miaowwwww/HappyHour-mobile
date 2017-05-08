@@ -17,12 +17,12 @@ class CommentListItem extends Component {
 		_history.push(`/person/${this.props.comment.from._id}`)
 	}
 
-	handleComment = async() => {
+	handleComment = async () => {
 		const content = await CommentTextarea.show();
-		if(content) {
+		if (content) {
 			const { commentAdd } = this.props;
 			const { video, from } = this.props.comment;
-			commentAdd({content, video, to: from })
+			commentAdd({ content, video, to: from })
 		}
 	}
 
@@ -32,12 +32,12 @@ class CommentListItem extends Component {
 		const { from, _id, video } = this.props.comment;
 		videoHttpServer.deleteComment(from._id, _id, video)
 			.then(res => {
-				Toast.show({text: res.ok}).then(() => {
+				Toast.show({ text: res.ok }).then(() => {
 					this.props.commentDelete(res.commentId, res.videoId);
 				})
 			})
 			.catch(err => {
-				Toast.show({text: err});
+				Toast.show({ text: err });
 			})
 	}
 	render() {
@@ -46,21 +46,21 @@ class CommentListItem extends Component {
 		const { className } = this.props;
 		return (
 			<li className={`CommentListItem ${className}`}
-					onClick={this.handleComment}>
+				onClick={this.handleComment}>
 				<img src={`header/${header}`} className="header_img" onClick={this.handleClickImg} />
 				<div>
-					<h1>{name || account} 
+					<h1>{name}
 						<small>{createAt}
 							{
-								this.props.userId == from._id &&
+								(this.props.userId == from._id || this.props.authority > 0) &&
 								<i className="icon-shanchu iconfont delete"
 									onClick={this.handleDelete}
 								></i>
 							}
 						</small></h1>
 					<p>
-						{ to && <em>回复 {to.name}：</em> }
-						{ content }
+						{to && <em>回复 {to.name}：</em>}
+						{content}
 					</p>
 				</div>
 			</li>
@@ -74,8 +74,8 @@ class CommentList extends Component {
 	}
 	componentDidMount() {
 		const { commentData, queryCommentList, videoId } = this.props;
-		if(!commentData.nomore) {
-			queryCommentList({videoId, pn: 1});
+		if (!commentData.nomore) {
+			queryCommentList({ videoId, pn: 1 });
 		}
 	}
 
@@ -83,19 +83,20 @@ class CommentList extends Component {
 		const { list } = this.props.commentData;
 		const { user } = this.props;
 		return list.map(comment => {
-			return <CommentListItem 
-							key={comment._id} 
-							userId={user._id}
-							comment={comment}
-							commentDelete={this.props.commentDelete}
-							commentAdd={this.props.commentAdd} />
+			return <CommentListItem
+				key={comment._id}
+				userId={user._id}
+				authority={user.authority}
+				comment={comment}
+				commentDelete={this.props.commentDelete}
+				commentAdd={this.props.commentAdd} />
 		})
 	}
 
 	render() {
 		return (
 			<ul className='CommentList' >
-				{ this.getcommentlist }
+				{this.getcommentlist}
 			</ul>
 		)
 	}
@@ -104,15 +105,15 @@ class CommentList extends Component {
 import { connect } from 'react-redux';
 import { queryCommentList, commentAdd, commentDelete } from '../actions/comment.js';
 
-function mapStateToProps(state, {videoId}) {
+function mapStateToProps(state, { videoId }) {
 	return {
-		commentData: state.comment[videoId] || {list: []},
+		commentData: state.comment[videoId] || { list: [] },
 		user: state.user
 	}
 }
 function mapDispatchToProps(dispatch) {
 	return {
-		queryCommentList: (videoId) => dispatch( queryCommentList(videoId) ),
+		queryCommentList: (videoId) => dispatch(queryCommentList(videoId)),
 		commentAdd: (comment) => dispatch(commentAdd(comment)),
 		commentDelete: (comment, video) => dispatch(commentDelete(comment, video)),
 	}

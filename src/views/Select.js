@@ -21,9 +21,6 @@ export default class Select extends Component {
 	}
 
 	componentDidMount() {
-		// if(this.props.videos.list.length === 0) {
-		// 	this.props.queryVideos({pn:1});
-		// }
 		videoHttpServer.queryVideos({uri: 'list', type: 'select', pn: 1})
 			.then( videos => {
 				this.setState({videos})
