@@ -10,6 +10,7 @@ const Multer = require('koa-multer');
 const userCtrl = require('../controller/user.js');
 const videoCtrl = require('../controller/video.js');
 const commentCtrl = require('../controller/comment.js');
+const noticeCtrl = require('../controller/notice.js');
 const { isLogined } = require('../controller/jwk.js');
 
 const uploadVideo = Multer({ dest: 'upload/cache/video' });
@@ -64,4 +65,9 @@ router.post('/video/comment', isLogined, commentCtrl.add)
 /* 评论模块：用户删除评论 */
 router.get('/video/comment/delete', isLogined, commentCtrl.deleteComment)
 
+
+/* 公告模块: 添加公告 */
+router.post('/notice/add', isLogined, noticeCtrl.add)
+/* 公告模块：获取公告列表 */
+router.get('/notice/query', noticeCtrl.query)
 module.exports = router;

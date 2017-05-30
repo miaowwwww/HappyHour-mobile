@@ -179,9 +179,18 @@ class VideoHttpServer extends HttpServer {
 		return this.get(`comment/delete?fromId=${fromId}&commentId=${commentId}&videoId=${videoId}`, true)
 	}
 }
-
+/* notice模块 */
+class NoticeHttpServer extends HttpServer {
+	add = (data) => {
+		return this.post('add', data, true);
+	}
+	query = (pn) => {
+		return this.get(`query?pn=${pn - 1}`)
+	}
+}
 export const userHttpServer = new UserHttpServer('user');
 export const videoHttpServer = new VideoHttpServer('video');
+export const noticeHttpServer = new NoticeHttpServer('notice');
 
 
 

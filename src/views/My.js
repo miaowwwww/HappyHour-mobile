@@ -47,7 +47,7 @@ export class My extends Component {
 				</header>
 				<dl className="My-List" >
 					<dt><Link to={`/person/${user._id}`}>我的主页</Link></dt>
-					<dt><Link to={`/follow`}>我的关注</Link></dt>
+					<dt><Link to={`/notice`}>系统公告</Link></dt>
 					<dt><Link to={`/updatewpd`}>修改密码</Link></dt>
 					<dt onClick={this.handleLogout} style={{color: 'red'}}>退出登录</dt>
 				</dl>

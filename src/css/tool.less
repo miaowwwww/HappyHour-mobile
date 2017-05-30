@@ -7,26 +7,67 @@
    flex-pack-justify：子元素两端对齐
    兼容性：ios 4+、android 2.3+、winphone8+
    ============================================================ */
-.flex(){display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}
-.flex-v(){-webkit-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}
-.flex-1(){-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
-.flex-n(@n){-webkit-box-flex:@n;-webkit-flex:@n;-ms-flex:@n;flex:@n;}
-.flex-vertical-center(){-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;}
-.flex-horizontal-center(){-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;}
-.flex-horizontal-justify(){-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}
-.flex-align-item(@position){
-	-webkit-box-align:@position;-webkit-align-items:@position;-ms-flex-align:@position;align-items:@position;
+.flex() {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
 }
-.flex-justify-content(@position){
-	-webkit-box-pack:@position;-webkit-justify-content:@position;-ms-flex-pack:@position;justify-content:@position;
+.flex-v() {
+	-webkit-box-orient: vertical;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+.flex-1() {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+}
+.flex-n(@n) {
+	-webkit-box-flex: @n;
+	-webkit-flex: @n;
+	-ms-flex: @n;
+	flex: @n;
+}
+.flex-vertical-center() {
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+.flex-horizontal-center() {
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+.flex-horizontal-justify() {
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+.flex-align-item(@position) {
+	-webkit-box-align: @position;
+	-webkit-align-items: @position;
+	-ms-flex-align: @position;
+	align-items: @position;
+}
+.flex-justify-content(@position) {
+	-webkit-box-pack: @position;
+	-webkit-justify-content: @position;
+	-ms-flex-pack: @position;
+	justify-content: @position;
 }
 
 /*
 	使用lib-flexible,需要的添加的 字体大小
 */
-
-.font-dpr(@font-size){
+.font-dpr(@font-size) {
 	font-size: @font-size;
+
 	[data-dpr="2"] & {
 		font-size: 2 * @font-size;
 	}
@@ -34,7 +75,6 @@
 		font-size: 3 * @font-size;
 	}
 }
-
 .clearfix () {
 	&:after {
 		content: '';

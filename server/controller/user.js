@@ -79,7 +79,6 @@ exports.updatePassword = async (ctx) => {
 	_user.password = newpwd;
 	await UserModel.save(_user);
 	return ctx.body = { ok: 'ok' };
-
 }
 
 /* 获取某个用户 ctx.params.id*/

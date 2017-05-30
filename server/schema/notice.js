@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-
 const NoticeSchema = new mongoose.Schema({
 	from: {	type: ObjectId,	ref: 'User'},
 	content: String,
+	title: String,
 	status: {	type: Number,	default: 1 },
 	createAt: {
 		type: Date,
@@ -14,7 +14,7 @@ const NoticeSchema = new mongoose.Schema({
 	updateAt: {
 		type: Date,
 		default: Date.now()
-	}
+	},
 
 })
 

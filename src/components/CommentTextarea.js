@@ -32,6 +32,7 @@ export default class CommentTextarea extends Model {
 	handleHide = () => {
 		this._resolveView();
 	}
+
 	render() {
 		return (
 			<div className='CommentTextarea mask' >

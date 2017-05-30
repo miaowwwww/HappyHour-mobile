@@ -18,6 +18,8 @@ import Search from '../views/Search';
 import Collect from '../views/Collect';
 import StarUser from '../views/StarUser';
 // import VideoPlay from '../components/VideoPlay';
+import Notice from '../views/Notice';
+import NoticeAdd from '../views/NoticeAdd';
 
 const routers = (
 	<Router history={ defineHistory } >
@@ -35,6 +37,8 @@ const routers = (
 			<Route path='/search' component={Search}></Route>
 			<Route path='/collect' component={Collect}></Route>
 			<Route path='/star' component={StarUser}></Route>
+			<Route path='/notice' component={Notice}></Route>
+			<Route path='/noticeadd' component={NoticeAdd}></Route>
 	</Router>
 )
 

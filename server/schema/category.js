@@ -1,8 +1,8 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var ObjectId = Schema.Types.ObjectId
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
 
-var CategorySchema = new Schema({
+const CategorySchema = new Schema({
   name: String,
   movies: [{ type: ObjectId, ref: 'Video' }],
   createAt: {
@@ -15,7 +15,6 @@ var CategorySchema = new Schema({
   }
 })
 
-// var ObjectId = mongoose.Schema.Types.ObjectId
 CategorySchema.pre('save', function (next) {
   if (this.isNew) {
     this.createAt = this.updateAt = Date.now()

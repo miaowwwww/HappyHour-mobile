@@ -4,6 +4,7 @@ var webpackMd5Hash = require('webpack-md5-hash');
 var extractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 var path = require('path');
+var cleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	// devtool: 'cheap-module-eval-source-map',
@@ -26,37 +27,31 @@ module.exports = {
 				use: 'babel-loader'		
 			},
 			{
-				test: /\.less$/,
+				test: /\.(less|css)$/,
 				use: extractTextPlugin.extract({
 					fallback: 'style-loader',
 					use: ['css-loader', 'postcss-loader', 'less-loader'],
 					publicPath: '../'
 				})
 			},
-			// {
-			// 	test: /\.(jpg|png)$/,
-			// 	use: 'url-loader?limit=8192&name=images/[name].[ext]'
-			// },
 			{
-				test: /\.(jpe?g|png|woff|svg|eot|ttf)$/,
+				test: /\.(jpe?g|png|gif|woff|svg|eot|ttf)$/,
 				use: 'url-loader?limit=4092&name=images/[name].[ext]'
 			},
-			{
-				test: /\.json$/,
-				use: 'json-loader'
-			}
 		]
+	},
+	resolve: {
+		extensions: ['.web.js', '.js', '.json', '.less'],
 	},
 	plugins: [
 		new htmlWebpackPlugin({
 			template: path.resolve(__dirname, '../src/index.html'),
 			filename: 'index.html',
-			title: 'HappyHour-m'
+			title: 'HappyHour-m-pro',
+			favicon: path.resolve(__dirname, '../src/favicon.ico'),
 		}),
 		new webpackMd5Hash(),
 		new webpack.optimize.CommonsChunkPlugin({
-			// name: 'vendor'
-			// filename: 'react-vorder.js'
 			names: ['app', 'vendor']
 		}),
 		new webpack.LoaderOptionsPlugin({
@@ -64,21 +59,27 @@ module.exports = {
 				postcss: {
 					options: {
 						plugins: [autoprefixer({
-							browsers: ['ie >= 9', 'ios > 7', 'Android > 4']
+							browsers: ['ie >= 9', 'ios > 7', 'Android > 4'],
+							// flexbox: false
 						})]
 					}
 				}
 			}
 		}),
+		
 		new extractTextPlugin({
 			filename: 'css/style.css',
 			disable: false,
 			allChunks: true
-		})
-		// new webpack.LoaderOptionsPlugin({
-		// 	minimize: true,
-		// 	debug: false
-		// }),
+		}),
+
+		new cleanWebpackPlugin(['dist'], {
+			root: path.resolve(__dirname, '../'),
+			verbose: true,
+			dry: false,
+			exclude: [],
+		}),
+
 		// new webpack.optimize.UglifyJsPlugin({
 		// 	beautify: false,
 		// 	mangle: {
@@ -86,7 +87,7 @@ module.exports = {
 		// 		keep_fnames: true
 		// 	},
 		// 	compress: {
-		// 		screw_ie8: true
+		// 		screw_ie8: false
 		// 	},
 		// 	comments: false
 		// }),

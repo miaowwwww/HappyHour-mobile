@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --config ./config/webpack.dev.config.js --hot",
-    "build": "webpack --config ./config/webpack.pro.config.js --watch",
+    "build": "webpack --config ./config/webpack.pro.config.js -p",
     "server": "nodemon --harmony ./server.js"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
+    "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.26.4",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.1",
@@ -59,7 +60,8 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1",
-    "webpack-md5-hash": "0.0.5"
+    "webpack-md5-hash": "0.0.5",
+    "webpack-merge": "^4.1.0"
   },
   "dependencies": {
     "antd-mobile": "^1.1.1",
